@@ -73,6 +73,8 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 .slide.art-full .art{left:50%; right:auto; top:50%; transform:translate(-50%,-50%); width:auto; max-width:78vw; max-height:78vh}
 .slide.art-full > :not(.art){visibility:hidden}
 .slide[data-img="25"] .menu .opt{font-size:clamp(20px,2.45vw,40px)}
+.slide.has-art .scene{grid-template-columns:1fr; gap:1.6vh}
+.slide.has-art .bubble{font-size:clamp(22px,2.5vw,42px)}
 /* chrome */
 .bar{position:fixed; left:0; right:0; bottom:0; height:7.5vh; display:flex; align-items:center; justify-content:space-between; padding:0 2vw; background:linear-gradient(to top, var(--bg) 60%, transparent); font-size:clamp(14px,1.4vw,22px); color:var(--muted); z-index:5}
 .bar .btns{display:flex; gap:.6vw}
@@ -101,7 +103,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 2 SAM TYPES -->
-<section class="slide dense" data-img="02">
+<section class="slide" data-img="02">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <div class="scene">
     <div>
@@ -132,7 +134,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 5 RUDE? -->
-<section class="slide dense" data-img="05">
+<section class="slide" data-img="05">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · Try it</p>
   <div class="scene">
     <div>
@@ -209,7 +211,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 13 FAST REPLIES -->
-<section class="slide dense" data-img="13">
+<section class="slide" data-img="13">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <div class="scene">
     <div>
@@ -283,51 +285,11 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
   <p class="step">So the person who answers the hidden message out loud usually ends up looking like <b class="ink lav">the problem</b>.</p>
 </section>
 
-<!-- 22 THE TRAP -->
-<section class="slide" data-img="22">
-  <p class="act"><span class="dot" style="background:var(--pink)"></span>The trap · answering tone with tone</p>
-  <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>I appreciate your trust. However, your message <b>did not answer</b> the specific questions I asked.</div>
-  <p class="step"><b>True.</b> Every word of it.</p>
-  <p class="step">And now the thread is about Sarah's <b class="ink pink">tone</b>, not about the flyer.</p>
-</section>
-
-<!-- 23 THE MOVE -->
-<section class="slide" data-img="23">
-  <p class="act"><span class="dot" style="background:var(--lav)"></span>The move · answer the task, not the tone</p>
-  <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>Thanks for the quick note. To avoid a reprint, could you confirm <b>two items</b> by <b>2:00</b>? If I do not hear back, I will keep the RSVP link and send the proof to print.</div>
-  <div class="step"><p><span class="pill" style="background:var(--lav)">keeps the warmth</span> &nbsp; <span class="pill" style="background:var(--peach)">keeps the ask</span> &nbsp; <span class="pill" style="background:var(--butter)">says by when</span> &nbsp; <span class="pill" style="background:var(--pink)">says what she will do if no answer</span></p></div>
-  <p class="step">Ms. Glenn can be as vague as she likes. The flyer still prints.</p>
-</section>
-
-<!-- 24 FOUR QUESTIONS -->
-<section class="slide dense" data-img="24">
-  <p class="act"><span class="dot" style="background:var(--lav)"></span>Before you type · four questions</p>
-  <div class="opts">
-    <div class="opt step"><span class="k" style="background:var(--lav)">1</span><span>What do I <b>still need</b> from this person?</span></div>
-    <div class="opt step"><span class="k" style="background:var(--blue)">2</span><span>What is the <b>relationship</b>, and what is the <b>history</b>?</span></div>
-    <div class="opt step"><span class="k" style="background:var(--peach)">3</span><span>What happens if I <b>say nothing</b>?</span></div>
-    <div class="opt step"><span class="k" style="background:var(--pink)">4</span><span>Is this the <b>first time</b>, or a <b>pattern</b>?</span></div>
-  </div>
-</section>
-
-<!-- 25 THE MENU -->
-<section class="slide dense" data-img="25">
-  <p class="act"><span class="dot" style="background:var(--lav)"></span>Your options · each one has a cost</p>
-  <div class="menu">
-    <div class="opt step"><span class="t"><span class="ink lav">Reply by email.</span></span><span class="c">Keeps a record. Slow. Can be ignored again.</span></div>
-    <div class="opt step"><span class="t"><span class="ink lav">Call, or walk over.</span></span><span class="c">Gets answers in minutes. Leaves no record.</span></div>
-    <div class="opt step"><span class="t"><span class="ink lav">"I will go ahead unless I hear back" email.</span></span><span class="c">Says what you will do, and by when. Shows in writing that you asked.</span></div>
-    <div class="opt step"><span class="t"><span class="ink lav">Copy another person.</span></span><span class="c">A second person sees it. Can look like going around your boss.</span></div>
-    <div class="opt step"><span class="t"><span class="ink lav">Go to the boss's boss.</span></span><span class="c">For a pattern, not for one email.</span></div>
-    <div class="opt step"><span class="t"><span class="ink lav">Say nothing and guess.</span></span><span class="c">Fast. If it goes wrong, it was your judgment.</span></div>
-  </div>
-</section>
-
-<!-- 26 NOW YOU -->
+<!-- 22 NOW YOU TRY -->
 <section class="slide center" data-img="26">
   <p class="act"><span class="dot" style="background:var(--pink)"></span>Now you try</p>
-  <h2>Sarah has <span class="hl pink">four</span> open questions and a <span class="hl pink">3:00 PM</span> print deadline.</h2>
-  <p class="step">Ms. Glenn's reply just landed. Open the activity in your group.</p>
+  <h2>A real case, in your <span class="hl pink">group</span>.</h2>
+  <p class="step">One boss. Four questions. A print deadline at 3:00. You decide what to do.</p>
   <a class="link step" id="activityLink" href="activity.html" target="_blank">Open: Reply, Call, or Escalate?</a>
 </section>
 
@@ -344,7 +306,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 
 <div class="bar">
   <div class="score"><span>Decoded by the class</span><span class="n" id="score">0</span><button id="plus" title="Class got it">+1</button><button id="minus" title="Undo">−1</button></div>
-  <div id="counter">1 / 27</div>
+  <div id="counter">1 / 23</div>
   <div class="btns">
     <button id="prev">← Back</button>
     <button id="next">Next →</button>
