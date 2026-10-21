@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reply, Call, or Escalate? · BUSN 2100 simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf6;--fg:#1c1f26;--muted:#5b6170;--card:#fff;--line:#e3e0d7;--soft:#f1efe8;
+ --blue:#DCEBF8;--lav:#E6DEF8;--butter:#FBF1B8;--pink:#FADAE5;--peach:#FFE3CF;--sky:#D9EEF8;--mint:#E2F1E8;
+ --inkblue:#245f9a;--inklav:#5b43a6;--inkbutter:#7a5f00;--inkpink:#a63a68;--inkpeach:#a9521c;--inkmint:#2f6b4a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Lexend','Avenir Next','Avenir',Verdana,'Segoe UI',sans-serif;font-size:19px;letter-spacing:.025em;word-spacing:.06em;line-height:1.7;-webkit-font-smoothing:antialiased}
+b,strong{font-weight:700}
+header{position:sticky;top:0;z-index:9;background:var(--bg);border-bottom:2px solid var(--line);padding:12px 18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:860px;margin:0 auto}
+.brand{font-weight:700;font-size:19px;line-height:1.2}
+.brand small{display:block;font-weight:400;font-size:13.5px;color:var(--muted);letter-spacing:.05em}
+.prog{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;max-width:860px;margin:10px auto 0}
+.prog div{height:100%;background:var(--inklav);width:0;transition:width .3s}
+.pill{display:inline-block;background:var(--soft);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
+main{max-width:860px;margin:0 auto;padding:22px 18px 120px}
+h1{font-size:30px;line-height:1.25;margin:0 0 10px}
+h2{font-size:24px;line-height:1.3;margin:22px 0 8px}
+h3{font-size:19px;margin:18px 0 6px}
+p{margin:0 0 12px}
+.lead{font-size:20px}
+.muted{color:var(--muted)}
+.small{font-size:15px;color:var(--muted)}
+.tag{display:inline-block;font-size:13.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px;margin:12px 0}
+.card.blue{background:var(--blue);border-color:transparent}.card.lav{background:var(--lav);border-color:transparent}.card.butter{background:var(--butter);border-color:transparent}.card.pink{background:var(--pink);border-color:transparent}.card.peach{background:var(--peach);border-color:transparent}.card.sky{background:var(--sky);border-color:transparent}.card.mint{background:var(--mint);border-color:transparent}
+.ink.blue{color:var(--inkblue)}.ink.lav{color:var(--inklav)}.ink.butter{color:var(--inkbutter)}.ink.pink{color:var(--inkpink)}.ink.peach{color:var(--inkpeach)}.ink.mint{color:var(--inkmint)}
+.msg{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0;font-size:18px;line-height:1.7}
+.msg .meta{font-size:14px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:10px;line-height:1.5}
+.btn{font:inherit;letter-spacing:.03em;font-size:17px;font-weight:700;background:var(--fg);color:var(--bg);border:2px solid var(--fg);border-radius:12px;padding:11px 18px;cursor:pointer;margin:6px 8px 6px 0}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn.soft{background:var(--soft);color:var(--fg);border-color:var(--soft)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.wide{width:100%;text-align:left}
+.door{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;font:inherit;letter-spacing:.025em;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0;cursor:pointer;color:var(--fg)}
+.door:hover{border-color:var(--muted)}
+.door .k{flex:none;display:grid;place-items:center;width:2em;height:2em;border-radius:50%;font-weight:700;color:#1c1f26}
+.door .t{font-weight:700;display:block}
+.door .s{display:block;font-size:15.5px;color:var(--muted)}
+.door.walked{border-style:dashed}
+.door.walked .t::after{content:" · walked";font-weight:400;color:var(--muted);font-size:14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;letter-spacing:.025em;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0;cursor:pointer;color:var(--fg)}
+.opt:hover{border-color:var(--muted)}
+.opt b{display:block;margin-bottom:2px}
+.reveal{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+textarea,input.field{width:100%;font:inherit;letter-spacing:.02em;line-height:1.6;font-size:18px;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--fg)}
+textarea{min-height:150px;resize:vertical}
+textarea:focus,input.field:focus{outline:3px solid var(--lav);border-color:var(--inklav)}
+.counter{font-size:14px;color:var(--muted);margin-top:4px}
+.ok{color:var(--inkmint)}
+.hot{display:inline;cursor:pointer;border-bottom:3px dotted #bbb;padding:0 2px;border-radius:4px}
+.hot.on{background:var(--pink);border-bottom-color:transparent;font-weight:700}
+.hot.show{background:var(--butter)}
+.tapwhy{background:var(--pink);border-radius:12px;padding:10px 14px;margin:8px 0;font-size:16.5px}
+.tapwhy b{color:var(--inkpink)}
+.sortrow{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0}
+.sortrow .q{font-weight:700;margin-bottom:8px}
+.sortrow .choices{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:inherit;font-size:15.5px;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--fg)}
+.chip.on{background:var(--fg);color:#fff;border-color:var(--fg)}
+.chip.good{background:var(--mint);border-color:var(--inkmint);color:var(--inkmint)}
+.chip.bad{background:var(--peach);border-color:var(--inkpeach);color:var(--inkpeach)}
+.checks{list-style:none;margin:8px 0;padding:0}
+.checks li{padding:6px 0 6px 34px;position:relative;font-size:16.5px}
+.checks li::before{content:"";position:absolute;left:0;top:10px;width:20px;height:20px;border:2px solid var(--muted);border-radius:6px;background:#fff}
+.checks li.on::before{background:var(--inkmint);border-color:var(--inkmint)}
+.checks li.on::after{content:"✓";position:absolute;left:4px;top:6px;color:#fff;font-weight:700;font-size:14px}
+.hedges{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.hedge{background:var(--peach);color:var(--inkpeach);border-radius:999px;padding:2px 10px;font-size:14px;font-weight:700}
+.trail{font-family:inherit;background:var(--soft);border-radius:10px;padding:6px 12px;display:inline-block;margin:3px 6px 3px 0;font-size:15.5px}
+.two{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}body{font-size:18px}h1{font-size:26px}}
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--line);padding:10px 18px;z-index:9}
+.nav .in{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.nav .hint{font-size:14px;color:var(--muted)}
+.err{color:#8a2d2d;font-weight:700;margin:8px 0}
+.bigid{font-size:34px;letter-spacing:.2em;font-weight:700}
+.secrow{display:flex;gap:10px;flex-wrap:wrap}
+.secbtn{font:inherit;letter-spacing:.02em;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;text-align:left;color:var(--fg)}
+.secbtn.on{border-color:var(--fg);background:var(--soft)}
+.secbtn span{display:block;font-size:14px;color:var(--muted)}
+.fb{border-radius:12px;padding:12px 16px;margin:10px 0}
+.fb.good{background:var(--mint)}.fb.note{background:var(--butter)}.fb.miss{background:var(--peach)}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="brand">Reply, Call, or Escalate?<small>BUSN 2100 · three stories, your choices, your words</small></div><span class="pill" id="where">Start</span></div><div class="prog"><div id="progbar"></div></div></header>
+<main id="page"></main>
+<div class="nav" id="nav"><div class="in"><button class="btn ghost" id="back">‹ Back</button><span class="hint" id="hint"></span><button class="btn" id="next">Next ›</button></div></div>
+
+<script>
+var SCENARIOS = [{"id": "glenn", "color": "lav", "title": "The boss", "subtitle": "Sarah, Ms. Glenn, and the 3:00 print deadline", "you": "You are <b>Sarah</b>, a program assistant in the College Outreach Office at a community college. First full time job. Eight months in.", "people": ["<b>Ms. Glenn</b>, Director of Outreach. Your boss. Fourteen years at the college. In meetings most of the day. Has said more than once that she does not like \"being pulled into small things.\"", "<b>Kevin Martinez</b>, Communications. Friendly. Approves anything with the college logo, so he sees every flyer before it prints.", "<b>Dr. Alvarez</b>, Dean of Students. Ms. Glenn's boss. You have met her twice, both times in a hallway."], "history": "In <b>April</b>, your second month, the spring flyer went out with the <b>wrong room number</b>. 250 copies, reprinted, <b>$180</b> from the office budget. You had emailed Ms. Glenn to confirm the room. No reply came. You used last year's room. At the May staff meeting she mentioned \"a reprint we could have avoided.\" She did not say your name. Everyone knew.", "clock": "<b>Wednesday, 11:40 AM.</b> The Parent Night flyer is done except for <b>four details</b>. Campus Print needs the final PDF by <b>3:00 PM today</b> for 300 copies by Friday. Miss it and the next slot is Monday, so flyers reach families two days before the event instead of a week.", "need": ["<b>RSVP link.</b> The web page goes live Friday. Print the link now, or print \"RSVP at the Outreach Office\"?", "<b>Speaker title.</b> The draft says \"Dr. Reyes, Director of Community Programs.\" You think her title became Dean in June.", "<b>Childcare hours.</b> Ms. Glenn's email last week said 6:00 to 8:30 PM. The childcare contract says 6:00 to 8:00.", "<b>Spanish version.</b> Same print run (adds two days) or online only?"], "your_message": {"meta": "<b>To:</b> Ms. Glenn · 10:55 AM · <b>Subject:</b> Finalizing Parent Info Flyer – Quick Questions", "body": "Hi Ms. Glenn,<br><br>I'm almost finished with the flyer for the October parent event, and just had a few quick things I wanted to check with you before sending it to print.<br><br>Should we include the RSVP link yet, or wait until it's live on the site? Do we have final wording for the guest speaker's name and title? And is the childcare information still confirmed for 6:00 to 8:30 PM? Also, I wasn't sure if we're doing the Spanish version in the same run.<br><br>If it's easier, I can just swing by or give you a quick call, totally up to you. Just didn't want to make guesses on details that might change.<br><br>Thank you so much!<br>Sarah"}, "taps": [{"text": "Quick Questions", "where": "subject line", "why": "\"Quick\" says small. Small things can wait. The subject line does not say print, 3:00, or decision."}, {"text": "just had a few quick things", "where": "first sentence", "why": "\"Just\" and \"quick\" shrink the ask before it is made. Four decisions became a few quick things."}, {"text": "I wanted to check with you", "where": "first sentence", "why": "Checking with is not asking for. It sounds like Sarah has already decided and is being polite."}, {"text": "I wasn't sure if", "where": "fourth question", "why": "Sarah's doubt is now the subject of the sentence, not the Spanish version."}, {"text": "If it's easier", "where": "closing", "why": "Apologizes for asking at all. It tells Ms. Glenn the email is a bother."}, {"text": "totally up to you", "where": "closing", "why": "Hands her permission not to decide. She took it: \"I trust your judgment.\""}, {"text": "Just didn't want to make guesses", "where": "closing", "why": "Says why Sarah is writing instead of what she needs. Nobody has to act on a feeling."}, {"text": "No deadline anywhere", "where": "the whole email", "why": "The 3:00 print is the one fact that would make Ms. Glenn answer today. It is not in the email. Nothing says today."}], "sort": [{"item": "RSVP link: print it now, or print \"RSVP at the Outreach Office\"?", "answer": "glenn", "note": "This one is hers. It is a choice about how the office wants to look, and only she can make it."}, {"item": "Speaker title: Director or Dean?", "answer": "me", "note": "The college website lists Dr. Reyes as Dean of Community Programs since June. Thirty seconds."}, {"item": "Childcare hours: 6:00 to 8:30, or 6:00 to 8:00?", "answer": "me", "note": "The childcare contract is in the shared drive. The contract wins over an old email."}, {"item": "Spanish version: same print run, or online only?", "answer": "me", "note": "Post it online today. Print it later if she wants. Costs nothing and holds nothing up."}], "their_message": {"meta": "<b>From:</b> Ms. Glenn · 11:38 AM", "body": "Hi Sarah,<br><br>Thanks for staying on top of the flyer. I'm glad you're thinking about these kinds of things. That shows initiative.<br><br>Let's aim to make this round smoother than last time. I trust you'll use your best judgment with the info we have. These kinds of small edits shouldn't hold us back from moving forward.<br><br>Please keep me posted once the final version goes out.<br><br>Best,<br>M. Glenn"}, "fork_question": "It is 11:45. Four questions, zero answers, 3:00 print. What do you do?", "doors": [{"key": "A", "label": "Reply by email again, shorter.", "sub": "One yes or no question, answer by 2:00.", "consequence": "You send it at 11:52: \"One thing only you can call: print the RSVP link, or print 'RSVP at the Outreach Office'? If I do not hear back by 2:00 I will print the Outreach Office line.\" 12:30, nothing. 1:45, nothing. At <b>2:05</b> a one line reply arrives: \"Link is fine.\" One answer. The other three are still yours to call.", "fork_question": "It is 2:06. What now?", "options": [{"key": "A1", "label": "Decide the other three yourself and send the proof at 2:45. Tell her what you chose.", "outcome": "The proof goes at 2:45. Thursday 9:05 AM: \"Thanks for the proof. Looks fine. Next time, let's not need quite so many check ins before a print run.\" Friday, Dr. Reyes's office emails Ms. Glenn: the flyer says Director; she has been Dean since June. Ms. Glenn forwards it to you with one line: \"Please see below.\"", "cost": "Flyer printed on time. One wrong title with the college logo on it, and it has your name on it in her mind, not hers."}, {"key": "A2", "label": "Walk to her office now.", "outcome": "Her door is closed. Her assistant says she is in a budget meeting until 2:30. You wait in the hallway. At <b>2:36</b> she comes out, gives you all three answers in ninety seconds, and adds, \"You could have just emailed me.\" The proof goes to print at 2:58.", "cost": "Flyer right and on time. Thirty minutes of your afternoon in a hallway, and a line that stings because you did email her. Twice."}, {"key": "A3", "label": "Wait. She answered once, she will answer the rest.", "outcome": "2:30, nothing. 2:50, nothing. You call Campus Print at 2:55 and ask for ten more minutes. They say the slot is gone. The flyer prints <b>Monday</b>. Families get it two days before the event. Monday 4:10 PM, Ms. Glenn: \"Why did the flyers go out so late?\"", "cost": "Nothing wrong on the flyer. Everything wrong on the calendar, and the question lands on you."}]}, {"key": "B", "label": "Walk to her office.", "sub": "Two minutes, face to face.", "consequence": "11:50. Her door is closed. Her assistant, Dana, says she is in a meeting with the Dean until <b>2:30</b> and \"she asked not to be interrupted.\"", "fork_question": "It is 11:52. What now?", "options": [{"key": "B1", "label": "Go back to your desk and send the \"I will go ahead unless I hear otherwise\" email with your four backup choices and a 2:00 cutoff.", "outcome": "No reply by 2:00. You send the proof at 2:05 with the four choices you named. At 2:40 she replies: \"Looks fine.\" The flyer prints at 2:58. Thursday 9:05 AM: \"Next time, let's not need quite so many check ins before a print run.\"", "cost": "Flyer right, on time, and your email shows you asked and said what you would do. The Thursday note still comes."}, {"key": "B2", "label": "Ask Dana to get one answer for you: the RSVP link, by phone, during a break.", "outcome": "Dana texts Ms. Glenn at 12:30. Ms. Glenn texts back at 1:15: \"Link.\" Dana adds, quietly, \"She asked why you didn't just decide.\" You decide the other three from the contract and the website and send the proof at 2:20.", "cost": "Flyer on time. You now owe Dana one, and Ms. Glenn has a new sentence about you."}, {"key": "B3", "label": "Wait by her door at 2:30.", "outcome": "The meeting runs long. At <b>2:44</b> she walks out with the Dean beside her. You ask your four questions in the hallway in front of Dr. Alvarez. Ms. Glenn answers all four in under a minute, pleasantly. In her office at 3:30 she says, \"Please do not bring flyer details up in front of the Dean.\"", "cost": "Flyer right and on time. You spent an afternoon waiting, and you embarrassed her without meaning to."}]}, {"key": "C", "label": "Send an \"I will go ahead unless I hear otherwise\" email.", "sub": "Name your backup choice for each item and a 2:00 cutoff.", "consequence": "You send it at 11:55. For each of the four you write what you will do if you hear nothing by 2:00: Outreach Office line for the RSVP, Dean from the website, 6:00 to 8:00 from the contract, Spanish online only for now. 1:58, no reply. You send the proof at 2:02. At 2:40: \"Looks fine.\" Flyer prints at 2:58. <b>Thursday 9:05 AM:</b> \"Thanks for the proof. Next time, let's not need quite so many check ins before a print run.\"", "fork_question": "The flyer is done. The note is here. This is the third time in eight months. What do you do with it?", "options": [{"key": "C1", "label": "Reply: \"Thanks, glad it worked. Going forward I will send decisions as a yes or no so they take ten seconds.\"", "outcome": "No reply. Two weeks later you send the next flyer with one yes or no line. She answers in four minutes.", "cost": "You answered the complaint by removing the thing she complained about. The pattern may not change. Your side of it did."}, {"key": "C2", "label": "Do not reply. Write a dated note for yourself: what was asked, what was answered, what happened.", "outcome": "Nothing happens, which is the point. In December, when your six month review says \"needs less hand holding,\" you have three dated notes showing three deadlines met with zero answers from her.", "cost": "Nothing today. A record for later. It only helps if you ever need it."}, {"key": "C3", "label": "Reply: \"I asked four times before the deadline and received no answers. I am not sure how to need fewer check ins.\"", "outcome": "Every word is true. She replies at 10:40: \"Sarah, I think we have different expectations about independence in this role. Let's discuss at your next check in.\" The thread is now about your tone.", "cost": "You were right. You are also the problem now, on paper."}]}, {"key": "D", "label": "Copy Kevin in Communications on a short reply.", "sub": "He approves the flyer anyway and can confirm the title.", "consequence": "You reply at 11:58 with the four questions and add Kevin. Kevin answers in ten minutes: title is Dean, and he will check the childcare contract. At <b>12:40</b> Ms. Glenn replies to all: \"Kevin, thanks. Sarah, in future let's keep these within the office.\"", "fork_question": "It is 12:41. Kevin is reading the same email. What now?", "options": [{"key": "D1", "label": "Reply to Ms. Glenn only: \"Understood. I included Kevin because he approves the logo. I will keep it within the office next time.\"", "outcome": "No reply. You finish the flyer with Kevin's answers and print at 2:50. Kevin stops by Thursday: \"Everything OK with Marianne?\"", "cost": "Flyer right and on time. A small apology for something that was not wrong. Kevin now knows there is weather between you and your boss."}, {"key": "D2", "label": "Reply to all, briefly, explaining why Kevin was needed.", "outcome": "Ms. Glenn does not reply. Kevin replies: \"All good on my end!\" Friday, Dr. Alvarez's assistant asks Kevin why the Outreach Office is \"airing things on email.\"", "cost": "Flyer on time. The thread traveled further than you did."}, {"key": "D3", "label": "Say nothing. Send the proof.", "outcome": "Flyer prints at 2:50 with the right title. Ms. Glenn's \"keep these within the office\" stays the last word on the thread, forever, where Kevin can see it.", "cost": "Flyer right. Silence read as agreement that you did something wrong."}]}, {"key": "E", "label": "Say nothing and use your best judgment.", "sub": "She said to. Decide all four and print.", "consequence": "You pick: Outreach Office line, Dean, 6:00 to 8:30 (her email was more recent than the contract), Spanish online only. The proof goes at 1:30. Prints at 2:58. Two weeks later, <b>event night</b>: at 8:00 the childcare provider packs up, contract hours. Nine parents are still in the gym until 8:30 with nowhere for their kids. At 8:40 Ms. Glenn finds you: \"I trusted your judgment on this.\"", "fork_question": "It is 8:41 on event night. What do you say?", "options": [{"key": "E1", "label": "Own it: \"That one was my call and it was wrong. I will write up what happened and how to avoid it.\"", "outcome": "She nods. Monday you send a one page note with a fix: a decisions checklist signed off two days before any print. She replies \"Good.\" The childcare provider is not happy, but the write up is yours and it is clean.", "cost": "One bad night. One clean paper trail. The pattern of unanswered emails is untouched."}, {"key": "E2", "label": "Point to the email: \"I asked you on the 11th and you said to use my judgment.\"", "outcome": "True. She says, \"And your judgment was wrong.\" Conversation over. In your review: \"deflects responsibility.\"", "cost": "You were right about the facts and lost the room."}, {"key": "E3", "label": "Say sorry and nothing else.", "outcome": "She says, \"We'll talk Monday.\" Monday never comes up. The story that survives in the office is the one where Sarah printed the wrong hours.", "cost": "Quiet. No fix, no record, and the story is not yours."}]}, {"key": "F", "label": "Go to Dr. Alvarez, the boss's boss.", "sub": "She would answer. You are eight months in.", "consequence": "You email Dr. Alvarez at 11:57 with the four questions and the 3:00 deadline. She answers in <b>six minutes</b>, all four, and copies Ms. Glenn: \"Marianne, Sarah needed these for the 3 PM print.\" The flyer prints at 2:58, perfect. At <b>3:15</b> Ms. Glenn asks you to come to her office.", "fork_question": "You are in her office. She says, \"You went to the Dean about a flyer.\" What do you say?", "options": [{"key": "F1", "label": "Calm and factual: \"I had a 3:00 print and no answers by noon. I should have told you I was going to ask her. I will next time.\"", "outcome": "She says, \"Next time, ask me.\" You say you did. She says, \"Ask me in person.\" You leave with the flyer done and a boss who now watches your email for the next three months.", "cost": "Flyer perfect. Trust spent. Buying it back takes months."}, {"key": "F2", "label": "Apologize fully.", "outcome": "\"I understand. It will not happen again.\" She softens. The next flyer, you email her four questions. No reply by the deadline. You print on your own judgment and get the title wrong.", "cost": "Peace today. The original problem is exactly where it was."}, {"key": "F3", "label": "\"With respect, I would do it again. The flyer had to print.\"", "outcome": "Silence. Then: \"Thank you, Sarah.\" Your December review mentions \"challenges with chain of command.\" Dr. Alvarez, who liked your email, never hears that part.", "cost": "Honest. Expensive. Nobody above Ms. Glenn ever sees the bill."}]}], "surprise_prompt": "One thing that surprised you about what happened on the path you took. Two sentences or more."}, {"id": "marcus", "color": "blue", "title": "The coworker", "subtitle": "Jordan, Marcus, and Monday's patients", "you": "You are <b>Jordan</b>, the scheduling coordinator at Riverbend Physical Therapy, a clinic with four therapists and a front office of three. Two years in.", "people": ["<b>Marcus</b>, the billing coordinator. Same level as you, same office manager, desk twelve feet from yours. Six years at Riverbend. Knows insurance better than anyone in the building.", "<b>Dana</b>, the office manager. Both of your boss. Good at her job, allergic to what she calls \"drama.\"", "<b>Three new patients</b> on Monday's schedule whose insurance plans may need prior approval. Without it, their visits get cancelled Monday morning or they get a bill they did not expect."], "history": "In <b>August</b> you asked Dana to \"remind Marcus\" to answer scheduling questions faster. Dana did. Marcus found out it came from you. He has been polite since. Very polite.", "clock": "<b>Thursday, 10:15 AM.</b> You emailed Marcus Wednesday at 9:00 asking him to confirm whether the three plans need prior approval. You need the answer by <b>Friday 5:00 PM</b> so you can call the patients before the weekend. His reply just came in.", "need": ["<b>Patient 1, Aetna plan.</b> Prior approval needed, yes or no?", "<b>Patient 2, UnitedHealthcare plan.</b> Prior approval needed, yes or no?", "<b>Patient 3, Medicaid.</b> Prior approval needed, yes or no?", "If yes on any of them, the approval takes <b>two business days</b>, so Friday is already late."], "your_message": {"meta": "<b>To:</b> Marcus · Wednesday 9:00 AM · <b>Subject:</b> Prior approval check for 3 new patients (Monday appointments)", "body": "Hi Marcus,<br><br>Three new patients are booked for Monday. Could you confirm whether their plans need prior approval? Patient names and plans are in the attached list. I need to call them by Friday at 5:00 if anything has to move.<br><br>Thanks,<br>Jordan"}, "their_message": {"meta": "<b>From:</b> Marcus · Thursday 10:15 AM", "body": "Hi Jordan,<br><br>Not sure why this keeps landing on my desk, but sure. I'll take a look when I get a minute. Some of us have actual deadlines too 🙂<br><br>Marcus"}, "fork_question": "It is 10:16 Thursday. Three patients, zero answers, Friday 5:00. What do you do?", "doors": [{"key": "A", "label": "Reply by email, short and specific.", "sub": "Three yes or no lines, needed by Thursday 3:00.", "consequence": "10:25: \"Thanks Marcus. Three yes or no lines are all I need: Aetna, United, Medicaid. By 3:00 today if possible so approvals can start.\" At <b>2:50</b> he replies: \"Aetna no. United yes. Medicaid, you'd have to call them, that's not really a billing question.\"", "fork_question": "Two answers, one bounced back to you. It is 2:51. What now?", "options": [{"key": "A1", "label": "Call Medicaid yourself. Start the United approval.", "outcome": "Forty minutes on hold. Medicaid: no approval needed. You start the United approval at 3:40; it clears Monday at 8:15 AM, ten minutes before the patient arrives. All three visits happen.", "cost": "Monday saved. You did part of his job. He knows you did, and so does Dana, because the approval has your name on it."}, {"key": "A2", "label": "Reply: \"Medicaid approvals are billing. Could you call them? I will start United.\"", "outcome": "No reply Thursday. Friday 11:00: \"Called. No approval needed. In the future please check the plan list on the shared drive before asking.\" There is a plan list on the shared drive. You did not know.", "cost": "Monday saved. You learned where the list is the hard way, in writing, from him."}, {"key": "A3", "label": "Walk over with the Medicaid question.", "outcome": "\"Not really a billing question\" turns out to mean \"I am tired of being asked.\" Face to face he sighs, pulls up the plan list, and answers in twenty seconds. Then: \"That list is on the shared drive, you know.\"", "cost": "Monday saved in twenty seconds. The dig lands, but now you know about the list, and he saw you ask in person instead of on paper."}]}, {"key": "B", "label": "Walk the twelve feet to his desk.", "sub": "Now, while the email is fresh.", "consequence": "He has headphones on. You wait. He takes one earbud out. You ask for the three answers. He says, \"I'll get to it.\" You say the patients need calls by Friday. He says, \"Jordan, I said I'll get to it,\" at a volume the whole front office hears.", "fork_question": "Dana looked up. The waiting room is twenty feet away. What now?", "options": [{"key": "B1", "label": "Lower your voice: \"Got it. Would 3:00 today work? I can start the approvals from there.\"", "outcome": "He says \"Fine.\" At 3:10 the three answers arrive by email, no greeting, no sign off. United needs approval. You start it. Monday works.", "cost": "Monday saved. The office saw him raise his voice and saw you not match it. That is worth something later."}, {"key": "B2", "label": "Walk away without a word.", "outcome": "No answers Thursday. Friday 4:30, nothing. You cancel Monday's three new patients \"pending insurance.\" One of them does not rebook.", "cost": "Nobody argued. One patient gone. Marcus never had to answer."}, {"key": "B3", "label": "Say, in the same volume: \"I asked yesterday. The patients come Monday.\"", "outcome": "Dana walks over: \"Both of you, my office.\" Ten minutes of \"we are a team here.\" Marcus sends the answers at 4:45 Thursday. Dana's note to both of you Friday: \"Let's keep front office conversations professional.\"", "cost": "Monday saved. You are now half of \"both of you\" in Dana's mind."}]}, {"key": "C", "label": "Do it yourself. Call the three insurers.", "sub": "He is not the only one who can find out.", "consequence": "Three calls, two hours on hold between patients checking in. By 1:30 you have: Aetna no, United yes, Medicaid no. You start the United approval yourself at 1:45 using Marcus's login notes taped inside the cabinet. It clears Monday at 8:15. All three visits happen.", "fork_question": "Monday afternoon Marcus sees the approval in the system with your name on it. He says, \"So you do billing now?\" What do you say?", "options": [{"key": "C1", "label": "\"I needed it by Friday and did not want to keep asking. If I did anything wrong in the system, tell me and I will fix it.\"", "outcome": "He checks. You did it right. He says nothing more. The next time you email him a question he answers the same day.", "cost": "Two hours of your week. A small shift in how he answers you. No fix for the next person he does this to."}, {"key": "C2", "label": "\"Somebody had to.\"", "outcome": "He goes to Dana: \"Jordan is doing approvals under my login.\" Dana to you, 4:00: \"Please do not use anyone else's login. Ever.\" True, and fair.", "cost": "Monday saved. You handed him a real complaint about you, and it stuck."}, {"key": "C3", "label": "\"Yes, when I have to.\"", "outcome": "He laughs, not kindly. For the next month every scheduling question you send him comes back with \"You can probably find that yourself.\"", "cost": "Monday saved. You just told him you do not need him, and he is taking you at your word."}]}, {"key": "D", "label": "Copy Dana on a short reply.", "sub": "She is both your boss. Let her see the deadline.", "consequence": "10:30: \"Hi Marcus, thanks. I need the three yes or no answers by Thursday 3:00 so approvals can start. Copying Dana so she knows Monday's schedule depends on it.\" Marcus replies at 10:34, to all: \"Happy to help, Jordan. For the record I got this yesterday at 9, not last week.\" Dana replies at 10:50, to you only: \"Can you two sort this without me?\"", "fork_question": "It is 10:51. What now?", "options": [{"key": "D1", "label": "Reply to Dana: \"Yes. Sorry for the noise.\" Then walk over to Marcus.", "outcome": "At his desk he says, \"You cc'd Dana.\" You say, \"I did. I should have asked you first.\" He gives you the three answers. United needs approval. Monday works. He does not forget the cc.", "cost": "Monday saved. August happened again, and he knows it."}, {"key": "D2", "label": "Reply to Dana explaining August, and this, and the pattern.", "outcome": "Dana reads it. Friday she moves the prior approval checks to a shared checklist both of you fill in. Marcus's desk gets quieter toward you. The approvals get done.", "cost": "Pattern fixed by a process. Relationship not fixed by anything."}, {"key": "D3", "label": "Reply to all: \"You are right, Wednesday 9 AM. The patients are still Monday.\"", "outcome": "Marcus replies, to all: \"Noted.\" Dana replies to nobody. The three answers arrive Friday at 4:50 PM. You call patients from the parking lot.", "cost": "You won the timeline point. You lost the afternoon and most of Friday."}]}, {"key": "E", "label": "Let it sit. He said he would look.", "sub": "Check again Friday at noon.", "consequence": "Thursday passes. Friday 12:00 you email: \"Any update on the three?\" Friday 4:40: \"Aetna no, United yes, Medicaid no.\" The United approval cannot start before Monday 8:00. It clears Tuesday. The patient arrives Monday at 8:30 and is sent home.", "fork_question": "Monday 8:35. The patient is in the parking lot, upset, with a child in the car. Dana asks what happened. What do you say?", "options": [{"key": "E1", "label": "\"I asked Marcus Wednesday, got the answer Friday at 4:40, and should have escalated Thursday. That is on me.\"", "outcome": "Dana says, \"Thank you for the straight answer.\" She asks Marcus the same question. He says he was busy. Dana sets a 24 hour rule for prior approval questions. The patient rebooks for Tuesday.", "cost": "One patient inconvenienced. A rule that helps the next hundred. You took half the blame that was mostly not yours, and it bought the rule."}, {"key": "E2", "label": "\"Marcus took two days to answer.\"", "outcome": "Marcus, from his desk: \"I answered Friday.\" Dana: \"Jordan, you schedule. If a plan needs approval you ask earlier.\" The patient rebooks. Nothing changes.", "cost": "True. Pointless. Same desk tomorrow."}, {"key": "E3", "label": "\"Insurance delay.\"", "outcome": "Dana accepts it. The patient does not rebook. Next month the same thing happens with a different patient.", "cost": "Easiest Monday. Most expensive year."}]}], "surprise_prompt": "One thing that surprised you about what happened on the path you took. Two sentences or more."}, {"id": "tyler", "color": "peach", "title": "The person you supervise", "subtitle": "Jennifer, Tyler, and the health inspection", "you": "You are <b>Jennifer</b>, 24, assistant manager at Beanstalk Café. Eight employees, two espresso machines, a drive through. You make the schedule and run closes.", "people": ["<b>Tyler</b>, 19, part time barista, six months in. Fast, funny, liked by the morning regulars. Closes Wednesdays.", "<b>Rosa</b>, the owner. In the café twice a week. Trusts you to handle the crew.", "<b>The staff group chat</b>, all eight employees plus Rosa, on the café's messaging app. Schedules, swaps, jokes, and every message you send."], "history": "The <b>health inspection</b> is Thursday at 7:00 AM. The espresso machine steam wands have to be deep cleaned the way the wall checklist says. Tyler cleaned them Monday and Tuesday close. Both mornings they failed your check: milk film still inside the tip. You showed him the right way Tuesday afternoon. He said, \"Got it.\"", "clock": "<b>Wednesday, 3:10 PM.</b> Tyler closes tonight. You are at the dentist until 5:00. You post in the staff group chat. His reply comes in forty seconds later, and everyone sees it.", "need": ["<b>Tonight:</b> both steam wands deep cleaned to the checklist, before the 7:00 AM inspection.", "<b>Tomorrow and after:</b> Tyler still closing Wednesdays, still fast, still liked by the regulars.", "<b>The chat:</b> seven other people watching how you answer."], "your_message": {"meta": "<b>Staff group chat</b> · Wednesday 3:10 PM · <b>Jennifer</b>", "body": "Tyler, please redo the steam wand cleaning tonight using the checklist on the wall. Inspection is 7 AM. Thanks!"}, "their_message": {"meta": "<b>Staff group chat</b> · Wednesday 3:11 PM · <b>Tyler</b>", "body": "Sure, I'll redo it AGAIN. Third time's the charm I guess 🙂"}, "fork_question": "It is 3:12. Seven people just read that. The inspection is in sixteen hours. What do you do?", "doors": [{"key": "A", "label": "Reply in the group chat.", "sub": "Everyone saw his message. Everyone sees yours.", "consequence": "You type for a minute. Whatever you send, it sits under his message with seven readers. Two of them already reacted to his with a laughing face.", "fork_question": "What do you send?", "options": [{"key": "A1", "label": "\"Ha, third time it is. I'll be in at 6:45 to check with you. Thanks Tyler.\"", "outcome": "The laughing faces stop. Tyler replies \"👍\". You arrive at 6:45; the wands are clean, mostly. You fix one together in three minutes before the inspector arrives. Pass.", "cost": "Inspection passed. His joke got answered with a joke and a plan. The two of you still have not talked about Monday and Tuesday."}, {"key": "A2", "label": "\"Tyler, the first two did not pass my check. Please follow the checklist tonight.\"", "outcome": "Silence in the chat. Then a private message from Mia, another closer: \"That was kind of harsh in the group.\" Tyler cleans the wands tonight, correctly. Thursday he does not look at you. Friday he asks Rosa to switch him to opens.", "cost": "Inspection passed. You corrected him in front of seven people. The schedule just got harder."}, {"key": "A3", "label": "\"Please keep the chat professional.\"", "outcome": "Tyler: \"Sorry.\" Two people leave the chat open with no reply. The wands get cleaned, correctly. For a month, nobody jokes in the group chat.", "cost": "Inspection passed. The chat went quiet, and quiet chats hide problems."}]}, {"key": "B", "label": "Message him privately.", "sub": "Out of the group. Now.", "consequence": "You open a direct message. He is on his phone; the dots appear and disappear while you type.", "fork_question": "What do you send?", "options": [{"key": "B1", "label": "\"Hey. I know the first two did not pass and that is frustrating. Can you call me for two minutes before your shift? I want to make sure the checklist makes sense.\"", "outcome": "He calls at 3:50. It turns out the wall checklist says \"soak tips\" and nobody told him where the soaking cup is. Three minute call. Tonight the wands pass. Thursday morning he says, \"Told you third time.\"", "cost": "Inspection passed. The real problem was a missing cup, not a lazy barista. You only found out by asking."}, {"key": "B2", "label": "\"That message was not OK in the group chat. Please do the cleaning properly tonight.\"", "outcome": "\"OK.\" The wands are clean Thursday. He is polite for two weeks, exactly polite, and then asks Rosa for fewer hours.", "cost": "Inspection passed. You answered the tone, not the problem, and the problem was never his attitude."}, {"key": "B3", "label": "\"Lol fair. Checklist tonight please, I'll check at 6:45.\"", "outcome": "\"👍\". Thursday 6:45: one wand clean, one with milk film. You clean it yourself in four minutes. Pass. Tyler never learns what he was doing wrong.", "cost": "Inspection passed by you. The fourth time will be the same as the first three."}]}, {"key": "C", "label": "Say nothing now. Talk to him in person at 4:00 before his shift.", "sub": "The dentist can wait ten minutes.", "consequence": "You get to the café at 4:05. He is clocking in. You ask him to step into the back for two minutes.", "fork_question": "What do you open with?", "options": [{"key": "C1", "label": "\"Show me how you have been cleaning the wands.\"", "outcome": "He shows you. He is skipping the soak because the soaking cup is \"always in the dish pit.\" You get the cup, do one wand together, he does the other. Thursday: pass. The group chat message never comes up, and it does not need to.", "cost": "Ten minutes. The inspection, the skill, and the relationship, all handled. The joke in the chat is just a joke now."}, {"key": "C2", "label": "\"The message in the chat. What was that about?\"", "outcome": "\"It was a joke.\" You say it did not read like one. He shrugs. You explain the checklist again. Tonight the wands pass. Thursday he is quiet; Friday he is fine. The soaking cup is still in the dish pit, and next month a new closer skips the soak too.", "cost": "Inspection passed. You handled the tone and missed the cause."}, {"key": "C3", "label": "\"Tonight has to pass. If the wands fail again I will have to take you off closes.\"", "outcome": "He nods. He cleans them for forty minutes, correctly. Thursday: pass. He never jokes with you again and asks Mia, not you, when he has a question.", "cost": "Inspection passed. You used the one tool you had, and it worked, and it cost you the part of him that asks."}]}, {"key": "D", "label": "Let the message go. Check the wands yourself at 6:45 AM.", "sub": "It is a joke. The inspection is the thing.", "consequence": "You leave the chat alone. Two more laughing faces appear. Thursday 6:45 AM: both wands have milk film. You have fifteen minutes. You clean them yourself. The inspector arrives at 7:02. Pass.", "fork_question": "It is 9:00 AM Thursday, after the inspection. Tyler is off until Saturday. What now?", "options": [{"key": "D1", "label": "Message him: \"We passed. Wands had film again, I cleaned them at 6:45. Let's do one together Saturday before open.\"", "outcome": "Saturday, you do one together. He finds out about the soaking cup. Next Wednesday the wands pass your check on the first try.", "cost": "One early morning and a Saturday. He learned it a week late, but he learned it from you."}, {"key": "D2", "label": "Say nothing. It passed.", "outcome": "Next Wednesday: film. The Wednesday after: film. In November the surprise reinspection fails on the steam wands. Rosa asks who closes Wednesdays.", "cost": "Nothing today. Everything in November."}, {"key": "D3", "label": "Tell Rosa Tyler is not following the checklist.", "outcome": "Rosa talks to Tyler Saturday. Tyler to you, Monday: \"You could have just told me.\" He is right.", "cost": "Inspection passed. You skipped a step on the way to the owner, and he noticed."}]}, {"key": "E", "label": "Tell Rosa now.", "sub": "Three failed cleans, a public joke, an inspection tomorrow.", "consequence": "You call Rosa at 3:20 from the dentist's parking lot. She says, \"Do you want me to handle it or do you want to?\"", "fork_question": "What do you say?", "options": [{"key": "E1", "label": "\"I will handle it. I wanted you to know before tomorrow in case it fails.\"", "outcome": "\"Good.\" You message Tyler privately, ask him to call, find out about the soaking cup. Pass. Rosa never mentions it again, except in December: \"You kept me in the loop and handled it. That is what I need.\"", "cost": "One phone call. Rosa saw you escalate the information and keep the problem."}, {"key": "E2", "label": "\"Can you talk to him? He does not listen to me.\"", "outcome": "Rosa messages Tyler. The wands pass. From then on Tyler checks with Rosa, not you, about closes. The crew notices.", "cost": "Inspection passed. You gave Rosa the part of your job that makes it yours."}, {"key": "E3", "label": "\"I think he should be written up for the chat message.\"", "outcome": "Rosa: \"For a joke?\" Pause. \"Clean the wands tonight, Jen. We'll talk about Tyler next week.\" You clean them. The write up never happens. The question of why they keep failing never gets asked.", "cost": "Inspection passed. You asked for a hammer and were handed a sponge."}]}], "surprise_prompt": "One thing that surprised you about what happened on the path you took. Two sentences or more."}];
+var FINAL_REFLECTION = [{"key": "hardest", "prompt": "Which of the three was hardest for you, and why? Name the moment where you did not know what to do. Three sentences or more."}, {"key": "pattern", "prompt": "Across the three stories, what did you notice about how you handle a person who is being polite and difficult at the same time? Say something true about yourself, not about Ms. Glenn, Marcus, or Tyler. Three sentences or more."}];
+var REVISION_EMAIL = {"prompt": "Pick one of the three stories. Write the message you would actually send now, after seeing what happened. An email to Ms. Glenn, an email or message to Marcus, or a message to Tyler. Subject line, greeting, body, closing.", "checks": ["Names a <b>deadline</b> or a time.", "Asks for the <b>fewest</b> things you truly need. One is fine.", "Says what <b>you</b> will do if you get no answer.", "Keeps <b>one warm line</b>. One is enough.", "Does <b>not</b> defend you, bring up the past, or point out that nothing was answered."]};
+var RUBRIC = [["3 points", "<b>Three surprises.</b> One per story, each specific to the path you took, not a summary of the story."], ["2 points", "<b>Final reflection.</b> Says which story was hardest and why, and says something true about how you handle people like this."], ["5 points", "<b>Your message.</b> One point for each of the five checks: deadline, fewest asks, what you will do if no answer, one warm line, no defending."]];
+var CONFIG = {
+  ENDPOINT: '__ENDPOINT__',
+  SALT1: 'northline-ctstate-2026',
+  ACTIVITY: 'RCE1',
+  VERSION: 'rce1-2026-10-21a',
+  SECTIONS: {'13046': {label:'CRN 13046', sub:'In person · Mon/Wed 12:30'}, '13901': {label:'CRN 13901', sub:'Live online · Mon/Wed 5:30'}}
+};
+var QS = (function(){ try { return new URLSearchParams(location.search); } catch(e){ return {get:function(){return null;}}; } })();
+if (QS.get('test') === '1') CONFIG.ACTIVITY += '-TEST';
+var PRESET = CONFIG.SECTIONS[QS.get('s')] ? QS.get('s') : null;
+var STORE_KEY = 'rce_' + CONFIG.ACTIVITY;
+var MIN = {surprise:20, reflect:35, email:40};
+var HEDGES = [
+ {re:/\bjust\b/gi, t:'just', why:'softens the ask'},
+ {re:/\bquick(ly)?\b/gi, t:'quick', why:'says small'},
+ {re:/\bmaybe\b/gi, t:'maybe', why:'half asks'},
+ {re:/\bsorry\b/gi, t:'sorry', why:'apologizes for asking'},
+ {re:/\bI was wondering\b/gi, t:'I was wondering', why:'describes you, not the ask'},
+ {re:/\bif it'?s easier\b/gi, t:"if it's easier", why:'apologizes for asking'},
+ {re:/\b(totally )?up to you\b/gi, t:'up to you', why:'hands over the decision'},
+ {re:/\bno rush\b/gi, t:'no rush', why:'cancels the deadline'},
+ {re:/\bwhenever (you (get|have) a chance|you can)\b/gi, t:'whenever you can', why:'cancels the deadline'},
+ {re:/\bI think\b/gi, t:'I think', why:'hedges a fact'},
+ {re:/\bkind of\b|\bsort of\b/gi, t:'kind of', why:'hedges'},
+ {re:/\bhopefully\b/gi, t:'hopefully', why:'hopes instead of asks'},
+ {re:/\ba (little )?bit\b/gi, t:'a bit', why:'shrinks'},
+ {re:/\bwould it be possible\b/gi, t:'would it be possible', why:'asks permission to ask'},
+ {re:/\bI (hope|don'?t want to) (that'?s okay|bother)\b/gi, t:'I hope that is okay', why:'apologizes'},
+ {re:/\bwanted to check\b/gi, t:'wanted to check', why:'checking is not asking'}
+];
+var DEFEND = /\b(april|reprint|last time|you (did not|didn't|never)|as I (said|mentioned)|per my|no one answered|nobody answered|I asked (you )?(four|4|twice|three))\b/i;
+var CHECKS = [
+ {k:'deadline', label:'Names a deadline or a time (by 2:00, today, before the 3:00 print)', test:function(t){ return /\b(\d{1,2}(:\d{2})?\s*(am|pm|a\.m\.|p\.m\.)|by\s+(noon|\d)|\btoday\b|\bbefore (the )?\d|\bdeadline\b|\b\d{1,2}:\d{2}\b)/i.test(t); }},
+ {k:'first', label:'The ask is in the first two sentences', test:function(t){ var b = body_(t); var first = b.split(/(?<=[.?!])\s+/).slice(0, 2).join(' '); return /\?|\b(could you|can you|please|confirm|need)\b/i.test(first); }},
+ {k:'one', label:'Asks Ms. Glenn for one thing only (the RSVP line)', test:function(t){ var q = (t.match(/\?/g) || []).length; return /\brsvp\b/i.test(t) && q <= 2; }},
+ {k:'default', label:'Says what you will do if you get no answer', test:function(t){ return /\b(if I (do not|don'?t|haven'?t|have not) hear|unless I hear|otherwise I will|I will (go ahead|print|use|proceed|send|keep)|I'?ll (go ahead|print|use|proceed|send|keep))\b/i.test(t); }},
+ {k:'warm', label:'Keeps one warm line (thanks, appreciate)', test:function(t){ return /\b(thank|thanks|appreciate|glad)\b/i.test(t); }},
+ {k:'nodefend', label:'Does not defend, bring up April, or say nothing was answered', test:function(t){ return !DEFEND.test(t); }}
+];
+function body_(t){ return String(t || '').replace(/^\s*subject:[^\n]*\n/i, '').replace(/^\s*(hi|hello|dear)[^\n]*\n/i, '').trim(); }
+
+/* ================= HELPERS ================= */
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function words(s){ var m = String(s || '').trim().match(/\S+/g); return m ? m.length : 0; }
+function onClick(sel, fn){ var el = $(sel); if (el) el.addEventListener('click', fn); }
+async function sha256Hex(text){ var buf = new TextEncoder().encode(text); var hash = await crypto.subtle.digest('SHA-256', buf); return Array.from(new Uint8Array(hash)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join(''); }
+async function postOnce(payload, timeoutMs){
+  if (!CONFIG.ENDPOINT || CONFIG.ENDPOINT.indexOf('http') !== 0) return {ok:false, error:'no_endpoint'};
+  var ctrl = new AbortController(); var t = setTimeout(function(){ ctrl.abort(); }, timeoutMs || 60000);
+  try { var res = await fetch(CONFIG.ENDPOINT, {method:'POST', body:JSON.stringify(payload), signal:ctrl.signal, credentials:'omit', cache:'no-store'}); var text = await res.text(); try { return JSON.parse(text); } catch(e){ return {ok:false, error:'bad_response'}; } }
+  catch(e){ return {ok:false, error:(e && e.name === 'AbortError') ? 'timeout' : 'network'}; }
+  finally { clearTimeout(t); }
+}
+async function post(payload, timeoutMs){ var r = null; for (var a = 0; a < 3; a++){ r = await postOnce(payload, timeoutMs || 60000); if (r && (r.ok || (r.error !== 'timeout' && r.error !== 'network' && r.error !== 'bad_response'))) return r; await new Promise(function(res){ setTimeout(res, 1200 + a * 800); }); } return r; }
+function normalizeId(raw){ return String(raw || '').replace(/\D/g, ''); }
+function secLabel(s){ return CONFIG.SECTIONS[s] ? CONFIG.SECTIONS[s].label : String(s || ''); }
+function shortId(h){ return h ? String(h).slice(0, 6).toUpperCase() : ''; }
+function keyColor(i){ return ['#E6DEF8','#DCEBF8','#FBF1B8','#FFE3CF','#FADAE5','#D9EEF8'][i % 6]; }
+
+/* ================= STATE ================= */
+var SCREENS = [];
+function buildScreens(){
+  SCREENS = [{type:'start'}];
+  SCENARIOS.forEach(function(s, i){
+    SCREENS.push({type:'case', s:i});
+    SCREENS.push({type:'messages', s:i});
+    if (s.sort) SCREENS.push({type:'sort', s:i});
+    SCREENS.push({type:'doors', s:i});
+    SCREENS.push({type:'surprise', s:i});
+    if (i === 0) SCREENS.push({type:'rewrite', s:i});
+  });
+  SCREENS.push({type:'reflect'});
+  SCREENS.push({type:'finish'});
+  SCREENS.push({type:'result'});
+  SCREENS.push({type:'learn'});
+}
+var st;
+function fresh(){
+  var stories = SCENARIOS.map(function(){ return {stage:'doors', door:null, opt:null, paths:[], sortPicks:{}, sortDone:false, taps:[], tapsShown:false, surprise:''}; });
+  return {i:0, cls:{mode:null, section:PRESET, h1:null, tail:'', recordId:null, startedAt:null, submitted:null, submitError:null, submitting:false}, stories:stories, email:{text:'', locked:false}, r1:'', r2:'', form:null, look:null, view:'pages'};
+}
+function save(){ try { var o = {}; Object.keys(st).forEach(function(k){ if (k !== 'form' && k !== 'look') o[k] = st[k]; }); sessionStorage.setItem(STORE_KEY, JSON.stringify({v:CONFIG.VERSION, st:o})); } catch(e){} }
+function restore(){ try { var raw = sessionStorage.getItem(STORE_KEY); if (!raw) return false; var o = JSON.parse(raw); if (!o || o.v !== CONFIG.VERSION || !o.st || !o.st.stories || o.st.stories.length !== SCENARIOS.length) return false; st = o.st; st.cls.submitting = false; st.view = 'pages'; return true; } catch(e){ return false; } }
+function isClass(){ return !!(st && st.cls && st.cls.mode === 'class'); }
+
+/* ================= RENDER ================= */
+function go(n){ st.i = Math.max(0, Math.min(SCREENS.length - 1, n)); st.view = 'pages'; save(); render(); window.scrollTo({top:0}); }
+function render(){
+  if (st.view === 'signin') return renderSignin();
+  if (st.view === 'lookup') return renderLookup();
+  var sc = SCREENS[st.i], h = '';
+  $('#progbar').style.width = Math.round(st.i / (SCREENS.length - 1) * 100) + '%';
+  $('#where').textContent = whereLabel(sc);
+  if (sc.type === 'start') h = startHTML();
+  else if (sc.type === 'case') h = caseHTML(sc.s);
+  else if (sc.type === 'messages') h = messagesHTML(sc.s);
+  else if (sc.type === 'sort') h = sortHTML(sc.s);
+  else if (sc.type === 'doors') h = doorsHTML(sc.s);
+  else if (sc.type === 'surprise') h = surpriseHTML(sc.s);
+  else if (sc.type === 'rewrite') h = rewriteHTML(sc.s);
+  else if (sc.type === 'reflect') h = reflectHTML();
+  else if (sc.type === 'finish') h = finishHTML();
+  else if (sc.type === 'result') h = resultHTML();
+  else if (sc.type === 'learn') h = learnHTML();
+  $('#page').innerHTML = h;
+  wire(sc);
+  updateNav();
+}
+function whereLabel(sc){
+  if (sc.type === 'start') return 'Start';
+  if (sc.s != null) return 'Story ' + (sc.s + 1) + ' of 3';
+  return {reflect:'Reflection', finish:'Finish', result:'Your result', learn:'What tends to work'}[sc.type] || '';
+}
+function storyHead(i){ var s = SCENARIOS[i]; return '<span class="tag ink ' + s.color + '">Story ' + (i + 1) + ' · ' + esc(s.title) + '</span>'; }
+
+function startHTML(){
+  var c = st.cls;
+  var mode = c.mode === 'class'
+    ? '<div class="fb good"><b>✅ You are signed in.</b> ' + esc(secLabel(c.section)) + ' · ID ending in <b>' + esc(c.tail) + '</b>. Press <b>Next ›</b>.</div>'
+    : '<div class="card lav"><span class="tag ink lav">Before you start</span>' +
+      '<button class="btn wide" type="button" id="goClass">🎓 Sign in and start ›</button>' +
+      '<p class="small" style="margin:8px 0 0">Your choices and your writing are saved for your professor. Your name is never saved.</p>' +
+      '<p class="small" style="margin:8px 0 0"><button class="btn soft" type="button" id="goLookup">Already finished? See your result</button></p></div>';
+  return '<h1>One boss. One coworker. One person you supervise.</h1>' +
+    '<p class="lead">Three true to life stories. In each one, someone answers you politely and gives you nothing. You choose what to do, you see what happens, and then you write.</p>' +
+    '<div class="card blue"><span class="tag ink blue">How it works</span>' +
+    '<p><b>1.</b> Read the story. Who is who, what happened before, what you need, and the message you got.</p>' +
+    '<p><b>2.</b> Pick a door. See what happens. Pick again inside it. See how it ends and what it cost.</p>' +
+    '<p><b>3.</b> Try another door if you want. Every path you walk is recorded, and none is marked right or wrong.</p>' +
+    '<p><b>4.</b> Write one surprise after each story. In Story 1 you also rewrite the email that started it.</p>' +
+    '<p><b>5.</b> Two reflection boxes at the end, then Finish. The Next button stays gray until each box has real sentences.</p>' +
+    '<p><b>Time:</b> about 35 to 45 minutes. You can close the tab and come back on the same device; your progress stays until you finish.</p></div>' +
+    '<div class="card butter"><span class="tag ink butter">How it is graded · 10 points</span>' +
+    '<p><b>3</b> for the three surprises, one per story, each specific to the path you took.<br><b>2</b> for the final reflection.<br><b>5</b> for your rewrite of Sarah\'s email: deadline, one ask, what you will do if no answer, one warm line, no defending.</p>' +
+    '<p class="small">Your professor reads your writing and gives individual feedback. Your score appears in Blackboard.</p></div>' + mode;
+}
+function caseHTML(i){
+  var s = SCENARIOS[i];
+  return storyHead(i) + '<h1>' + esc(s.subtitle) + '</h1>' +
+    '<div class="card ' + s.color + '"><p>' + s.you + '</p>' + s.people.map(function(p){ return '<p>' + p + '</p>'; }).join('') + '</div>' +
+    '<div class="card"><span class="tag">What happened before</span><p>' + s.history + '</p></div>' +
+    '<div class="card"><span class="tag">The clock</span><p>' + s.clock + '</p></div>' +
+    '<div class="card"><span class="tag">What you need</span>' + s.need.map(function(n){ return '<p>· ' + n + '</p>'; }).join('') + '</div>';
+}
+function messagesHTML(i){
+  var s = SCENARIOS[i], S = st.stories[i];
+  var h = storyHead(i) + '<h1>The message you sent, and the reply</h1>';
+  if (s.taps){
+    h += '<p class="lead">First, your own message, the way it went out at 10:55. <b>Tap the words that made the ask disappear.</b> There are ' + s.taps.length + '. Find at least 4 to go on.</p>';
+    h += '<div class="msg" id="tapmsg"><div class="meta">' + tapify(s.your_message.meta, s.taps, 'meta') + '</div>' + tapify(s.your_message.body, s.taps, 'body') +
+      '<div style="margin-top:12px"><span class="hot' + (S.taps.indexOf(7) >= 0 ? ' on' : '') + '" data-tap="7">🔍 Something is missing from the whole email</span></div></div>';
+    h += '<p class="small"><span id="tapcount"></span> &nbsp; <button class="btn soft" type="button" id="tapAll">Show me all of them</button></p><div id="tapwhys"></div>';
+  } else {
+    h += '<div class="msg"><div class="meta">' + s.your_message.meta + '</div>' + s.your_message.body + '</div>';
+  }
+  h += '<h2>The reply</h2><div class="msg"><div class="meta">' + s.their_message.meta + '</div>' + s.their_message.body + '</div>';
+  return h;
+}
+function tapify(text, taps, part){
+  var out = text;
+  taps.forEach(function(t, idx){
+    if (idx === 7) return;
+    var on = st.stories[0].taps.indexOf(idx) >= 0, shown = st.stories[0].tapsShown;
+    var span = '<span class="hot' + (on ? ' on' : (shown ? ' show' : '')) + '" data-tap="' + idx + '">' + esc(t.text) + '</span>';
+    out = out.replace(t.text, span);
+  });
+  return out;
+}
+function sortHTML(i){
+  var s = SCENARIOS[i], S = st.stories[i], done = S.sortDone;
+  var h = storyHead(i) + '<h1>Before you answer her: sort the four</h1><p class="lead">For each one, tap the honest answer. <b>Only Ms. Glenn can decide this</b>, or <b>I can find this out myself</b>.</p>';
+  s.sort.forEach(function(it, k){
+    var pick = S.sortPicks[k];
+    h += '<div class="sortrow"><div class="q">' + (k + 1) + '. ' + it.item + '</div><div class="choices">' +
+      '<button type="button" class="chip' + (pick === 'glenn' ? (done ? (it.answer === 'glenn' ? ' good' : ' bad') : ' on') : '') + '" data-sort="' + k + '" data-v="glenn"' + (done ? ' disabled' : '') + '>Only Ms. Glenn can decide this</button>' +
+      '<button type="button" class="chip' + (pick === 'me' ? (done ? (it.answer === 'me' ? ' good' : ' bad') : ' on') : '') + '" data-sort="' + k + '" data-v="me"' + (done ? ' disabled' : '') + '>I can find this out myself</button></div>' +
+      (done ? '<p class="small" style="margin:8px 0 0"><b>' + (it.answer === 'glenn' ? 'Hers.' : 'Yours.') + '</b> ' + it.note + '</p>' : '') + '</div>';
+  });
+  var picked = Object.keys(S.sortPicks).length;
+  if (!done) h += '<p><button class="btn" type="button" id="sortGo"' + (picked < s.sort.length ? ' disabled' : '') + '>See how it sorts ›</button></p>';
+  else { var need = s.sort.filter(function(it){ return it.answer === 'glenn'; }).length; h += '<div class="card mint"><p><b>You need Ms. Glenn for ' + (need === 1 ? 'one thing' : need + ' things') + '.</b> Everything else is a website, a contract, or a choice you can make today. Keep that count in mind when you pick a door.</p></div>'; }
+  return h;
+}
+function doorsHTML(i){
+  var s = SCENARIOS[i], S = st.stories[i], h = storyHead(i);
+  if (S.stage === 'doors'){
+    h += '<h1>' + esc(s.fork_question) + '</h1><p class="small">No door is marked right. Pick the one you would really take.' + (S.paths.length ? ' Doors you already walked are dashed.' : '') + '</p>';
+    s.doors.forEach(function(d, k){
+      var walked = S.paths.some(function(p){ return p[0] === d.key; });
+      h += '<button type="button" class="door' + (walked ? ' walked' : '') + '" data-door="' + k + '"><span class="k" style="background:' + keyColor(k) + '">' + d.key + '</span><span><span class="t">' + esc(d.label) + '</span><span class="s">' + esc(d.sub) + '</span></span></button>';
+    });
+    if (S.paths.length) h += '<p style="margin-top:14px"><button class="btn" type="button" id="doneDoors">I am done with this story ›</button></p>';
+  } else if (S.stage === 'cons'){
+    var d = s.doors[S.door];
+    h += '<p class="trail">You picked <b>' + d.key + '</b> · ' + esc(d.label) + '</p><h1>What happens</h1><div class="card ' + s.color + ' reveal"><p>' + d.consequence + '</p></div>' +
+      '<h2>' + esc(d.fork_question) + '</h2>' + d.options.map(function(o, k){ return '<button type="button" class="opt" data-opt="' + k + '"><b>' + o.key + '</b>' + esc(o.label) + '</button>'; }).join('') +
+      '<p><button class="btn ghost" type="button" id="backDoors">‹ Pick a different door instead</button></p>';
+  } else {
+    var d2 = s.doors[S.door], o2 = d2.options[S.opt];
+    h += '<p class="trail">' + d2.key + ' · ' + esc(d2.label) + '</p><p class="trail">' + o2.key + ' · ' + esc(o2.label) + '</p>' +
+      '<h1>How it ends</h1><div class="card ' + s.color + ' reveal"><p>' + o2.outcome + '</p></div>' +
+      '<div class="card butter"><span class="tag ink butter">What it cost, what it got</span><p>' + o2.cost + '</p></div>' +
+      '<p><button class="btn soft" type="button" id="tryAnother">↺ Try another door</button> <button class="btn" type="button" id="doneDoors">Continue ›</button></p>' +
+      '<p class="small">Paths you walked in this story: ' + S.paths.map(function(p){ return '<span class="trail">' + p[0] + ' → ' + p[1] + '</span>'; }).join('') + '</p>';
+  }
+  return h;
+}
+function surpriseHTML(i){
+  var s = SCENARIOS[i], S = st.stories[i];
+  return storyHead(i) + '<h1>One thing that surprised you</h1><p class="lead">' + esc(s.surprise_prompt) + '</p>' +
+    '<p class="small">Paths you walked: ' + (S.paths.map(function(p){ return '<span class="trail">' + p[0] + ' → ' + p[1] + '</span>'; }).join('') || 'none yet') + '</p>' +
+    '<textarea id="surprise" placeholder="What I did not expect was...">' + esc(S.surprise) + '</textarea><div class="counter" id="surpriseCount"></div>';
+}
+function rewriteHTML(i){
+  var s = SCENARIOS[i], E = st.email;
+  var example = '<div class="msg" style="font-size:16px"><div class="meta">' + s.your_message.meta + '</div>' + s.your_message.body + '</div>';
+  return storyHead(i) + '<h1>Rewrite the 10:55 email</h1>' +
+    '<p class="lead">You have seen where the weak email led. Write the one Sarah should have sent. <b>Subject line, greeting, body, closing.</b> The panel on the right reacts as you type.</p>' +
+    '<details style="margin:0 0 12px"><summary class="small" style="cursor:pointer">Show the original again</summary>' + example + '</details>' +
+    '<div class="two"><div><textarea id="email" style="min-height:320px" placeholder="Subject: ...&#10;&#10;Hi Ms. Glenn,&#10;&#10;..."' + (E.locked ? ' readonly' : '') + '>' + esc(E.text) + '</textarea><div class="counter" id="emailCount"></div>' +
+    '<p>' + (E.locked ? '<span class="ok"><b>✅ Locked in.</b></span> <button class="btn soft" type="button" id="unlock">Edit it again</button>' : '<button class="btn" type="button" id="lock">Lock in my email</button>') + '</p></div>' +
+    '<div><div class="card peach" style="margin-top:0"><span class="tag ink peach">Hedge words</span><div class="hedges" id="hedges"></div><p class="small" id="hedgeNote"></p></div>' +
+    '<div class="card mint"><span class="tag ink mint">Five checks</span><ul class="checks" id="checks"></ul></div></div></div>';
+}
+function reflectHTML(){
+  return '<span class="tag">Final reflection</span><h1>Two boxes, then you are done.</h1>' +
+    FINAL_REFLECTION.map(function(r, k){ return '<div class="card pink"><p><b>Box ' + (k + 1) + '.</b> ' + esc(r.prompt) + '</p><textarea id="ref' + (k + 1) + '">' + esc(st['r' + (k + 1)]) + '</textarea><div class="counter" id="refCount' + (k + 1) + '"></div></div>'; }).join('');
+}
+function finishHTML(){
+  var c = st.cls, ok = allDone();
+  var h = '<span class="tag">Finish</span><h1>Check, then save.</h1><ul class="checks">' +
+    SCENARIOS.map(function(s, i){ var S = st.stories[i]; return '<li class="' + (S.paths.length ? 'on' : '') + '">Story ' + (i + 1) + ': walked at least one full path (' + S.paths.length + ')</li><li class="' + (words(S.surprise) >= MIN.surprise ? 'on' : '') + '">Story ' + (i + 1) + ': surprise written (' + words(S.surprise) + ' words)</li>'; }).join('') +
+    '<li class="' + (st.email.locked && words(st.email.text) >= MIN.email ? 'on' : '') + '">Sarah\'s email rewritten and locked in</li>' +
+    '<li class="' + (words(st.r1) >= MIN.reflect ? 'on' : '') + '">Reflection box 1</li><li class="' + (words(st.r2) >= MIN.reflect ? 'on' : '') + '">Reflection box 2</li></ul>';
+  if (!ok) h += '<div class="fb note"><b>Something is still empty.</b> Use Back to find the unchecked line.</div>';
+  else if (!isClass()) h += '<div class="fb note"><b>You are not signed in</b>, so nothing can be saved. Go back to the start and sign in.</div>';
+  else if (c.submitted && c.submitted.ok) h += '<div class="fb good"><b>✅ Saved.</b> Press Next to see your result.</div>';
+  else h += '<p><button class="btn" type="button" id="submitBtn"' + (c.submitting ? ' disabled' : '') + '>' + (c.submitting ? 'Saving…' : 'Save my work ›') + '</button></p>' + (c.submitError ? '<div class="fb miss"><b>Not saved yet.</b> ' + esc(errMsg(c.submitError)) + ' Try again. Backup code: <b>B-' + esc(shortId(c.h1)) + '</b>.</div>' : '');
+  return h;
+}
+function errMsg(e){ return {timeout:'The connection timed out.', network:'The connection failed. Check the Wi-Fi.', bad_response:'The server answer was not readable.', no_endpoint:'Saving is switched off on this copy of the page.'}[e] || ('Error: ' + e + '.'); }
+function resultHTML(){
+  var c = st.cls;
+  var h = '<span class="tag">Your result</span><h1>Here is what you did.</h1>';
+  if (c.submitted && c.submitted.ok){ var when = c.submitted.submittedAt ? new Date(c.submitted.submittedAt) : new Date(); h += '<div class="fb good"><b>✅ Recorded</b> at ' + esc(when.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'})) + ' for ' + esc(secLabel(c.section)) + '. Record ID <b>' + esc(shortId(c.recordId)) + '</b>.' + (c.submitted.already ? ' (A result for this number was already saved earlier; the first one stands.)' : '') + '</div><p class="small">📸 A screenshot of this page is your proof. Your score and feedback appear in Blackboard after grading.</p>'; }
+  else h += '<div class="fb note">Not saved. Go back to Finish and press Save.</div>';
+  h += summaryHTML({paths:st.stories.map(function(S){ return S.paths; }), texts:{s1:st.stories[0].surprise, s2:st.stories[1].surprise, s3:st.stories[2].surprise, r1:st.r1, r2:st.r2, email:st.email.text}});
+  return h;
+}
+function summaryHTML(d){
+  var h = '';
+  SCENARIOS.forEach(function(s, i){ var p = (d.paths && d.paths[i]) || []; h += '<div class="card ' + s.color + '"><span class="tag ink ' + s.color + '">Story ' + (i + 1) + ' · ' + esc(s.title) + '</span><p>' + (p.map(function(x){ return '<span class="trail">' + esc(x[0]) + ' → ' + esc(x[1]) + '</span>'; }).join('') || '<span class="muted">no path</span>') + '</p><p><b>Surprise:</b> ' + esc(d.texts['s' + (i + 1)] || '') + '</p></div>'; });
+  h += '<div class="card pink"><span class="tag ink pink">Reflection</span><p>' + esc(d.texts.r1 || '') + '</p><p>' + esc(d.texts.r2 || '') + '</p></div>';
+  h += '<div class="card blue"><span class="tag ink blue">Your rewrite of Sarah\'s email</span><p style="white-space:pre-wrap">' + esc(d.texts.email || '') + '</p></div>';
+  return h;
+}
+function learnHTML(){
+  return '<span class="tag">What tends to work, and why</span><h1>Now that you have chosen and written.</h1>' +
+    '<div class="card lav"><span class="tag ink lav">Story 1 · the boss</span><p><b>The real move happens before the email:</b> sort the four. Only the RSVP line was hers. Then one short email: the three things you will handle yourself, the one thing only she can call, a time, and what you will do if you hear nothing. The flyer prints whatever she does, and the record shows you asked.</p><p><b>And the behavior is a separate problem.</b> A clever email fixes the flyer, not Ms. Glenn. The honest end of Story 1 is dated notes, a calm conversation about process ("could we do a five minute call the day before any print run?"), and going above her only when the pattern starts costing the office or showing up in your review.</p></div>' +
+    '<div class="card blue"><span class="tag ink blue">Story 2 · the coworker</span><p>Twelve feet is a walk, not an email. Ask in person, quietly, with a time. If he raises his voice, do not match it; the office remembers who stayed calm. Then find the plan list on the shared drive, because half of what you asked him was there. Copying the manager works once and costs you for a year.</p></div>' +
+    '<div class="card peach"><span class="tag ink peach">Story 3 · the person you supervise</span><p>Never correct someone in a group chat; take it private or in person. And before you answer the tone, ask to <b>see the task</b>: "show me how you have been cleaning the wands." The soaking cup was in the dish pit. Most attitude problems you will manage are missing cups.</p></div>' +
+    '<div class="card mint"><p><b>One sentence to keep:</b> answer the task first, keep the warmth, name the time, say what you will do if there is no answer, and never defend yourself in writing to someone who is being polite and difficult at the same time.</p></div>' +
+    '<p><button class="btn soft" type="button" id="restart">↺ Start over (for practice; your saved result stays)</button></p>';
+}
+
+/* ================= WIRING ================= */
+function wire(sc){
+  if (sc.type === 'start'){ onClick('#goClass', function(){ st.form = {id:'', confirm:false, err:''}; st.view = 'signin'; render(); }); onClick('#goLookup', function(){ st.look = {id:'', out:''}; st.view = 'lookup'; render(); }); }
+  if (sc.type === 'messages' && SCENARIOS[sc.s].taps){
+    var S = st.stories[sc.s], taps = SCENARIOS[sc.s].taps;
+    var paint = function(){ $('#tapcount').textContent = 'Found ' + S.taps.length + ' of ' + taps.length + '.'; $('#tapwhys').innerHTML = S.taps.slice().sort(function(a, b){ return a - b; }).map(function(idx){ var t = taps[idx]; return '<div class="tapwhy reveal"><b>' + esc(t.text) + '</b> <span class="small">(' + esc(t.where) + ')</span><br>' + esc(t.why) + '</div>'; }).join(''); updateNav(); };
+    $$('[data-tap]').forEach(function(el){ el.addEventListener('click', function(){ var idx = +el.dataset.tap; if (S.taps.indexOf(idx) < 0){ S.taps.push(idx); el.classList.add('on'); el.classList.remove('show'); save(); paint(); } }); });
+    onClick('#tapAll', function(){ S.tapsShown = true; taps.forEach(function(t, idx){ if (S.taps.indexOf(idx) < 0) S.taps.push(idx); }); save(); render(); });
+    paint();
+  }
+  if (sc.type === 'sort'){
+    var S2 = st.stories[sc.s];
+    $$('[data-sort]').forEach(function(b){ b.addEventListener('click', function(){ S2.sortPicks[b.dataset.sort] = b.dataset.v; save(); render(); }); });
+    onClick('#sortGo', function(){ S2.sortDone = true; save(); render(); });
+  }
+  if (sc.type === 'doors'){
+    var S3 = st.stories[sc.s];
+    $$('[data-door]').forEach(function(b){ b.addEventListener('click', function(){ S3.door = +b.dataset.door; S3.opt = null; S3.stage = 'cons'; save(); render(); window.scrollTo({top:0}); }); });
+    $$('[data-opt]').forEach(function(b){ b.addEventListener('click', function(){ S3.opt = +b.dataset.opt; S3.stage = 'out'; var d = SCENARIOS[sc.s].doors[S3.door], o = d.options[S3.opt]; S3.paths.push([d.key, o.key]); save(); render(); window.scrollTo({top:0}); }); });
+    onClick('#backDoors', function(){ S3.stage = 'doors'; S3.door = null; save(); render(); });
+    onClick('#tryAnother', function(){ S3.stage = 'doors'; S3.door = null; S3.opt = null; save(); render(); window.scrollTo({top:0}); });
+    onClick('#doneDoors', function(){ go(st.i + 1); });
+  }
+  if (sc.type === 'surprise'){
+    var S4 = st.stories[sc.s], ta = $('#surprise');
+    var upd = function(){ S4.surprise = ta.value; var w = words(ta.value); $('#surpriseCount').innerHTML = w + ' words' + (w >= MIN.surprise ? ' <span class="ok">✓</span>' : ' · at least ' + MIN.surprise); save(); updateNav(); };
+    ta.addEventListener('input', upd); upd();
+  }
+  if (sc.type === 'rewrite'){
+    var ta2 = $('#email');
+    var upd2 = function(){ st.email.text = ta2.value; paintEmail(ta2.value); save(); updateNav(); };
+    ta2.addEventListener('input', upd2); upd2();
+    onClick('#lock', function(){ if (words(st.email.text) < MIN.email) return; st.email.locked = true; save(); render(); });
+    onClick('#unlock', function(){ st.email.locked = false; save(); render(); });
+  }
+  if (sc.type === 'reflect'){
+    [1, 2].forEach(function(k){ var t = $('#ref' + k); var u = function(){ st['r' + k] = t.value; var w = words(t.value); $('#refCount' + k).innerHTML = w + ' words' + (w >= MIN.reflect ? ' <span class="ok">✓</span>' : ' · at least ' + MIN.reflect); save(); updateNav(); }; t.addEventListener('input', u); u(); });
+  }
+  if (sc.type === 'finish'){ onClick('#submitBtn', submitFinal); }
+  if (sc.type === 'learn'){ onClick('#restart', function(){ var cls = st.cls; st = fresh(); st.cls = cls; save(); go(0); }); }
+}
+function analyzeEmail(t){
+  var found = [];
+  HEDGES.forEach(function(h){ var m = String(t || '').match(h.re); if (m) found.push({t:h.t, n:m.length, why:h.why}); });
+  var checks = CHECKS.map(function(c){ return {k:c.k, label:c.label, ok:c.test(String(t || ''))}; });
+  return {hedges:found, hedgeCount:found.reduce(function(a, b){ return a + b.n; }, 0), checks:checks, passed:checks.filter(function(c){ return c.ok; }).length, words:words(t)};
+}
+function paintEmail(t){
+  var a = analyzeEmail(t);
+  $('#hedges').innerHTML = a.hedges.length ? a.hedges.map(function(h){ return '<span class="hedge">' + esc(h.t) + (h.n > 1 ? ' ×' + h.n : '') + ' · ' + esc(h.why) + '</span>'; }).join('') : '<span class="small ok">none found ✓</span>';
+  $('#hedgeNote').textContent = a.hedgeCount ? a.hedgeCount + ' hedge word' + (a.hedgeCount > 1 ? 's' : '') + '. Each one makes the ask smaller.' : 'Clean.';
+  $('#checks').innerHTML = a.checks.map(function(c){ return '<li class="' + (c.ok ? 'on' : '') + '">' + esc(c.label) + '</li>'; }).join('');
+  $('#emailCount').innerHTML = a.words + ' words' + (a.words >= MIN.email ? ' <span class="ok">✓</span>' : ' · at least ' + MIN.email) + ' · ' + a.passed + ' of ' + a.checks.length + ' checks';
+}
+function canNext(){
+  var sc = SCREENS[st.i];
+  if (sc.type === 'start') return isClass();
+  if (sc.type === 'messages' && SCENARIOS[sc.s].taps) return st.stories[sc.s].taps.length >= 4;
+  if (sc.type === 'sort') return st.stories[sc.s].sortDone;
+  if (sc.type === 'doors') return st.stories[sc.s].paths.length > 0 && st.stories[sc.s].stage !== 'cons';
+  if (sc.type === 'surprise') return words(st.stories[sc.s].surprise) >= MIN.surprise;
+  if (sc.type === 'rewrite') return st.email.locked && words(st.email.text) >= MIN.email;
+  if (sc.type === 'reflect') return words(st.r1) >= MIN.reflect && words(st.r2) >= MIN.reflect;
+  if (sc.type === 'finish') return !!(st.cls.submitted && st.cls.submitted.ok);
+  if (sc.type === 'learn') return false;
+  return true;
+}
+function allDone(){ return st.stories.every(function(S){ return S.paths.length > 0 && words(S.surprise) >= MIN.surprise; }) && st.email.locked && words(st.email.text) >= MIN.email && words(st.r1) >= MIN.reflect && words(st.r2) >= MIN.reflect; }
+function updateNav(){
+  var sc = SCREENS[st.i], nav = $('#nav');
+  nav.style.display = (st.view !== 'pages') ? 'none' : '';
+  var nx = $('#next'), bk = $('#back'), hint = $('#hint');
+  bk.disabled = st.i === 0;
+  var ok = canNext(); nx.disabled = !ok;
+  nx.textContent = sc.type === 'finish' ? 'See my result ›' : 'Next ›';
+  var hints = {start:'Sign in to begin.', messages:'Tap at least 4 of the weak spots.', sort:'Sort all four, then press See how it sorts.', doors:'Walk at least one path to the end.', surprise:'Write at least ' + MIN.surprise + ' words.', rewrite:'Write at least ' + MIN.email + ' words and lock it in.', reflect:'Both boxes, ' + MIN.reflect + ' words or more.', finish:'Press Save my work.'};
+  hint.textContent = ok ? '' : (hints[sc.type] || '');
+  if (sc.type === 'learn'){ nx.style.display = 'none'; } else nx.style.display = '';
+}
+
+/* ================= SIGN IN / SUBMIT / LOOKUP ================= */
+function secButtons(locked){ return '<div class="secrow">' + Object.keys(CONFIG.SECTIONS).map(function(k){ var s = CONFIG.SECTIONS[k], on = st.cls.section === k; return '<button type="button" class="secbtn' + (on ? ' on' : '') + '" data-sec="' + k + '"' + (locked ? ' disabled' : '') + '><b>' + esc(s.label) + '</b><span>' + esc(s.sub) + '</span></button>'; }).join('') + '</div>'; }
+function renderSignin(){
+  $('#nav').style.display = 'none';
+  var f = st.form || (st.form = {id:'', confirm:false, err:''});
+  var h = '<h1>Sign in</h1><p class="lead">Two steps, then the first story.</p>' +
+    '<div class="card"><p><b>1. Tap your class.</b></p>' + secButtons(f.confirm) + '</div>' +
+    '<div class="card"><label for="sid"><b>2. Type the 8 digit number you log in to Blackboard with.</b></label><p class="small">It is your Student ID. It starts with 0, for example 03083452.</p><input id="sid" class="field" inputmode="numeric" autocomplete="off" maxlength="14" value="' + esc(f.id) + '"' + (f.confirm ? ' readonly' : '') + '></div>' +
+    '<div class="err" aria-live="polite">' + esc(f.err || '') + '</div>';
+  if (!f.confirm) h += '<p><button type="button" class="btn" id="signNext">Next ›</button> <button type="button" class="btn ghost" id="signBack">‹ Back</button></p>';
+  else { var d = normalizeId(f.id); h += '<div class="card butter"><p>You typed:</p><div class="bigid">' + esc(d.slice(0, 4) + ' ' + d.slice(4)) + '</div><p>Is this <b>your</b> Blackboard number? If it is wrong, your points go to no one.</p><p><button type="button" class="btn" id="signYes">Yes, that is me ›</button> <button type="button" class="btn soft" id="signFix">No, let me fix it</button></p></div>'; }
+  h += '<div class="card"><b>🔒 What is saved.</b> A scrambled version of your number, your choices, your writing, and the time. Your name is never saved. Your number is never saved the way you typed it.</div>';
+  $('#page').innerHTML = h;
+  var sid = $('#sid'); if (sid) sid.addEventListener('input', function(){ f.id = sid.value; });
+  if (!f.confirm) $$('[data-sec]').forEach(function(b){ b.addEventListener('click', function(){ st.cls.section = b.dataset.sec; f.err = ''; renderSignin(); }); });
+  onClick('#signNext', function(){ var d = normalizeId(f.id); if (!st.cls.section){ f.err = 'Step 1 is missing: tap your class.'; renderSignin(); return; } if (d.length !== 8){ f.err = 'Your number needs 8 digits. You typed ' + d.length + '.'; renderSignin(); return; } f.err = ''; f.confirm = true; renderSignin(); });
+  onClick('#signFix', function(){ f.confirm = false; renderSignin(); });
+  onClick('#signBack', function(){ st.form = null; st.view = 'pages'; render(); });
+  onClick('#signYes', signIn);
+}
+async function signIn(){
+  var f = st.form, btn = $('#signYes'), d = normalizeId(f.id);
+  btn.disabled = true; btn.textContent = 'One moment…';
+  var h1; try { h1 = await sha256Hex(CONFIG.SALT1 + '|' + d); } catch(e){ f.err = 'This browser could not scramble your number. Use Chrome, Safari, or Edge.'; f.confirm = false; renderSignin(); return; }
+  var r = await post({action:'start', h1:h1, section:st.cls.section, activity:CONFIG.ACTIVITY, clientVersion:CONFIG.VERSION}, 45000);
+  if (r && r.ok && r.already){
+    f.err = 'A finished result for this number is already saved. Use "Already finished? See your result" on the start page.'; f.confirm = false; renderSignin(); return;
+  }
+  var c = st.cls; c.mode = 'class'; c.h1 = h1; c.tail = d.slice(-2); c.recordId = (r && r.ok && r.recordId) || null; c.startedAt = new Date().toISOString();
+  st.form = null; st.view = 'pages'; save(); go(1);
+}
+async function submitFinal(){
+  var c = st.cls; if (!isClass() || c.submitting || (c.submitted && c.submitted.ok)) return;
+  c.submitting = true; c.submitError = null; save(); render();
+  var a = analyzeEmail(st.email.text);
+  var payload = {action:'submit', h1:c.h1, section:c.section, activity:CONFIG.ACTIVITY, clientVersion:CONFIG.VERSION, startedAt:c.startedAt,
+    minutes:Math.round((Date.now() - new Date(c.startedAt).getTime()) / 60000),
+    paths:st.stories.map(function(S){ return S.paths; }),
+    sort:st.stories[0].sortPicks, taps:st.stories[0].taps.length,
+    texts:{s1:st.stories[0].surprise, s2:st.stories[1].surprise, s3:st.stories[2].surprise, r1:st.r1, r2:st.r2, email:st.email.text},
+    checks:{hedges:a.hedgeCount, passed:a.passed, list:a.checks.map(function(x){ return x.k + ':' + (x.ok ? 1 : 0); }).join(' ')}};
+  var r = await post(payload, 60000);
+  c.submitting = false;
+  if (r && r.ok){ c.submitted = r; c.recordId = r.recordId || c.recordId; c.submitError = null; } else c.submitError = (r && r.error) || 'network';
+  save(); render();
+}
+function renderLookup(){
+  $('#nav').style.display = 'none';
+  var f = st.look || (st.look = {id:'', out:''});
+  var h = '<h1>See your result</h1><p class="lead">Type the same number you used. You will see your paths, your writing, and your score and feedback once graded.</p>' +
+    '<div class="card"><p><b>1. Tap your class.</b></p>' + secButtons(false) + '</div>' +
+    '<div class="card"><label for="lid"><b>2. Your 8 digit Blackboard number.</b></label><input id="lid" class="field" inputmode="numeric" autocomplete="off" maxlength="14" value="' + esc(f.id) + '"></div>' +
+    '<p><button type="button" class="btn" id="lookGo">Show me ›</button> <button type="button" class="btn ghost" id="lookBack">‹ Back</button></p><div id="lookOut">' + f.out + '</div>';
+  $('#page').innerHTML = h;
+  var lid = $('#lid'); lid.addEventListener('input', function(){ f.id = lid.value; });
+  $$('[data-sec]').forEach(function(b){ b.addEventListener('click', function(){ f.id = lid.value; st.cls.section = b.dataset.sec; renderLookup(); }); });
+  onClick('#lookBack', function(){ st.look = null; st.view = 'pages'; render(); });
+  onClick('#lookGo', async function(){
+    var d = normalizeId(f.id), btn = $('#lookGo');
+    if (!st.cls.section){ f.out = '<div class="fb miss">Tap your class first.</div>'; renderLookup(); return; }
+    if (d.length !== 8){ f.out = '<div class="fb miss">Your number needs 8 digits. You typed ' + d.length + '.</div>'; renderLookup(); return; }
+    btn.disabled = true; btn.textContent = 'Looking…';
+    var h1; try { h1 = await sha256Hex(CONFIG.SALT1 + '|' + d); } catch(e){ h1 = null; }
+    var r = h1 ? await post({action:'lookup', h1:h1, section:st.cls.section, activity:CONFIG.ACTIVITY, clientVersion:CONFIG.VERSION}, 60000) : null;
+    if (!r || !r.ok){ f.out = '<div class="fb miss">Could not reach the server. Check the Wi-Fi and try again.</div>'; renderLookup(); return; }
+    if (!r.found){ f.out = '<div class="fb note"><b>No record</b> for this number in ' + esc(secLabel(st.cls.section)) + '. If you finished it, email Professor Calafiore with the date and time.</div>'; renderLookup(); return; }
+    var x = r.found, fmt = function(iso){ var dd = new Date(iso); return isNaN(dd) ? String(iso) : dd.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}); };
+    var top = x.submittedAt ? '<div class="fb good"><b>✅ Recorded</b> on ' + esc(fmt(x.submittedAt)) + '. Record ID <b>' + esc(x.recordId) + '</b>.</div>' : '<div class="fb note"><b>Started</b> on ' + esc(fmt(x.startedAt)) + ' but <b>not finished</b>.</div>';
+    var grade = (x.score != null && x.score !== '') ? '<div class="card butter"><span class="tag ink butter">Your score</span><p><b>' + esc(x.score) + ' out of 10</b></p>' + (x.feedback ? '<p><b>Feedback from Professor Calafiore:</b> ' + esc(x.feedback) + '</p>' : '') + '</div>' : '<p class="small">Not graded yet. Your score will appear here and in Blackboard.</p>';
+    f.out = top + grade + (x.submittedAt ? summaryHTML({paths:x.paths || [], texts:x.texts || {}}) : '');
+    renderLookup();
+  });
+}
+
+/* ================= BOOT ================= */
+buildScreens();
+if (!restore()) st = fresh();
+$('#next').addEventListener('click', function(){ if (canNext()) go(st.i + 1); });
+$('#back').addEventListener('click', function(){ if (st.i > 0){ go(st.i - 1); } });
+render();
+</script>
+</body>
+</html>
