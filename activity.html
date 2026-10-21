@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reply, Call, or Escalate? · BUSN 2100 group activity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfaf6; --fg:#1c1f26; --muted:#5b6170; --card:#ffffff; --line:#e3e0d7; --soft:#f1efe8;
+  --blue:#CFE4F7; --lav:#DCD1F5; --butter:#FBEFA6; --pink:#FAD2E0; --peach:#FFDCC3; --sky:#D9EEF8;
+  --inkblue:#245f9a; --inklav:#5b43a6; --inkbutter:#7a5f00; --inkpink:#a63a68; --inkpeach:#a9521c;
+}
+:root[data-theme="dark"]{
+  --bg:#14161c; --fg:#f3f0e8; --muted:#aab0bd; --card:#1e2129; --line:#2d313c; --soft:#262a34;
+  --blue:#2b4a66; --lav:#3f3566; --butter:#5e5120; --pink:#5e3045; --peach:#5e3c25; --sky:#274a5c;
+  --inkblue:#9CC9F2; --inklav:#C9B6F2; --inkbutter:#F6E27A; --inkpink:#F7B8D0; --inkpeach:#FFC9A3;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--fg); font-family:'Lexend','Avenir Next','Avenir',Verdana,'Segoe UI',sans-serif; font-size:21px; letter-spacing:.03em; word-spacing:.08em; line-height:1.72; -webkit-font-smoothing:antialiased}
+b,strong{font-weight:700}
+header{position:sticky; top:0; z-index:9; background:var(--bg); border-bottom:2px solid var(--line); padding:14px 20px 12px}
+.top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; max-width:1080px; margin:0 auto}
+.brand{font-weight:700; font-size:22px}
+.brand small{display:block; font-weight:400; font-size:15px; color:var(--muted); letter-spacing:.06em}
+.rounds{display:flex; gap:8px; flex-wrap:wrap; max-width:1080px; margin:10px auto 0}
+.rounds button{font:inherit; letter-spacing:.03em; font-size:17px; font-weight:700; background:var(--card); color:var(--fg); border:2px solid var(--line); border-radius:12px; padding:9px 14px; cursor:pointer}
+.rounds button[aria-current="true"]{background:var(--fg); color:var(--bg); border-color:var(--fg)}
+.rounds button .n{display:inline-grid; place-items:center; width:1.5em; height:1.5em; border-radius:50%; margin-right:.4em; font-size:.9em; color:#1c1f26}
+.tools{display:flex; gap:8px}
+.tools button{font:inherit; font-size:15px; background:var(--card); color:var(--fg); border:2px solid var(--line); border-radius:10px; padding:6px 12px; cursor:pointer}
+main{max-width:1080px; margin:0 auto; padding:26px 20px 90px}
+.round{display:none}
+.round.active{display:block; animation:fade .3s ease}
+@keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+h1{font-size:40px; line-height:1.2; margin:0 0 8px}
+h2{font-size:30px; line-height:1.25; margin:28px 0 10px}
+h3{font-size:22px; margin:22px 0 8px}
+p{margin:0 0 14px}
+.lead{font-size:23px}
+.muted{color:var(--muted)}
+.tag{display:inline-block; font-size:15px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+.card{background:var(--card); border:2px solid var(--line); border-radius:16px; padding:20px 22px; margin:14px 0}
+.card.blue{background:var(--blue); border-color:transparent} .card.lav{background:var(--lav); border-color:transparent} .card.butter{background:var(--butter); border-color:transparent} .card.pink{background:var(--pink); border-color:transparent} .card.peach{background:var(--peach); border-color:transparent} .card.sky{background:var(--sky); border-color:transparent}
+.ink.blue{color:var(--inkblue)} .ink.lav{color:var(--inklav)} .ink.butter{color:var(--inkbutter)} .ink.pink{color:var(--inkpink)} .ink.peach{color:var(--inkpeach)}
+.email{background:var(--card); border:2px solid var(--line); border-radius:16px; padding:18px 22px; margin:14px 0; font-size:20px; line-height:1.75}
+.email .meta{font-size:16px; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:12px; line-height:1.6}
+.email .meta b{color:var(--fg)}
+.email p{margin:0 0 12px}
+.email ol{margin:0 0 12px 24px; padding:0}
+.email li{margin:0 0 8px}
+.email .line{padding:0 .2em; border-radius:.3em}
+.email .line.on{background:var(--lav); color:var(--inklav); font-weight:700}
+.reveal{display:none}
+.reveal.on{display:block; animation:fade .3s ease}
+.btn{font:inherit; letter-spacing:.03em; font-size:18px; font-weight:700; background:var(--fg); color:var(--bg); border:2px solid var(--fg); border-radius:12px; padding:10px 18px; cursor:pointer; margin:6px 8px 6px 0}
+.btn.ghost{background:transparent; color:var(--fg)}
+.post{border-left:8px solid var(--inkpink); background:var(--pink); border-radius:16px; padding:18px 22px; margin:22px 0}
+.post .tag{color:var(--inkpink)}
+.post ol,.post ul{margin:6px 0 0 24px; padding:0}
+.post li{margin:0 0 8px}
+.time{display:inline-block; background:var(--soft); border-radius:999px; padding:2px 12px; font-size:16px; font-weight:700; color:var(--muted); margin-left:8px}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.q{background:var(--card); border:2px solid var(--line); border-radius:14px; padding:14px 18px}
+.q .k{display:inline-grid; place-items:center; width:1.8em; height:1.8em; border-radius:50%; font-weight:700; color:#1c1f26; margin-right:8px}
+.q .if{font-size:18px; color:var(--muted); margin-top:6px}
+.opt{display:flex; gap:12px; align-items:flex-start; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:14px 18px; margin:10px 0}
+.opt .k{flex:none; display:grid; place-items:center; width:2em; height:2em; border-radius:50%; font-weight:700; color:#1c1f26}
+.opt .t{font-weight:700}
+.opt .c{display:block; font-size:18px; color:var(--muted)}
+.check{list-style:none; margin:0; padding:0}
+.check li{padding:8px 0 8px 40px; position:relative; border-bottom:1px solid var(--line)}
+.check li::before{content:""; position:absolute; left:0; top:12px; width:22px; height:22px; border:2px solid var(--muted); border-radius:6px}
+.rubric td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+.rubric{border-collapse:collapse; width:100%; font-size:19px}
+.rubric td:first-child{font-weight:700; white-space:nowrap}
+.nav{display:flex; justify-content:space-between; margin-top:34px; gap:10px}
+@media (max-width:760px){ body{font-size:19px} .grid{grid-template-columns:1fr} h1{font-size:32px} h2{font-size:26px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="brand">Reply, Call, or Escalate?<small>BUSN 2100 · Unit 4 · a group case in six rounds</small></div>
+    <div class="tools"><button id="theme">Light / Dark</button><button id="bigger">A+</button><button id="smaller">A−</button></div>
+  </div>
+  <nav class="rounds" id="rounds">
+    <button data-r="0"><span class="n" style="background:var(--sky)">▶</span>Start</button>
+    <button data-r="1"><span class="n" style="background:#CFE4F7">1</span>Read it</button>
+    <button data-r="2"><span class="n" style="background:#DCD1F5">2</span>Translate it</button>
+    <button data-r="3"><span class="n" style="background:#FBEFA6">3</span>What do I still need?</button>
+    <button data-r="4"><span class="n" style="background:#FFDCC3">4</span>Choose the move</button>
+    <button data-r="5"><span class="n" style="background:#FAD2E0">5</span>Draft it</button>
+    <button data-r="6"><span class="n" style="background:#D9EEF8">6</span>The long game</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="round" data-r="0">
+  <span class="tag">Start here</span>
+  <h1>One boss. Four questions. A 3:00 PM deadline.</h1>
+  <p class="lead">Your group is <b>Sarah</b> today. You will read a real looking email thread, work out what is really being said, decide what to do, and still get the flyer printed on time.</p>
+
+  <div class="card blue">
+    <span class="tag ink blue">How this works</span>
+    <p><b>Six rounds.</b> Your professor calls each round. Click the round button at the top. You can go back any time.</p>
+    <p><b>Your group talks in your Teams breakout room chat.</b> Typed, not out loud. Every round ends with a pink box that says exactly what to post.</p>
+    <p><b>One person posts the group's final answer</b> in each round. Everyone else posts their own thinking along the way. Both count.</p>
+  </div>
+
+  <div class="card lav">
+    <span class="tag ink lav">Your three jobs at once</span>
+    <p><b>1. Read the tone.</b> What is the boss really saying?</p>
+    <p><b>2. Choose the move.</b> Reply, call, walk over, set a default, loop someone in, escalate, or stay quiet.</p>
+    <p><b>3. Get the task done anyway.</b> The flyer prints at 3:00 no matter how anyone feels.</p>
+  </div>
+
+  <h2>How you are graded today <span class="time">10 points</span></h2>
+  <p>Your professor reads your breakout room chat after class. Each person earns points from what they typed.</p>
+  <table class="rubric">
+    <tr><td>2 pts</td><td><b>Present and typing.</b> You posted in your room in at least four of the six rounds.</td></tr>
+    <tr><td>2 pts</td><td><b>Translated.</b> In Round 2 you put at least one loaded line into plain words, in your own words.</td></tr>
+    <tr><td>2 pts</td><td><b>Voted with a reason.</b> In Round 4 you named a move and gave one reason tied to the case, not a feeling.</td></tr>
+    <tr><td>2 pts</td><td><b>Built the draft.</b> In Round 5 you added, cut, or fixed something in the group's draft, or wrote the call opener.</td></tr>
+    <tr><td>2 pts</td><td><b>Stayed professional.</b> No mocking Ms. Glenn, no sarcasm, no piling on a groupmate. Disagreeing is fine. Disagreeing well is the point.</td></tr>
+  </table>
+  <div class="nav"><span></span><button class="btn" data-go="1">Round 1: Read it →</button></div>
+</section>
+
+<!-- ROUND 1 -->
+<section class="round" data-r="1">
+  <span class="tag">Round 1 · Read it <span class="time">5 minutes</span></span>
+  <h1>The case file</h1>
+  <p class="lead">Read everything. No chat yet. You need the whole picture before you can judge one email.</p>
+
+  <h2>Who is who</h2>
+  <div class="card">
+    <p><b>Sarah</b> is a <b>program assistant</b> in the College Outreach Office at a community college. It is her first full time job. She has been there <b>8 months</b>.</p>
+    <p><b>Ms. Glenn</b> is the <b>Director of Outreach</b>. Sarah's boss. 14 years at the college. In meetings most of the day. Likes to be kept in the loop. Has said more than once that she does not like "being pulled into small things."</p>
+    <p><b>Kevin Martinez</b> works in <b>Communications</b>. Friendly. He approves anything that carries the college logo, so he sees every flyer before it prints.</p>
+    <p><b>Dr. Alvarez</b> is the <b>Dean of Students</b>. Ms. Glenn's boss. Sarah has met her twice, both times in a hallway.</p>
+  </div>
+
+  <h2>What happened last time</h2>
+  <div class="card butter">
+    <p>In <b>April</b>, Sarah's second month, the spring flyer went out with the <b>wrong room number</b>. 250 copies. Reprinted. Cost: <b>$180</b> from the office budget.</p>
+    <p>Sarah had emailed Ms. Glenn to confirm the room. No reply came. Sarah used last year's room.</p>
+    <p>At the May staff meeting, Ms. Glenn mentioned "a reprint we could have avoided." She did not say Sarah's name. Everyone knew.</p>
+  </div>
+
+  <h2>Today</h2>
+  <div class="card">
+    <p><b>Wednesday, 11:40 AM.</b> The fall Parent Information Night flyer is done except for <b>four details</b>.</p>
+    <p>Campus Print Services needs the final PDF by <b>3:00 PM today</b> to deliver 300 copies by Friday. The event is next Thursday evening. If the PDF is late, the next print slot is Monday, and the flyers go out two days before the event instead of a week before.</p>
+  </div>
+
+  <h2>Sarah's email, 10:55 AM</h2>
+  <div class="email">
+    <div class="meta"><b>To:</b> Ms. Glenn &nbsp;·&nbsp; <b>Subject:</b> Parent Night flyer: four quick confirmations before 3:00 print deadline</div>
+    <p>Hi Ms. Glenn,</p>
+    <p>The flyer is ready to go to print. Campus Print needs the final PDF by 3:00 today. Could you confirm four things?</p>
+    <ol>
+      <li><b>RSVP link.</b> The web page goes live Friday. Print the link now, or print "RSVP at the Outreach Office" instead?</li>
+      <li><b>Speaker title.</b> The draft says "Dr. Reyes, Director of Community Programs." I think her title changed to Dean in June. Which one goes on the flyer?</li>
+      <li><b>Childcare hours.</b> Your email last week said 6:00 to 8:30 PM. The childcare contract says 6:00 to 8:00. Which is right?</li>
+      <li><b>Spanish version.</b> Print it in the same run, or post it online only? Same run adds two days to the vendor timeline.</li>
+    </ol>
+    <p>If it is easier, I can call or swing by, whatever works for you. I just do not want to guess on details that might change.</p>
+    <p>Thank you,<br>Sarah</p>
+  </div>
+
+  <button class="btn" data-reveal="r1reply">Show Ms. Glenn's reply, 11:38 AM</button>
+  <div class="reveal" id="r1reply">
+    <h2>Ms. Glenn's reply, 11:38 AM</h2>
+    <div class="email">
+      <div class="meta"><b>From:</b> Ms. Glenn &nbsp;·&nbsp; <b>Subject:</b> Re: Parent Night flyer: four quick confirmations before 3:00 print deadline</div>
+      <p>Hi Sarah,</p>
+      <p>Thanks for staying on top of the flyer. I'm glad you're thinking about these kinds of things. That shows initiative.</p>
+      <p>Let's aim to make this round smoother than last time. I trust you'll use your best judgment with the info we have. These kinds of small edits shouldn't hold us back from moving forward.</p>
+      <p>Please keep me posted once the final version goes out.</p>
+      <p>Best,<br>M. Glenn</p>
+    </div>
+    <div class="card peach">
+      <p><b>Count the answers.</b> Sarah asked four questions. How many did she get answered?</p>
+    </div>
+    <div class="post">
+      <span class="tag">Post in your room chat</span>
+      <p>Each person types <b>one line</b>: your first gut reaction to Ms. Glenn's reply, in five words or fewer. No discussion yet.</p>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="0">← Start</button><button class="btn" data-go="2">Round 2: Translate it →</button></div>
+</section>
+
+<!-- ROUND 2 -->
+<section class="round" data-r="2">
+  <span class="tag">Round 2 · Translate it <span class="time">6 minutes</span></span>
+  <h1>What is Ms. Glenn really saying?</h1>
+  <p class="lead">Her reply is polite in every sentence. Find the <b>three sentences</b> that carry a second message, and put each one into <b>plain words</b>.</p>
+
+  <div class="email" id="r2email">
+    <div class="meta"><b>From:</b> Ms. Glenn &nbsp;·&nbsp; 11:38 AM</div>
+    <p>Hi Sarah,</p>
+    <p><span class="line" data-l="1">Thanks for staying on top of the flyer.</span> <span class="line" data-l="2">I'm glad you're thinking about these kinds of things.</span> <span class="line" data-l="3">That shows initiative.</span></p>
+    <p><span class="line" data-l="4">Let's aim to make this round smoother than last time.</span> <span class="line" data-l="5">I trust you'll use your best judgment with the info we have.</span> <span class="line" data-l="6">These kinds of small edits shouldn't hold us back from moving forward.</span></p>
+    <p><span class="line" data-l="7">Please keep me posted once the final version goes out.</span></p>
+    <p>Best,<br>M. Glenn</p>
+  </div>
+  <p class="muted">Tip: click a sentence to mark it while you talk. Marks are only on your screen.</p>
+
+  <div class="post">
+    <span class="tag">Post in your room chat</span>
+    <ol>
+      <li><b>Each person:</b> pick one sentence you think is loaded. Type it, then type <b>"plain words:"</b> and what it really says. Your own words.</li>
+      <li><b>Group:</b> agree on the three most loaded sentences. One person posts all three with the group's plain words version of each.</li>
+      <li><b>Bonus:</b> what did Ms. Glenn do with the <b>four questions</b>? Say it in one sentence.</li>
+    </ol>
+  </div>
+
+  <button class="btn ghost" data-reveal="r2key">After you post: show one reading of the lines</button>
+  <div class="reveal" id="r2key">
+    <div class="card lav">
+      <span class="tag ink lav">One reading, not the only one</span>
+      <p><b>"Let's aim to make this round smoother than last time."</b> → plain words: <b>"I remember April. I want you to know I remember."</b> It brings up the old mistake without naming it.</p>
+      <p><b>"I trust you'll use your best judgment with the info we have."</b> → plain words: <b>"Do not ask me again."</b> And if a guess goes wrong, it was Sarah's judgment, not Ms. Glenn's silence.</p>
+      <p><b>"These kinds of small edits shouldn't hold us back."</b> → plain words: <b>"Your questions are small. You are slowing us down."</b> A $180 reprint came from a "small edit."</p>
+      <p><b>"Please keep me posted once the final version goes out."</b> → plain words: <b>"Tell me after. Not before."</b> She wants the result, not the decision.</p>
+      <p>And the four questions? <b>Answered: zero.</b></p>
+    </div>
+    <div class="card sky">
+      <span class="tag ink blue">Why this matters</span>
+      <p>Readers tend to read email as <b>more negative</b> than the writer meant, and the gap grows when the reader is lower in rank (Byron, 2008). So part of what Sarah hears may be hers. <b>And</b> four unanswered questions are not in her head. Both things are true at once. That is why you check the task before you judge the tone.</p>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="1">← Round 1</button><button class="btn" data-go="3">Round 3: What do I still need? →</button></div>
+</section>
+
+<!-- ROUND 3 -->
+<section class="round" data-r="3">
+  <span class="tag">Round 3 · What do I still need? <span class="time">5 minutes</span></span>
+  <h1>Forget the tone for six minutes.</h1>
+  <p class="lead">It is 11:45. The PDF is due at 3:00. Sarah has <b>four</b> open questions and <b>zero</b> answers. For each one, decide: <b>what does Sarah do if nobody answers?</b></p>
+
+  <div class="grid">
+    <div class="q"><span class="k" style="background:#CFE4F7">1</span><b>RSVP link</b>
+      <div class="if">Print the link now, or "RSVP at the Outreach Office"?<br><b>If wrong:</b> a link that shows "coming soon" for two days, or parents with no way to RSVP online.</div></div>
+    <div class="q"><span class="k" style="background:#DCD1F5">2</span><b>Speaker title</b>
+      <div class="if">Director or Dean?<br><b>If wrong:</b> a dean's title printed wrong on 300 flyers with the college logo. Kevin in Communications will notice.</div></div>
+    <div class="q"><span class="k" style="background:#FBEFA6">3</span><b>Childcare hours</b>
+      <div class="if">6:00 to 8:30, or 6:00 to 8:00?<br><b>If wrong:</b> parents who planned on 8:30 find the childcare room closing at 8:00. The one mistake that lands on a child.</div></div>
+    <div class="q"><span class="k" style="background:#FFDCC3">4</span><b>Spanish version</b>
+      <div class="if">Same print run, or online only?<br><b>If wrong:</b> either a two day delay on everything, or Spanish speaking families get no printed flyer.</div></div>
+  </div>
+
+  <div class="post">
+    <span class="tag">Post in your room chat</span>
+    <ol>
+      <li><b>Group:</b> for each of the four, post the <b>default</b>: what Sarah will do if she gets no answer by 2:00. One line each.</li>
+      <li><b>Group:</b> which one of the four is <b>too risky to guess</b>? Name it, and say why in one sentence.</li>
+      <li><b>Each person:</b> what is the <b>safest default</b> for the risky one? Post your idea.</li>
+    </ol>
+  </div>
+  <button class="btn ghost" data-reveal="r3key">After you post: one way to sort the four</button>
+  <div class="reveal" id="r3key">
+    <div class="card butter">
+      <span class="tag ink butter">One way to sort them</span>
+      <p><b>Safe to default:</b> the RSVP line can say "RSVP at the Outreach Office or online at ..." so it works either way. The Spanish version can go online now and print later, which costs nothing today.</p>
+      <p><b>Can be checked without Ms. Glenn:</b> Dr. Reyes's title is on the college website and in Kevin's hands. The childcare hours are in the provider's contract.</p>
+      <p><b>The point:</b> Sarah needs Ms. Glenn for far less than four things. Maybe for one. That changes what the next email has to do.</p>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="2">← Round 2</button><button class="btn" data-go="4">Round 4: Choose the move →</button></div>
+</section>
+
+<!-- ROUND 4 -->
+<section class="round" data-r="4">
+  <span class="tag">Round 4 · Choose the move <span class="time">7 minutes</span></span>
+  <h1>What does Sarah do at 11:50?</h1>
+  <p class="lead">Every option below works in some situation. None of them is free. Pick the one that gets the flyer printed <b>and</b> keeps Sarah's standing with her boss.</p>
+
+  <div class="opt"><span class="k" style="background:#CFE4F7">A</span><div><span class="t">Reply by email again.</span><span class="c">Shorter this time. Keeps a written record. Slow. Can be ignored again, and then it is 2:30.</span></div></div>
+  <div class="opt"><span class="k" style="background:#DCD1F5">B</span><div><span class="t">Walk to her office, or call.</span><span class="c">Answers in two minutes if she is there. No record. She said she does not like being pulled into small things.</span></div></div>
+  <div class="opt"><span class="k" style="background:#FBEFA6">C</span><div><span class="t">"Proceeding unless I hear otherwise" email.</span><span class="c">State the defaults and a 2:00 cutoff. Puts the risk in writing. Reads as confident. Can also read as "fine, I will do it my way."</span></div></div>
+  <div class="opt"><span class="k" style="background:#FFDCC3">D</span><div><span class="t">Loop Kevin in.</span><span class="c">Communications approves the flyer anyway. He can confirm the title. Adds a witness. Can read as going around your boss.</span></div></div>
+  <div class="opt"><span class="k" style="background:#FAD2E0">E</span><div><span class="t">Escalate to Dr. Alvarez.</span><span class="c">The Dean would answer. And Sarah, 8 months in, just went over her boss's head about a flyer.</span></div></div>
+  <div class="opt"><span class="k" style="background:#D9EEF8">F</span><div><span class="t">Say nothing and guess.</span><span class="c">Fastest. This is what Sarah did in April. If it goes wrong, "I trust your judgment" becomes the record.</span></div></div>
+
+  <div class="card">
+    <p><b>You can combine.</b> B then C is a real strategy: try the door, and if she is not there, send the "proceeding unless" email. Say so if that is your group's answer.</p>
+  </div>
+
+  <div class="post">
+    <span class="tag">Post in your room chat</span>
+    <ol>
+      <li><b>Each person:</b> vote. Type the letter and <b>one reason from the case</b> (a fact from the file, not a feeling). Example: "C, because April shows she does not answer emails before deadlines."</li>
+      <li><b>Group:</b> land on one move, or one combination. One person posts it with the group's reason.</li>
+      <li><b>Group:</b> post the one move you <b>ruled out first</b>, and why.</li>
+    </ol>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="3">← Round 3</button><button class="btn" data-go="5">Round 5: Draft it →</button></div>
+</section>
+
+<!-- ROUND 5 -->
+<section class="round" data-r="5">
+  <span class="tag">Round 5 · Draft it <span class="time">9 minutes</span></span>
+  <h1>Write the move.</h1>
+  <p class="lead">Whatever your group chose, it has to be said. Build it together in the chat.</p>
+
+  <div class="card lav">
+    <span class="tag ink lav">If your move is an email (A, C, or D)</span>
+    <p>Draft the whole email: subject line, greeting, body, closing. Keep it <b>shorter</b> than Sarah's first one.</p>
+    <ul class="check">
+      <li>It names the <b>deadline</b> (3:00 print, so a cutoff for her answer).</li>
+      <li>It asks for the <b>fewest</b> things Sarah truly needs from Ms. Glenn. One is fine.</li>
+      <li>It gives a <b>default</b> for anything she can decide herself.</li>
+      <li>It keeps the <b>warmth</b>. One line is enough.</li>
+      <li>It does <b>not</b> defend Sarah, mention April, or point out that nothing was answered.</li>
+      <li>It is something Ms. Glenn can answer with <b>one word</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card blue">
+    <span class="tag ink blue">If your move is a call or a walk over (B)</span>
+    <p>Write the <b>first two sentences</b> Sarah says when Ms. Glenn looks up from her screen. Then write the <b>three line email</b> Sarah sends after the conversation so the answers exist in writing.</p>
+  </div>
+
+  <div class="card peach">
+    <span class="tag ink peach">If your move is to escalate or stay silent (E or F)</span>
+    <p>Write the <b>one paragraph</b> Sarah would say to Dr. Alvarez, or the <b>dated note</b> Sarah writes for herself at 3:00 recording what she decided and why. Then answer: what is the cost if this goes well? What is the cost if it does not?</p>
+  </div>
+
+  <div class="post">
+    <span class="tag">Post in your room chat</span>
+    <ol>
+      <li><b>One person</b> starts the draft. <b>Everyone else</b> adds, cuts, or fixes at least one thing. Say what you changed and why.</li>
+      <li><b>One person</b> posts the <b>final version</b> with the word FINAL above it.</li>
+      <li><b>Group:</b> read it as Ms. Glenn. Post one line: what does <b>she</b> hear?</li>
+    </ol>
+  </div>
+  <button class="btn ghost" data-reveal="r5key">After you post: one email that would work</button>
+  <div class="reveal" id="r5key">
+    <div class="email">
+      <div class="meta"><b>To:</b> Ms. Glenn &nbsp;·&nbsp; <b>Subject:</b> Parent Night flyer: one yes or no by 2:00</div>
+      <p>Hi Ms. Glenn,</p>
+      <p>Thanks for the quick reply. I will handle the title, the childcare hours, and the Spanish version from the contract, the website, and Kevin, so you do not need to look at those.</p>
+      <p>One thing only you can call: <b>print the RSVP link now, or print "RSVP at the Outreach Office"?</b></p>
+      <p>If I do not hear back by <b>2:00</b>, I will print "RSVP at the Outreach Office or online," which works either way, and send the proof to Campus Print at 3:00.</p>
+      <p>Thank you,<br>Sarah</p>
+    </div>
+    <div class="card lav">
+      <p><b>What it does:</b> keeps the warmth, asks for one thing, sets a default and a time, puts the decision on paper, and never mentions April. If Ms. Glenn answers "link," great. If she says nothing, the flyer still prints and the record shows Sarah asked.</p>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="4">← Round 4</button><button class="btn" data-go="6">Round 6: The long game →</button></div>
+</section>
+
+<!-- ROUND 6 -->
+<section class="round" data-r="6">
+  <span class="tag">Round 6 · The long game <span class="time">6 minutes</span></span>
+  <h1>The flyer printed. It was fine.</h1>
+  <p class="lead">Thursday, 9:05 AM. Sarah sent the proof at 2:55 the day before. Ms. Glenn never answered the 2:00 question. This arrives.</p>
+
+  <div class="email">
+    <div class="meta"><b>From:</b> Ms. Glenn &nbsp;·&nbsp; Thursday 9:05 AM</div>
+    <p>Hi Sarah,</p>
+    <p>Thanks for the proof. Looks fine.</p>
+    <p>Next time, let's not need quite so many check ins before a print run.</p>
+    <p>M. Glenn</p>
+  </div>
+
+  <div class="card butter">
+    <span class="tag ink butter">The question that is not about this flyer</span>
+    <p>This is the <b>third time</b> in eight months that Sarah asked for a decision in writing, got no decision, and then got a note about asking. The task is done. The pattern is not.</p>
+  </div>
+
+  <div class="post">
+    <span class="tag">Post in your room chat</span>
+    <ol>
+      <li><b>Group:</b> does Sarah reply to this email? If yes, post the reply (two lines maximum). If no, post why not.</li>
+      <li><b>Each person:</b> what does Sarah <b>write down</b> for herself today, and where? One line.</li>
+      <li><b>Group:</b> who, if anyone, does Sarah talk to about this, and <b>when</b>: now, after the next time, or never? Give the reason.</li>
+      <li><b>Group:</b> name <b>two things</b> that would turn this from "an annoying boss" into "a problem to escalate." Be specific.</li>
+    </ol>
+  </div>
+  <button class="btn ghost" data-reveal="r6key">After you post: what people who handle this well tend to do</button>
+  <div class="reveal" id="r6key">
+    <div class="card sky">
+      <span class="tag ink blue">What tends to work</span>
+      <p><b>Do not reply to the tone.</b> "Thanks, glad it worked. I will send decisions as a yes or no going forward so they take ten seconds." That answers the complaint by removing the thing she complained about.</p>
+      <p><b>Keep a dated note.</b> One line per time: date, what was asked, what was answered, what happened. Not to build a case. To know whether this is three times or thirteen.</p>
+      <p><b>Escalation is for a pattern with a cost,</b> not for one email. Signs it has become that: Sarah's name is attached to mistakes caused by missing decisions, the "check in" complaints show up in her review, or the pattern starts to cost the office money or parents a service.</p>
+      <p><b>The first conversation is still with Ms. Glenn,</b> face to face, about the process, not about her tone: "Before print runs, could we do a five minute call the day before? Then I will not need to email you questions."</p>
+    </div>
+  </div>
+  <div class="nav"><button class="btn ghost" data-go="5">← Round 5</button><button class="btn" data-go="0">Back to start</button></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var rounds=[].slice.call(document.querySelectorAll('.round'));
+  var btns=[].slice.call(document.querySelectorAll('#rounds button'));
+  function go(n){
+    rounds.forEach(function(r){r.classList.toggle('active',r.getAttribute('data-r')===String(n));});
+    btns.forEach(function(b){b.setAttribute('aria-current',b.getAttribute('data-r')===String(n)?'true':'false');});
+    window.scrollTo({top:0,behavior:'smooth'});
+    try{localStorage.setItem('rce_round',n);}catch(e){}
+  }
+  btns.forEach(function(b){b.onclick=function(){go(b.getAttribute('data-r'));};});
+  document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){go(b.getAttribute('data-go'));};});
+  document.querySelectorAll('[data-reveal]').forEach(function(b){b.onclick=function(){var t=document.getElementById(b.getAttribute('data-reveal')); t.classList.toggle('on'); t.scrollIntoView({behavior:'smooth',block:'start'});};});
+  document.querySelectorAll('#r2email .line').forEach(function(l){l.onclick=function(){l.classList.toggle('on');};});
+  var root=document.documentElement;
+  document.getElementById('theme').onclick=function(){var t=root.getAttribute('data-theme')==='dark'?'light':'dark'; root.setAttribute('data-theme',t); try{localStorage.setItem('rce_theme',t);}catch(e){}};
+  var size=21;
+  function setSize(){document.body.style.fontSize=size+'px'; try{localStorage.setItem('rce_size',size);}catch(e){}}
+  document.getElementById('bigger').onclick=function(){size=Math.min(30,size+1);setSize();};
+  document.getElementById('smaller').onclick=function(){size=Math.max(16,size-1);setSize();};
+  try{var t=localStorage.getItem('rce_theme'); if(t) root.setAttribute('data-theme',t); var s=parseInt(localStorage.getItem('rce_size'),10); if(s){size=s;setSize();}}catch(e){}
+  var start=0; try{var q=new URLSearchParams(location.search); if(q.get('r')!==null) start=q.get('r'); else start=localStorage.getItem('rce_round')||0;}catch(e){}
+  go(start);
+})();
+</script>
+</body>
+</html>

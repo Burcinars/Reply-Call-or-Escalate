@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What the Reader Hears · Unit 4 Writing Emails</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14161c; --fg:#f6f3ec; --muted:#a9adb8; --card:#1e2129; --line:#2c303b;
+  --blue:#9CC9F2; --lav:#C9B6F2; --butter:#F6E27A; --pink:#F7B8D0; --peach:#FFC9A3; --sky:#BFE3F5;
+  --ink:#1c1f26;
+  --ls:0.035em; --ws:0.10em; --lh:1.62;
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --fg:#1c1f26; --muted:#5b6170; --card:#f6f4ee; --line:#e2dfd6;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg); color:var(--fg);
+  font-family:'Lexend','Avenir Next','Avenir',Verdana,'Segoe UI',sans-serif;
+  letter-spacing:var(--ls); word-spacing:var(--ws); line-height:var(--lh);
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+b,strong{font-weight:700}
+.deck{position:fixed; inset:0}
+.slide{position:absolute; inset:0; display:none; padding:4.5vh 6vw 10vh; flex-direction:column; justify-content:center; gap:2.4vh}
+.slide.active{display:flex; animation:fade .35s ease}
+@keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+.act{font-size:clamp(18px,1.6vw,26px); font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:var(--muted)}
+.act .dot{display:inline-block; width:.8em; height:.8em; border-radius:50%; margin-right:.5em; vertical-align:-.05em}
+h1{font-size:clamp(40px,6.2vw,104px); line-height:1.12; margin:0; font-weight:700}
+h2{font-size:clamp(34px,4.6vw,78px); line-height:1.18; margin:0; font-weight:700}
+p,li{font-size:clamp(24px,3.1vw,52px); margin:0}
+p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
+.hl{padding:.02em .22em; border-radius:.3em; color:var(--ink); font-weight:700; box-decoration-break:clone; -webkit-box-decoration-break:clone}
+.hl.blue{background:var(--blue)} .hl.lav{background:var(--lav)} .hl.butter{background:var(--butter)} .hl.pink{background:var(--pink)} .hl.peach{background:var(--peach)} .hl.sky{background:var(--sky)}
+.ink.blue{color:var(--blue)} .ink.lav{color:var(--lav)} .ink.butter{color:var(--butter)} .ink.pink{color:var(--pink)} .ink.peach{color:var(--peach)}
+:root[data-theme="light"] .ink.blue{color:#2a6fb0} :root[data-theme="light"] .ink.lav{color:#6a4fb8} :root[data-theme="light"] .ink.butter{color:#8a6d00} :root[data-theme="light"] .ink.pink{color:#b43f72} :root[data-theme="light"] .ink.peach{color:#b55a1f}
+.step{opacity:0; transform:translateY(10px); transition:opacity .35s, transform .35s, filter .35s; pointer-events:none}
+.step.on{opacity:1; transform:none; pointer-events:auto}
+.step.dim{opacity:.38}
+.email{background:var(--card); border:2px solid var(--line); border-radius:1.2vw; padding:2.6vh 2.6vw; font-size:clamp(24px,3vw,50px); line-height:1.55}
+.email .meta{font-size:clamp(18px,1.9vw,30px); color:var(--muted); margin-bottom:1.2vh}
+.email .meta b{color:var(--fg)}
+.scene{display:grid; grid-template-columns:1fr 1fr; gap:3vw; align-items:center}
+.who{display:flex; align-items:center; gap:1.2vw; font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
+.face{width:clamp(56px,6vw,110px); height:clamp(56px,6vw,110px); flex:none}
+.bubble{position:relative; background:var(--card); border:2px solid var(--line); border-radius:1.4vw; padding:2.2vh 2vw; font-size:clamp(24px,2.9vw,48px); line-height:1.5}
+.bubble.say::after{content:""; position:absolute; left:3vw; bottom:-1.5vw; width:0; height:0; border:1.5vw solid transparent; border-top-color:var(--line); border-bottom:0}
+.bubble.think{border-style:dashed; border-radius:2.4vw}
+.bubble.think::after{content:"\25CF \25CF"; position:absolute; left:2.4vw; bottom:-2.4vw; color:var(--muted); font-size:1.4vw; letter-spacing:.3em}
+.opts{display:flex; flex-direction:column; gap:1.8vh}
+.opt{display:flex; gap:1.4vw; align-items:flex-start; background:var(--card); border:2px solid var(--line); border-radius:1vw; padding:1.8vh 2vw; font-size:clamp(22px,2.8vw,46px); line-height:1.5}
+.opt .k{flex:none; width:2.2em; height:2.2em; border-radius:50%; display:grid; place-items:center; font-weight:700; color:var(--ink); font-size:.8em}
+.menu{display:grid; grid-template-columns:1fr 1fr; gap:1.6vh 2vw}
+.menu .opt{flex-direction:column; gap:.4vh}
+.menu .opt .t{font-weight:700}
+.menu .opt .c{font-size:.78em; color:var(--muted)}
+.big{font-size:clamp(38px,5.4vw,92px); line-height:1.2; font-weight:700}
+.center{text-align:center; align-items:center}
+.src{font-size:clamp(20px,2.1vw,34px); color:var(--muted); line-height:1.5}
+.pill{display:inline-block; padding:.1em .6em; border-radius:2em; font-weight:700; font-size:clamp(18px,1.8vw,28px); color:var(--ink)}
+.game{display:flex; align-items:center; gap:1vw}
+/* chrome */
+.bar{position:fixed; left:0; right:0; bottom:0; height:7.5vh; display:flex; align-items:center; justify-content:space-between; padding:0 2vw; background:linear-gradient(to top, var(--bg) 60%, transparent); font-size:clamp(14px,1.4vw,22px); color:var(--muted); z-index:5}
+.bar .btns{display:flex; gap:.6vw}
+.bar button{font:inherit; letter-spacing:.02em; background:var(--card); color:var(--fg); border:2px solid var(--line); border-radius:.6em; padding:.35em .9em; cursor:pointer; font-size:clamp(14px,1.4vw,22px)}
+.bar button:hover{border-color:var(--muted)}
+.prog{position:fixed; left:0; top:0; height:.6vh; background:var(--lav); width:0; transition:width .3s; z-index:6}
+.score{display:flex; align-items:center; gap:.6vw}
+.score .n{min-width:2.2em; text-align:center; font-weight:700; color:var(--fg); background:var(--card); border:2px solid var(--line); border-radius:.6em; padding:.2em .5em}
+.hint{position:fixed; right:2vw; top:2vh; font-size:clamp(12px,1.2vw,18px); color:var(--muted); opacity:.8; z-index:5}
+.kbd{border:1px solid var(--line); border-radius:.4em; padding:0 .4em; font-family:inherit}
+.link{display:inline-block; margin-top:1vh; background:var(--lav); color:var(--ink); font-weight:700; text-decoration:none; padding:.4em 1em; border-radius:.6em; font-size:clamp(24px,2.8vw,46px)}
+@media (max-width:820px){ .scene{grid-template-columns:1fr} .menu{grid-template-columns:1fr} .slide{padding:3vh 5vw 11vh} }
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="hint">Click or <span class="kbd">→</span> next · <span class="kbd">←</span> back · <span class="kbd">F</span> full screen</div>
+<div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide center">
+  <p class="act">BUSN 2100 · Unit 4 · Writing Emails</p>
+  <h1>What the <span class="hl lav">reader</span> hears</h1>
+  <p>Email carries your words. <b>It does not carry your voice.</b></p>
+  <p class="small">Part 1: the reader fills in the blanks. &nbsp; Part 2: sometimes it is on purpose.</p>
+</section>
+
+<!-- 2 SAM TYPES -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
+  <div class="scene">
+    <div>
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#9CC9F2"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 46q10 10 20 0" stroke="#9CC9F2" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Sam</b>, the manager. 9:10 AM. Relaxed.</span></div>
+      <div class="bubble say" style="margin-top:2vh">Hey, can you send me the Q2 numbers <span class="ink blue"><b>when you get a chance</b></span>?</div>
+    </div>
+    <div class="step">
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F7B8D0"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 50q10 -8 20 0" stroke="#F7B8D0" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Daniel</b>, the employee. 9:11 AM.</span></div>
+      <div class="bubble think" style="margin-top:2vh">Oh no. This must be due <b>today</b>. I need to hurry.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 POINT -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
+  <h2>"When you get a chance" has <span class="hl blue">no clock</span> in it.</h2>
+  <p class="step">Email hides how urgent something is. So the reader <b>guesses</b>.</p>
+  <p class="step">And people usually guess the <b class="ink blue">stressful</b> version.</p>
+</section>
+
+<!-- 4 NAME IT -->
+<section class="slide center">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1</p>
+  <p>This is called</p>
+  <h1><span class="hl blue">email urgency bias</span></h1>
+  <p class="small step">Plain words: email leaves out the clock, so the reader invents one. Usually a fast one.</p>
+</section>
+
+<!-- 5 RUDE? -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · Try it</p>
+  <div class="scene">
+    <div>
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#9CC9F2"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 46q10 10 20 0" stroke="#9CC9F2" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Sam</b> types, still smiling.</span></div>
+      <div class="bubble say" style="margin-top:2vh">Please correct this mistake.</div>
+    </div>
+    <div class="step">
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F7B8D0"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 50q10 -8 20 0" stroke="#F7B8D0" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Daniel</b> reads it.</span></div>
+      <div class="bubble think" style="margin-top:2vh">Why are they being so <b>rude</b>?</div>
+    </div>
+  </div>
+  <p class="step small">Same five words. Two different emails.</p>
+</section>
+
+<!-- 6 POINT -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
+  <h2>Email has <span class="hl blue">no voice</span> and <span class="hl blue">no face</span>.</h2>
+  <p class="step">So the reader adds the emotion themselves.</p>
+  <p class="step">A <b>neutral</b> email often lands as a <b class="ink blue">rude</b> one.</p>
+</section>
+
+<!-- 7 NAME IT -->
+<section class="slide center">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1</p>
+  <p>This is called</p>
+  <h1><span class="hl blue">negative tone bias</span></h1>
+  <p class="small step">Plain words: when the tone is missing, the reader fills the gap. And the gap usually gets filled with something negative.</p>
+</section>
+
+<!-- 8 RESEARCH 1 -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
+  <h2>Writers thought about <span class="hl butter">78 out of 100</span> readers would catch their tone.</h2>
+  <p class="step">Readers actually caught it in about <span class="hl butter">56 out of 100</span> messages.</p>
+  <p class="step">56 out of 100 is close to a <b>coin flip</b>.</p>
+  <p class="src step">Kruger, Epley, Parker and Ng (2005), <i>Journal of Personality and Social Psychology</i>. Six studies on email and tone.</p>
+</section>
+
+<!-- 9 RESEARCH 2 -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
+  <h2>Readers read email as <span class="hl butter">more negative</span> than the writer meant.</h2>
+  <p class="step">The gap grows when the reader is <b>lower in rank</b> than the writer.</p>
+  <p class="step">And it grows when the workplace is already <b>tense</b>.</p>
+  <p class="src step">Byron (2008), <i>Academy of Management Review</i>. "Carrying too heavy a load? The communication and miscommunication of emotion by email."</p>
+</section>
+
+<!-- 10 DECODE: same request, three ways -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--pink)"></span>Decode it · Which one would you rather receive?</p>
+  <div class="opts">
+    <div class="opt step"><span class="k" style="background:var(--pink)">A</span><span>Let's tighten this section a bit to make the message sharper.</span></div>
+    <div class="opt step"><span class="k" style="background:var(--peach)">B</span><span>Good draft. Could you shorten this paragraph so the main point stands out more?</span></div>
+    <div class="opt step"><span class="k" style="background:var(--sky)">C</span><span>Nice work. A tighter version of this section would make the argument stronger.</span></div>
+  </div>
+  <p class="step"><b>Same request, three times.</b> One warm sentence changes what the reader hears.</p>
+</section>
+
+<!-- 11 POINT -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
+  <h2>One warm sentence costs <span class="hl blue">five seconds</span>.</h2>
+  <p class="step">An email that is <b>only</b> correction gets read as cold. Add one line of context or thanks and the correction lands as help.</p>
+  <p class="step small">Good managers do this on purpose. Small affirmations, written down.</p>
+</section>
+
+<!-- 12 EMOJI -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
+  <h2>So, just add a 🙂 ?</h2>
+  <p class="step">In work emails to someone new, a smiley did <b>not</b> make the writer seem warmer.</p>
+  <p class="step">It made the writer seem <span class="hl butter">less competent</span> on first contact.</p>
+  <p class="src step">Glikson, Cheshin and van Kleef (2018), <i>Social Psychological and Personality Science</i>. "The Dark Side of a Smiley."</p>
+</section>
+
+<!-- 13 FAST REPLIES -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
+  <div class="scene">
+    <div>
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#9CC9F2"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 46q10 10 20 0" stroke="#9CC9F2" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Sam</b>, 4:50 PM Friday.</span></div>
+      <div class="bubble say" style="margin-top:2vh">Can you look at this when you get a chance?</div>
+    </div>
+    <div class="step">
+      <div class="who"><svg class="face" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F7B8D0"/><circle cx="50" cy="42" r="18" fill="#1c1f26"/><path d="M20 92c4-20 18-30 30-30s26 10 30 30z" fill="#1c1f26"/><path d="M40 50q10 -8 20 0" stroke="#F7B8D0" stroke-width="4" fill="none" stroke-linecap="round"/></svg><span><b>Daniel</b>, phone in hand.</span></div>
+      <div class="bubble think" style="margin-top:2vh">If I don't reply quickly, I will look <b>lazy</b>.</div>
+    </div>
+  </div>
+  <p class="step">In many workplaces a <b class="ink blue">fast reply</b> is read as competence. Your <b>silence</b> is read as a message too.</p>
+</section>
+
+<!-- 14 TURN -->
+<section class="slide center">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2 · Sometimes it is on purpose</p>
+  <h2>So far the reader was <span class="hl blue">adding</span> tone that was not there.</h2>
+  <p class="step">Now the other case. The tone <b>is</b> there. <b class="ink lav">On purpose.</b> Hidden inside polite words.</p>
+</section>
+
+<!-- 15 to 19 DECODE LINES -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
+  <div class="email">Per my last email, the file is attached.</div>
+  <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You did not read my email."</p>
+  <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It makes you feel careless. Nobody said the word careless.</p>
+</section>
+
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
+  <div class="email">Not sure if you saw my message from Monday.</div>
+  <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You ignored me."</p>
+  <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It puts you on the defensive before you have typed a word.</p>
+</section>
+
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
+  <div class="email">Going forward, let's make sure the numbers are checked.</div>
+  <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You made a mistake, and I want it on the record."</p>
+  <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; "Let's" sounds shared. The blame is not shared.</p>
+</section>
+
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
+  <div class="email">I trust you'll use your best judgment.</div>
+  <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "Do not ask me again."</p>
+  <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It sounds like a compliment. If it goes wrong, it was <b>your</b> judgment.</p>
+</section>
+
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
+  <div class="email">Let's aim to make this round smoother than last time.</div>
+  <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "I remember last time. I want you to know I remember."</p>
+  <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It brings up an old mistake without naming it. You cannot defend yourself against a thing nobody said.</p>
+</section>
+
+<!-- 20 NAME IT -->
+<section class="slide center">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2</p>
+  <p>Polite words <b>+</b> a hidden complaint</p>
+  <h1>= <span class="hl lav">passive aggressive</span></h1>
+  <p class="small step">Plain words: <b>aggressive</b> means it attacks. <b>Passive</b> means the attack hides inside politeness.</p>
+</section>
+
+<!-- 21 WHY -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2 · Why people write this way</p>
+  <h2>Because it is <span class="hl lav">deniable</span>.</h2>
+  <p class="step">If you push back, they can say: <b>"I only said thanks."</b></p>
+  <p class="step">So the person who answers the hidden message out loud usually ends up looking like <b class="ink lav">the problem</b>.</p>
+</section>
+
+<!-- 22 THE TRAP -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--pink)"></span>The trap · answering tone with tone</p>
+  <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>I appreciate your trust. However, your message <b>did not answer</b> the specific questions I asked.</div>
+  <p class="step"><b>True.</b> Every word of it.</p>
+  <p class="step">And now the thread is about Sarah's <b class="ink pink">tone</b>, not about the flyer.</p>
+</section>
+
+<!-- 23 THE MOVE -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>The move · answer the task, not the tone</p>
+  <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>Thanks for the quick note. To avoid a reprint, could you confirm <b>two items</b> by <b>2:00</b>? If I do not hear back, I will keep the RSVP link and send the proof to print.</div>
+  <div class="step"><p><span class="pill" style="background:var(--lav)">keeps the warmth</span> &nbsp; <span class="pill" style="background:var(--peach)">keeps the ask</span> &nbsp; <span class="pill" style="background:var(--butter)">adds a deadline</span> &nbsp; <span class="pill" style="background:var(--pink)">adds a default</span></p></div>
+  <p class="step">Ms. Glenn can be as vague as she likes. The flyer still prints.</p>
+</section>
+
+<!-- 24 FOUR QUESTIONS -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Before you type · four questions</p>
+  <div class="opts">
+    <div class="opt step"><span class="k" style="background:var(--lav)">1</span><span>What do I <b>still need</b> from this person?</span></div>
+    <div class="opt step"><span class="k" style="background:var(--blue)">2</span><span>What is the <b>relationship</b>, and what is the <b>history</b>?</span></div>
+    <div class="opt step"><span class="k" style="background:var(--peach)">3</span><span>What happens if I <b>say nothing</b>?</span></div>
+    <div class="opt step"><span class="k" style="background:var(--pink)">4</span><span>Is this the <b>first time</b>, or a <b>pattern</b>?</span></div>
+  </div>
+</section>
+
+<!-- 25 THE MENU -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--lav)"></span>Your options · each one has a cost</p>
+  <div class="menu">
+    <div class="opt step"><span class="t"><span class="ink lav">Reply by email.</span></span><span class="c">Keeps a record. Slow. Can be ignored again.</span></div>
+    <div class="opt step"><span class="t"><span class="ink lav">Call, or walk over.</span></span><span class="c">Gets answers in minutes. Leaves no record.</span></div>
+    <div class="opt step"><span class="t"><span class="ink lav">"Proceeding unless" email.</span></span><span class="c">Sets a default and a deadline. Puts the risk on paper.</span></div>
+    <div class="opt step"><span class="t"><span class="ink lav">Loop someone in.</span></span><span class="c">Adds a witness. Can read as going around your boss.</span></div>
+    <div class="opt step"><span class="t"><span class="ink lav">Escalate.</span></span><span class="c">Go above. Use for a pattern, not for one email.</span></div>
+    <div class="opt step"><span class="t"><span class="ink lav">Say nothing and guess.</span></span><span class="c">Fast. If it goes wrong, it was your judgment.</span></div>
+  </div>
+</section>
+
+<!-- 26 NOW YOU -->
+<section class="slide center">
+  <p class="act"><span class="dot" style="background:var(--pink)"></span>Now you try</p>
+  <h2>Sarah has <span class="hl pink">four</span> open questions and a <span class="hl pink">3:00 PM</span> print deadline.</h2>
+  <p class="step">Ms. Glenn's reply just landed. Open the activity in your group.</p>
+  <a class="link step" id="activityLink" href="activity.html" target="_blank">Open: Reply, Call, or Escalate?</a>
+</section>
+
+<!-- 27 SOURCES -->
+<section class="slide">
+  <p class="act"><span class="dot" style="background:var(--butter)"></span>Sources</p>
+  <p class="src">Kruger, J., Epley, N., Parker, J., and Ng, Z. (2005). Egocentrism over e-mail: Can we communicate as well as we think? <i>Journal of Personality and Social Psychology</i>, 89(6), 925–936.</p>
+  <p class="src">Byron, K. (2008). Carrying too heavy a load? The communication and miscommunication of emotion by email. <i>Academy of Management Review</i>, 33(2), 309–327.</p>
+  <p class="src">Glikson, E., Cheshin, A., and van Kleef, G. A. (2018). The dark side of a smiley: Effects of smiling emoticons on virtual first impressions. <i>Social Psychological and Personality Science</i>, 9(5), 614–625.</p>
+  <p class="src">Scenarios adapted from Professor Calafiore's Email Biases and Real-World Email Scenarios teaching materials.</p>
+</section>
+
+</div>
+
+<div class="bar">
+  <div class="score"><span>Decoded by the class</span><span class="n" id="score">0</span><button id="plus" title="Class got it">+1</button><button id="minus" title="Undo">−1</button></div>
+  <div id="counter">1 / 27</div>
+  <div class="btns">
+    <button id="prev">← Back</button>
+    <button id="next">Next →</button>
+    <button id="theme">Light / Dark</button>
+    <button id="full">Full screen</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var i=0;
+  var prog=document.getElementById('prog'), counter=document.getElementById('counter');
+  function steps(s){return [].slice.call(s.querySelectorAll('.step'));}
+  function show(n, allSteps){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){s.classList.toggle('active',k===i);});
+    var st=steps(slides[i]);
+    st.forEach(function(e){e.classList.remove('on','dim');});
+    if(allSteps){ st.forEach(function(e){e.classList.add('on');}); }
+    counter.textContent=(i+1)+' / '+slides.length;
+    prog.style.width=((i+1)/slides.length*100)+'%';
+    try{localStorage.setItem('wtrh_slide',i);}catch(e){}
+  }
+  function next(){
+    var st=steps(slides[i]);
+    var pending=st.filter(function(e){return !e.classList.contains('on');});
+    if(pending.length){
+      st.forEach(function(e){ if(e.classList.contains('on')) e.classList.add('dim'); });
+      pending[0].classList.add('on');
+      return;
+    }
+    if(i<slides.length-1) show(i+1,false);
+  }
+  function back(){
+    var st=steps(slides[i]);
+    var on=st.filter(function(e){return e.classList.contains('on');});
+    if(on.length){
+      on[on.length-1].classList.remove('on','dim');
+      if(on.length>1){ on[on.length-2].classList.remove('dim'); }
+      return;
+    }
+    if(i>0) show(i-1,true);
+  }
+  document.getElementById('next').onclick=function(e){e.stopPropagation();next();};
+  document.getElementById('prev').onclick=function(e){e.stopPropagation();back();};
+  document.getElementById('theme').onclick=function(e){
+    e.stopPropagation();
+    var r=document.documentElement; var t=r.getAttribute('data-theme')==='light'?'dark':'light';
+    r.setAttribute('data-theme',t); try{localStorage.setItem('wtrh_theme',t);}catch(x){}
+  };
+  document.getElementById('full').onclick=function(e){e.stopPropagation(); var d=document.documentElement; if(!document.fullscreenElement){ (d.requestFullscreen||d.webkitRequestFullscreen).call(d);} else {document.exitFullscreen();}};
+  var score=0, sc=document.getElementById('score');
+  document.getElementById('plus').onclick=function(e){e.stopPropagation();score++;sc.textContent=score;};
+  document.getElementById('minus').onclick=function(e){e.stopPropagation();if(score>0)score--;sc.textContent=score;};
+  document.getElementById('deck').addEventListener('click',function(e){ if(e.target.closest('a,button')) return; next(); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'||e.key==='Enter'){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='Backspace'){e.preventDefault();back();}
+    else if(e.key==='f'||e.key==='F'){document.getElementById('full').click();}
+    else if(e.key==='Home'){show(0,false);} else if(e.key==='End'){show(slides.length-1,true);}
+  });
+  var t='dark'; try{t=localStorage.getItem('wtrh_theme')||'dark';}catch(e){}
+  document.documentElement.setAttribute('data-theme',t);
+  var start=0; try{ var q=new URLSearchParams(location.search); if(q.get('s')) start=parseInt(q.get('s'),10)-1; else if(localStorage.getItem('wtrh_slide')) start=parseInt(localStorage.getItem('wtrh_slide'),10);}catch(e){}
+  show(isNaN(start)?0:start,false);
+})();
+</script>
+</body>
+</html>
