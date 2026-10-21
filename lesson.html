@@ -64,6 +64,15 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 .src{font-size:clamp(20px,2.1vw,34px); color:var(--muted); line-height:1.5}
 .pill{display:inline-block; padding:.1em .6em; border-radius:2em; font-weight:700; font-size:clamp(18px,1.8vw,28px); color:var(--ink)}
 .game{display:flex; align-items:center; gap:1vw}
+
+/* image slots: img/slide-NN.png, shown big first, then docked beside the words */
+.art{position:absolute; right:4vw; top:50%; transform:translateY(-50%); width:31vw; max-height:72vh; object-fit:contain; border-radius:1.4vw; box-shadow:0 12px 44px rgba(0,0,0,.28); transition:all .45s ease; z-index:2}
+.slide.has-art:not(.dense){padding-right:39vw}
+.slide.dense.has-art{padding-right:19vw}
+.slide.dense .art{width:15vw; max-height:46vh; right:2.5vw}
+.slide.art-full .art{left:50%; right:auto; top:50%; transform:translate(-50%,-50%); width:auto; max-width:78vw; max-height:78vh}
+.slide.art-full > :not(.art){visibility:hidden}
+.slide[data-img="25"] .menu .opt{font-size:clamp(20px,2.45vw,40px)}
 /* chrome */
 .bar{position:fixed; left:0; right:0; bottom:0; height:7.5vh; display:flex; align-items:center; justify-content:space-between; padding:0 2vw; background:linear-gradient(to top, var(--bg) 60%, transparent); font-size:clamp(14px,1.4vw,22px); color:var(--muted); z-index:5}
 .bar .btns{display:flex; gap:.6vw}
@@ -84,7 +93,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 <div class="deck" id="deck">
 
 <!-- 1 TITLE -->
-<section class="slide center">
+<section class="slide center" data-img="01">
   <p class="act">BUSN 2100 · Unit 4 · Writing Emails</p>
   <h1>What the <span class="hl lav">reader</span> hears</h1>
   <p>Email carries your words. <b>It does not carry your voice.</b></p>
@@ -92,7 +101,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 2 SAM TYPES -->
-<section class="slide">
+<section class="slide dense" data-img="02">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <div class="scene">
     <div>
@@ -107,7 +116,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 3 POINT -->
-<section class="slide">
+<section class="slide" data-img="03">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <h2>"When you get a chance" has <span class="hl blue">no clock</span> in it.</h2>
   <p class="step">Email hides how urgent something is. So the reader <b>guesses</b>.</p>
@@ -115,7 +124,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 4 NAME IT -->
-<section class="slide center">
+<section class="slide center" data-img="04">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1</p>
   <p>This is called</p>
   <h1><span class="hl blue">email urgency bias</span></h1>
@@ -123,7 +132,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 5 RUDE? -->
-<section class="slide">
+<section class="slide dense" data-img="05">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · Try it</p>
   <div class="scene">
     <div>
@@ -139,7 +148,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 6 POINT -->
-<section class="slide">
+<section class="slide" data-img="06">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <h2>Email has <span class="hl blue">no voice</span> and <span class="hl blue">no face</span>.</h2>
   <p class="step">So the reader adds the emotion themselves.</p>
@@ -147,7 +156,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 7 NAME IT -->
-<section class="slide center">
+<section class="slide center" data-img="07">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1</p>
   <p>This is called</p>
   <h1><span class="hl blue">negative tone bias</span></h1>
@@ -155,7 +164,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 8 RESEARCH 1 -->
-<section class="slide">
+<section class="slide" data-img="08">
   <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
   <h2>Writers thought about <span class="hl butter">78 out of 100</span> readers would catch their tone.</h2>
   <p class="step">Readers actually caught it in about <span class="hl butter">56 out of 100</span> messages.</p>
@@ -164,7 +173,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 9 RESEARCH 2 -->
-<section class="slide">
+<section class="slide" data-img="09">
   <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
   <h2>Readers read email as <span class="hl butter">more negative</span> than the writer meant.</h2>
   <p class="step">The gap grows when the reader is <b>lower in rank</b> than the writer.</p>
@@ -172,19 +181,18 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
   <p class="src step">Byron (2008), <i>Academy of Management Review</i>. "Carrying too heavy a load? The communication and miscommunication of emotion by email."</p>
 </section>
 
-<!-- 10 DECODE: same request, three ways -->
-<section class="slide">
-  <p class="act"><span class="dot" style="background:var(--pink)"></span>Decode it · Which one would you rather receive?</p>
+<!-- 10 DECODE: same request, two ways -->
+<section class="slide dense" data-img="10">
+  <p class="act"><span class="dot" style="background:var(--pink)"></span>Decode it · Same request, two ways. Which one would you rather receive?</p>
   <div class="opts">
-    <div class="opt step"><span class="k" style="background:var(--pink)">A</span><span>Let's tighten this section a bit to make the message sharper.</span></div>
-    <div class="opt step"><span class="k" style="background:var(--peach)">B</span><span>Good draft. Could you shorten this paragraph so the main point stands out more?</span></div>
-    <div class="opt step"><span class="k" style="background:var(--sky)">C</span><span>Nice work. A tighter version of this section would make the argument stronger.</span></div>
+    <div class="opt step"><span class="k" style="background:var(--pink)">A</span><span>Fix this paragraph. The main point is buried.</span></div>
+    <div class="opt step"><span class="k" style="background:var(--sky)">B</span><span>Good draft. One ask: could you shorten this paragraph so the main point stands out?</span></div>
   </div>
-  <p class="step"><b>Same request, three times.</b> One warm sentence changes what the reader hears.</p>
+  <p class="step"><b>Same request.</b> A sounds like a complaint. B sounds like help. The difference is <span class="hl pink">one warm sentence</span> in front.</p>
 </section>
 
 <!-- 11 POINT -->
-<section class="slide">
+<section class="slide" data-img="11">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <h2>One warm sentence costs <span class="hl blue">five seconds</span>.</h2>
   <p class="step">An email that is <b>only</b> correction gets read as cold. Add one line of context or thanks and the correction lands as help.</p>
@@ -192,7 +200,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 12 EMOJI -->
-<section class="slide">
+<section class="slide" data-img="12">
   <p class="act"><span class="dot" style="background:var(--butter)"></span>What the research found</p>
   <h2>So, just add a 🙂 ?</h2>
   <p class="step">In work emails to someone new, a smiley did <b>not</b> make the writer seem warmer.</p>
@@ -201,7 +209,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 13 FAST REPLIES -->
-<section class="slide">
+<section class="slide dense" data-img="13">
   <p class="act"><span class="dot" style="background:var(--blue)"></span>Part 1 · The reader fills in the blanks</p>
   <div class="scene">
     <div>
@@ -217,42 +225,42 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 14 TURN -->
-<section class="slide center">
+<section class="slide center" data-img="14">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2 · Sometimes it is on purpose</p>
   <h2>So far the reader was <span class="hl blue">adding</span> tone that was not there.</h2>
   <p class="step">Now the other case. The tone <b>is</b> there. <b class="ink lav">On purpose.</b> Hidden inside polite words.</p>
 </section>
 
 <!-- 15 to 19 DECODE LINES -->
-<section class="slide">
+<section class="slide" data-img="15">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
   <div class="email">Per my last email, the file is attached.</div>
   <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You did not read my email."</p>
   <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It makes you feel careless. Nobody said the word careless.</p>
 </section>
 
-<section class="slide">
+<section class="slide" data-img="16">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
   <div class="email">Not sure if you saw my message from Monday.</div>
   <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You ignored me."</p>
   <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It puts you on the defensive before you have typed a word.</p>
 </section>
 
-<section class="slide">
+<section class="slide" data-img="17">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
   <div class="email">Going forward, let's make sure the numbers are checked.</div>
   <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "You made a mistake, and I want it on the record."</p>
   <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; "Let's" sounds shared. The blame is not shared.</p>
 </section>
 
-<section class="slide">
+<section class="slide" data-img="18">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
   <div class="email">I trust you'll use your best judgment.</div>
   <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "Do not ask me again."</p>
   <p class="step"><span class="pill" style="background:var(--peach)">what it does</span> &nbsp; It sounds like a compliment. If it goes wrong, it was <b>your</b> judgment.</p>
 </section>
 
-<section class="slide">
+<section class="slide" data-img="19">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Decode it · What does this line really say?</p>
   <div class="email">Let's aim to make this round smoother than last time.</div>
   <p class="step"><span class="pill" style="background:var(--lav)">plain words</span> &nbsp; "I remember last time. I want you to know I remember."</p>
@@ -260,7 +268,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 20 NAME IT -->
-<section class="slide center">
+<section class="slide center" data-img="20">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2</p>
   <p>Polite words <b>+</b> a hidden complaint</p>
   <h1>= <span class="hl lav">passive aggressive</span></h1>
@@ -268,7 +276,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 21 WHY -->
-<section class="slide">
+<section class="slide" data-img="21">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Part 2 · Why people write this way</p>
   <h2>Because it is <span class="hl lav">deniable</span>.</h2>
   <p class="step">If you push back, they can say: <b>"I only said thanks."</b></p>
@@ -276,7 +284,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 22 THE TRAP -->
-<section class="slide">
+<section class="slide" data-img="22">
   <p class="act"><span class="dot" style="background:var(--pink)"></span>The trap · answering tone with tone</p>
   <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>I appreciate your trust. However, your message <b>did not answer</b> the specific questions I asked.</div>
   <p class="step"><b>True.</b> Every word of it.</p>
@@ -284,7 +292,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 23 THE MOVE -->
-<section class="slide">
+<section class="slide" data-img="23">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>The move · answer the task, not the tone</p>
   <div class="email"><div class="meta"><b>Sarah</b> to her boss, Ms. Glenn</div>Thanks for the quick note. To avoid a reprint, could you confirm <b>two items</b> by <b>2:00</b>? If I do not hear back, I will keep the RSVP link and send the proof to print.</div>
   <div class="step"><p><span class="pill" style="background:var(--lav)">keeps the warmth</span> &nbsp; <span class="pill" style="background:var(--peach)">keeps the ask</span> &nbsp; <span class="pill" style="background:var(--butter)">adds a deadline</span> &nbsp; <span class="pill" style="background:var(--pink)">adds a default</span></p></div>
@@ -292,7 +300,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 24 FOUR QUESTIONS -->
-<section class="slide">
+<section class="slide dense" data-img="24">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Before you type · four questions</p>
   <div class="opts">
     <div class="opt step"><span class="k" style="background:var(--lav)">1</span><span>What do I <b>still need</b> from this person?</span></div>
@@ -303,7 +311,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 25 THE MENU -->
-<section class="slide">
+<section class="slide dense" data-img="25">
   <p class="act"><span class="dot" style="background:var(--lav)"></span>Your options · each one has a cost</p>
   <div class="menu">
     <div class="opt step"><span class="t"><span class="ink lav">Reply by email.</span></span><span class="c">Keeps a record. Slow. Can be ignored again.</span></div>
@@ -316,7 +324,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 26 NOW YOU -->
-<section class="slide center">
+<section class="slide center" data-img="26">
   <p class="act"><span class="dot" style="background:var(--pink)"></span>Now you try</p>
   <h2>Sarah has <span class="hl pink">four</span> open questions and a <span class="hl pink">3:00 PM</span> print deadline.</h2>
   <p class="step">Ms. Glenn's reply just landed. Open the activity in your group.</p>
@@ -324,7 +332,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 </section>
 
 <!-- 27 SOURCES -->
-<section class="slide">
+<section class="slide" data-img="27">
   <p class="act"><span class="dot" style="background:var(--butter)"></span>Sources</p>
   <p class="src">Kruger, J., Epley, N., Parker, J., and Ng, Z. (2005). Egocentrism over e-mail: Can we communicate as well as we think? <i>Journal of Personality and Social Psychology</i>, 89(6), 925–936.</p>
   <p class="src">Byron, K. (2008). Carrying too heavy a load? The communication and miscommunication of emotion by email. <i>Academy of Management Review</i>, 33(2), 309–327.</p>
@@ -349,11 +357,23 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
 (function(){
   var slides=[].slice.call(document.querySelectorAll('.slide'));
   var i=0;
+
+  // image slots
+  slides.forEach(function(sl){
+    var n=sl.getAttribute('data-img'); if(!n) return;
+    var im=new Image(); im.className='art'; im.alt='';
+    im.onload=function(){ sl.classList.add('has-art'); if(!sl.querySelector('.step.on')) sl.classList.add('art-full'); };
+    im.onerror=function(){ im.remove(); };
+    im.src='img/slide-'+n+'.png';
+    sl.appendChild(im);
+  });
   var prog=document.getElementById('prog'), counter=document.getElementById('counter');
   function steps(s){return [].slice.call(s.querySelectorAll('.step'));}
   function show(n, allSteps){
     i=Math.max(0,Math.min(slides.length-1,n));
     slides.forEach(function(s,k){s.classList.toggle('active',k===i);});
+    slides.forEach(function(s){ if(s.classList.contains('has-art')) s.classList.add('art-full'); });
+    if(allSteps) slides[i].classList.remove('art-full');
     var st=steps(slides[i]);
     st.forEach(function(e){e.classList.remove('on','dim');});
     if(allSteps){ st.forEach(function(e){e.classList.add('on');}); }
@@ -362,6 +382,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
     try{localStorage.setItem('wtrh_slide',i);}catch(e){}
   }
   function next(){
+    if(slides[i].classList.contains('art-full')){ slides[i].classList.remove('art-full'); return; }
     var st=steps(slides[i]);
     var pending=st.filter(function(e){return !e.classList.contains('on');});
     if(pending.length){
@@ -379,6 +400,7 @@ p.small{font-size:clamp(20px,2.2vw,36px); color:var(--muted)}
       if(on.length>1){ on[on.length-2].classList.remove('dim'); }
       return;
     }
+    if(slides[i].classList.contains('has-art') && !slides[i].classList.contains('art-full')){ slides[i].classList.add('art-full'); return; }
     if(i>0) show(i-1,true);
   }
   document.getElementById('next').onclick=function(e){e.stopPropagation();next();};
