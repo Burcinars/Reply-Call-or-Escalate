@@ -106,7 +106,9 @@ var CONFIG = {
   ENDPOINT: '__ENDPOINT__',
   SALT1: 'northline-ctstate-2026',
   ACTIVITY: 'RCE1',
-  VERSION: 'rce1-2026-10-21a',
+  VERSION: 'rce1-2026-10-21b',
+  DEADLINE: '2026-10-26T17:00:00-04:00',
+  DEADLINE_TEXT: 'Monday, October 26, 5:00 PM',
   SECTIONS: {'13046': {label:'CRN 13046', sub:'In person · Mon/Wed 12:30'}, '13901': {label:'CRN 13901', sub:'Live online · Mon/Wed 5:30'}}
 };
 var QS = (function(){ try { return new URLSearchParams(location.search); } catch(e){ return {get:function(){return null;}}; } })();
@@ -160,6 +162,7 @@ async function postOnce(payload, timeoutMs){
 async function post(payload, timeoutMs){ var r = null; for (var a = 0; a < 3; a++){ r = await postOnce(payload, timeoutMs || 60000); if (r && (r.ok || (r.error !== 'timeout' && r.error !== 'network' && r.error !== 'bad_response'))) return r; await new Promise(function(res){ setTimeout(res, 1200 + a * 800); }); } return r; }
 function normalizeId(raw){ return String(raw || '').replace(/\D/g, ''); }
 function secLabel(s){ return CONFIG.SECTIONS[s] ? CONFIG.SECTIONS[s].label : String(s || ''); }
+function closed(){ return Date.now() > new Date(CONFIG.DEADLINE).getTime(); }
 function shortId(h){ return h ? String(h).slice(0, 6).toUpperCase() : ''; }
 function keyColor(i){ return ['#E6DEF8','#DCEBF8','#FBF1B8','#FFE3CF','#FADAE5','#D9EEF8'][i % 6]; }
 
@@ -221,7 +224,10 @@ function storyHead(i){ var s = SCENARIOS[i]; return '<span class="tag ink ' + s.
 
 function startHTML(){
   var c = st.cls;
-  var mode = c.mode === 'class'
+  var due = '<div class="card pink"><span class="tag ink pink">Due</span><p><b>' + esc(CONFIG.DEADLINE_TEXT) + '</b>, before class. After that the page closes and nothing is accepted. Finish in one sitting if you can; it saves only when you press <b>Save my work</b> at the end.</p></div>';
+  var mode = closed() && c.mode !== 'class'
+    ? '<div class="fb miss"><b>Closed.</b> The deadline was ' + esc(CONFIG.DEADLINE_TEXT) + '. <button class="btn soft" type="button" id="goLookup">Already finished? See your result</button></div>'
+    : c.mode === 'class'
     ? '<div class="fb good"><b>✅ You are signed in.</b> ' + esc(secLabel(c.section)) + ' · ID ending in <b>' + esc(c.tail) + '</b>. Press <b>Next ›</b>.</div>'
     : '<div class="card lav"><span class="tag ink lav">Before you start</span>' +
       '<button class="btn wide" type="button" id="goClass">🎓 Sign in and start ›</button>' +
@@ -238,7 +244,7 @@ function startHTML(){
     '<p><b>Time:</b> about 35 to 45 minutes. You can close the tab and come back on the same device; your progress stays until you finish.</p></div>' +
     '<div class="card butter"><span class="tag ink butter">How it is graded · 10 points</span>' +
     '<p><b>3</b> for the three surprises, one per story, each specific to the path you took.<br><b>2</b> for the final reflection.<br><b>5</b> for your rewrite of Sarah\'s email: deadline, one ask, what you will do if no answer, one warm line, no defending.</p>' +
-    '<p class="small">Your professor reads your writing and gives individual feedback. Your score appears in Blackboard.</p></div>' + mode;
+    '<p class="small">Your professor reads your writing and gives individual feedback. Your score appears in Blackboard.</p></div>' + due + mode;
 }
 function caseHTML(i){
   var s = SCENARIOS[i];
@@ -341,6 +347,7 @@ function finishHTML(){
   if (!ok) h += '<div class="fb note"><b>Something is still empty.</b> Use Back to find the unchecked line.</div>';
   else if (!isClass()) h += '<div class="fb note"><b>You are not signed in</b>, so nothing can be saved. Go back to the start and sign in.</div>';
   else if (c.submitted && c.submitted.ok) h += '<div class="fb good"><b>✅ Saved.</b> Press Next to see your result.</div>';
+  else if (closed()) h += '<div class="fb miss"><b>Closed.</b> The deadline was ' + esc(CONFIG.DEADLINE_TEXT) + '. This cannot be saved now.</div>';
   else h += '<p><button class="btn" type="button" id="submitBtn"' + (c.submitting ? ' disabled' : '') + '>' + (c.submitting ? 'Saving…' : 'Save my work ›') + '</button></p>' + (c.submitError ? '<div class="fb miss"><b>Not saved yet.</b> ' + esc(errMsg(c.submitError)) + ' Try again. Backup code: <b>B-' + esc(shortId(c.h1)) + '</b>.</div>' : '');
   return h;
 }
@@ -444,7 +451,7 @@ function updateNav(){
   bk.disabled = st.i === 0;
   var ok = canNext(); nx.disabled = !ok;
   nx.textContent = sc.type === 'finish' ? 'See my result ›' : 'Next ›';
-  var hints = {start:'Sign in to begin.', messages:'Tap at least 4 of the weak spots.', sort:'Sort all four, then press See how it sorts.', doors:'Walk at least one path to the end.', surprise:'Write at least ' + MIN.surprise + ' words.', rewrite:'Write at least ' + MIN.email + ' words and lock it in.', reflect:'Both boxes, ' + MIN.reflect + ' words or more.', finish:'Press Save my work.'};
+  var hints = {start:(closed() ? 'Closed.' : 'Sign in to begin.'), messages:'Tap at least 4 of the weak spots.', sort:'Sort all four, then press See how it sorts.', doors:'Walk at least one path to the end.', surprise:'Write at least ' + MIN.surprise + ' words.', rewrite:'Write at least ' + MIN.email + ' words and lock it in.', reflect:'Both boxes, ' + MIN.reflect + ' words or more.', finish:'Press Save my work.'};
   hint.textContent = ok ? '' : (hints[sc.type] || '');
   if (sc.type === 'learn'){ nx.style.display = 'none'; } else nx.style.display = '';
 }
@@ -481,7 +488,7 @@ async function signIn(){
   st.form = null; st.view = 'pages'; save(); go(1);
 }
 async function submitFinal(){
-  var c = st.cls; if (!isClass() || c.submitting || (c.submitted && c.submitted.ok)) return;
+  var c = st.cls; if (!isClass() || c.submitting || (c.submitted && c.submitted.ok) || closed()) return;
   c.submitting = true; c.submitError = null; save(); render();
   var a = analyzeEmail(st.email.text);
   var payload = {action:'submit', h1:c.h1, section:c.section, activity:CONFIG.ACTIVITY, clientVersion:CONFIG.VERSION, startedAt:c.startedAt,
