@@ -103,7 +103,7 @@ var FINAL_REFLECTION = [{"key": "hardest", "prompt": "Which of the three was har
 var REVISION_EMAIL = {"prompt": "Pick one of the three stories. Write the message you would actually send now, after seeing what happened. An email to Ms. Glenn, an email or message to Marcus, or a message to Tyler. Subject line, greeting, body, closing.", "checks": ["Names a <b>deadline</b> or a time.", "Asks for the <b>fewest</b> things you truly need. One is fine.", "Says what <b>you</b> will do if you get no answer.", "Keeps <b>one warm line</b>. One is enough.", "Does <b>not</b> defend you, bring up the past, or point out that nothing was answered."]};
 var RUBRIC = [["3 points", "<b>Three surprises.</b> One per story, each specific to the path you took, not a summary of the story."], ["2 points", "<b>Final reflection.</b> Says which story was hardest and why, and says something true about how you handle people like this."], ["5 points", "<b>Your message.</b> One point for each of the five checks: deadline, fewest asks, what you will do if no answer, one warm line, no defending."]];
 var CONFIG = {
-  ENDPOINT: '__ENDPOINT__',
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbzYM8ITyKyoXsQzn4gESi-4zlQ8fVE696NESxTvzv8C-ZR17FMSAmQjDCd24sVe8_awIg/exec',
   SALT1: 'northline-ctstate-2026',
   ACTIVITY: 'RCE1',
   VERSION: 'rce1-2026-10-21b',
@@ -188,8 +188,12 @@ function fresh(){
   var stories = SCENARIOS.map(function(){ return {stage:'doors', door:null, opt:null, paths:[], sortPicks:{}, sortDone:false, taps:[], tapsShown:false, surprise:''}; });
   return {i:0, cls:{mode:null, section:PRESET, h1:null, tail:'', recordId:null, startedAt:null, submitted:null, submitError:null, submitting:false}, stories:stories, email:{text:'', locked:false}, r1:'', r2:'', form:null, look:null, view:'pages'};
 }
-function save(){ try { var o = {}; Object.keys(st).forEach(function(k){ if (k !== 'form' && k !== 'look') o[k] = st[k]; }); sessionStorage.setItem(STORE_KEY, JSON.stringify({v:CONFIG.VERSION, st:o})); } catch(e){} }
-function restore(){ try { var raw = sessionStorage.getItem(STORE_KEY); if (!raw) return false; var o = JSON.parse(raw); if (!o || o.v !== CONFIG.VERSION || !o.st || !o.st.stories || o.st.stories.length !== SCENARIOS.length) return false; st = o.st; st.cls.submitting = false; st.view = 'pages'; return true; } catch(e){ return false; } }
+function save(){ var raw = null; try { var o = {}; Object.keys(st).forEach(function(k){ if (k !== 'form' && k !== 'look') o[k] = st[k]; }); raw = JSON.stringify({v:CONFIG.VERSION, t:Date.now(), st:o}); } catch(e){ return; }
+  try { sessionStorage.setItem(STORE_KEY, raw); } catch(e){}
+  try { if (st.cls && st.cls.submitted && st.cls.submitted.ok) localStorage.removeItem(STORE_KEY); else localStorage.setItem(STORE_KEY, raw); } catch(e){} }
+function readStore(store, maxAgeMs){ try { var raw = store.getItem(STORE_KEY); if (!raw) return null; var o = JSON.parse(raw); if (!o || o.v !== CONFIG.VERSION || !o.st || !o.st.stories || o.st.stories.length !== SCENARIOS.length) return null; if (maxAgeMs && (!o.t || Date.now() - o.t > maxAgeMs)) return null; return o; } catch(e){ return null; } }
+function restore(){ var o = null; try { o = readStore(sessionStorage, 0); } catch(e){} if (!o){ try { o = readStore(localStorage, 21 * 24 * 3600 * 1000); } catch(e){} } if (!o) return false;
+  st = o.st; st.cls.submitting = false; st.view = 'pages'; if (st.cls.submitError === 'no_endpoint') st.cls.submitError = null; return true; }
 function isClass(){ return !!(st && st.cls && st.cls.mode === 'class'); }
 
 /* ================= RENDER ================= */
@@ -351,7 +355,7 @@ function finishHTML(){
   else h += '<p><button class="btn" type="button" id="submitBtn"' + (c.submitting ? ' disabled' : '') + '>' + (c.submitting ? 'Saving…' : 'Save my work ›') + '</button></p>' + (c.submitError ? '<div class="fb miss"><b>Not saved yet.</b> ' + esc(errMsg(c.submitError)) + ' Try again. Backup code: <b>B-' + esc(shortId(c.h1)) + '</b>.</div>' : '');
   return h;
 }
-function errMsg(e){ return {timeout:'The connection timed out.', network:'The connection failed. Check the Wi-Fi.', bad_response:'The server answer was not readable.', no_endpoint:'Saving is switched off on this copy of the page.'}[e] || ('Error: ' + e + '.'); }
+function errMsg(e){ return {timeout:'The connection timed out.', network:'The connection failed. Check the Wi-Fi.', bad_response:'The server answer was not readable.', no_endpoint:'Saving is switched off on this copy of the page.', window_closed:'The deadline has passed, so this was not saved.', bad_id:'Your number did not read correctly. Go back to the start and sign in again.'}[e] || ('Error: ' + e + '.'); }
 function resultHTML(){
   var c = st.cls;
   var h = '<span class="tag">Your result</span><h1>Here is what you did.</h1>';
