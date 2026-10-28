@@ -109,6 +109,8 @@ var CONFIG = {
   VERSION: 'rce1-2026-10-21b',
   DEADLINE: '2026-10-28T17:00:00-04:00',
   DEADLINE_TEXT: 'Wednesday, October 28, 5:00 PM',
+  DUE_NOTE: ', before class',
+  SECTION_DUE: {'13046': {at: '2026-10-28T23:59:00-04:00', text: 'Wednesday, October 28, 11:59 PM', note: ''}},
   SECTIONS: {'13046': {label:'CRN 13046', sub:'In person · Mon/Wed 12:30'}, '13901': {label:'CRN 13901', sub:'Live online · Mon/Wed 5:30'}}
 };
 var QS = (function(){ try { return new URLSearchParams(location.search); } catch(e){ return {get:function(){return null;}}; } })();
@@ -162,7 +164,14 @@ async function postOnce(payload, timeoutMs){
 async function post(payload, timeoutMs){ var r = null; for (var a = 0; a < 3; a++){ r = await postOnce(payload, timeoutMs || 60000); if (r && (r.ok || (r.error !== 'timeout' && r.error !== 'network' && r.error !== 'bad_response'))) return r; await new Promise(function(res){ setTimeout(res, 1200 + a * 800); }); } return r; }
 function normalizeId(raw){ return String(raw || '').replace(/\D/g, ''); }
 function secLabel(s){ return CONFIG.SECTIONS[s] ? CONFIG.SECTIONS[s].label : String(s || ''); }
-function closed(){ return Date.now() > new Date(CONFIG.DEADLINE).getTime(); }
+function curSec(){ return (st && st.cls && st.cls.section) || PRESET || null; }
+function dueFor(s){ var d = s && CONFIG.SECTION_DUE[s]; return d ? d : {at: CONFIG.DEADLINE, text: CONFIG.DEADLINE_TEXT, note: CONFIG.DUE_NOTE}; }
+function closedFor(s){ return Date.now() > new Date(dueFor(s).at).getTime(); }
+function closed(){ var s = curSec(); if (s) return closedFor(s); return Object.keys(CONFIG.SECTIONS).every(function(k){ return closedFor(k); }); }
+function dueLine(){ var s = curSec(); if (s) return '<b>' + esc(dueFor(s).text) + '</b>' + esc(dueFor(s).note || '') + '.';
+  return Object.keys(CONFIG.SECTIONS).map(function(k){ return esc(CONFIG.SECTIONS[k].label) + ': <b>' + esc(dueFor(k).text) + '</b>' + esc(dueFor(k).note || ''); }).join('<br>') + '.'; }
+function closedLine(){ var s = curSec(); return s ? 'The deadline was ' + esc(dueFor(s).text) + '.' : 'The deadlines have passed.'; }
+function closedMsg(s){ return 'This is closed for ' + secLabel(s) + '. The deadline was ' + dueFor(s).text + '.'; }
 function shortId(h){ return h ? String(h).slice(0, 6).toUpperCase() : ''; }
 function keyColor(i){ return ['#E6DEF8','#DCEBF8','#FBF1B8','#FFE3CF','#FADAE5','#D9EEF8'][i % 6]; }
 
@@ -228,9 +237,9 @@ function storyHead(i){ var s = SCENARIOS[i]; return '<span class="tag ink ' + s.
 
 function startHTML(){
   var c = st.cls;
-  var due = '<div class="card pink"><span class="tag ink pink">Due</span><p><b>' + esc(CONFIG.DEADLINE_TEXT) + '</b>, before class. After that the page closes and nothing is accepted. Finish in one sitting if you can; it saves only when you press <b>Save my work</b> at the end.</p></div>';
+  var due = '<div class="card pink"><span class="tag ink pink">Due</span><p>' + dueLine() + ' After that the page closes and nothing is accepted. Finish in one sitting if you can; it saves only when you press <b>Save my work</b> at the end.</p></div>';
   var mode = closed() && c.mode !== 'class'
-    ? '<div class="fb miss"><b>Closed.</b> The deadline was ' + esc(CONFIG.DEADLINE_TEXT) + '. <button class="btn soft" type="button" id="goLookup">Already finished? See your result</button></div>'
+    ? '<div class="fb miss"><b>Closed.</b> ' + closedLine() + ' <button class="btn soft" type="button" id="goLookup">Already finished? See your result</button></div>'
     : c.mode === 'class'
     ? '<div class="fb good"><b>✅ You are signed in.</b> ' + esc(secLabel(c.section)) + ' · ID ending in <b>' + esc(c.tail) + '</b>. Press <b>Next ›</b>.</div>'
     : '<div class="card lav"><span class="tag ink lav">Before you start</span>' +
@@ -351,7 +360,7 @@ function finishHTML(){
   if (!ok) h += '<div class="fb note"><b>Something is still empty.</b> Use Back to find the unchecked line.</div>';
   else if (!isClass()) h += '<div class="fb note"><b>You are not signed in</b>, so nothing can be saved. Go back to the start and sign in.</div>';
   else if (c.submitted && c.submitted.ok) h += '<div class="fb good"><b>✅ Saved.</b> Press Next to see your result.</div>';
-  else if (closed()) h += '<div class="fb miss"><b>Closed.</b> The deadline was ' + esc(CONFIG.DEADLINE_TEXT) + '. This cannot be saved now.</div>';
+  else if (closed()) h += '<div class="fb miss"><b>Closed.</b> ' + closedLine() + ' This cannot be saved now.</div>';
   else h += '<p><button class="btn" type="button" id="submitBtn"' + (c.submitting ? ' disabled' : '') + '>' + (c.submitting ? 'Saving…' : 'Save my work ›') + '</button></p>' + (c.submitError ? '<div class="fb miss"><b>Not saved yet.</b> ' + esc(errMsg(c.submitError)) + ' Try again. Backup code: <b>B-' + esc(shortId(c.h1)) + '</b>.</div>' : '');
   return h;
 }
@@ -482,9 +491,11 @@ function renderSignin(){
 }
 async function signIn(){
   var f = st.form, btn = $('#signYes'), d = normalizeId(f.id);
+  if (closedFor(st.cls.section)){ f.err = closedMsg(st.cls.section); f.confirm = false; renderSignin(); return; }
   btn.disabled = true; btn.textContent = 'One moment…';
   var h1; try { h1 = await sha256Hex(CONFIG.SALT1 + '|' + d); } catch(e){ f.err = 'This browser could not scramble your number. Use Chrome, Safari, or Edge.'; f.confirm = false; renderSignin(); return; }
   var r = await post({action:'start', h1:h1, section:st.cls.section, activity:CONFIG.ACTIVITY, clientVersion:CONFIG.VERSION}, 45000);
+  if (r && !r.ok && r.error === 'window_closed'){ f.err = closedMsg(st.cls.section); f.confirm = false; renderSignin(); return; }
   if (r && r.ok && r.already){
     f.err = 'A finished result for this number is already saved. Use "Already finished? See your result" on the start page.'; f.confirm = false; renderSignin(); return;
   }
