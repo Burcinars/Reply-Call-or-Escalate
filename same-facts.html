@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Hanken+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Same Facts, Different Feel · Six scenes about tone</title>
+<style>
+:root{
+  --ink:#1F1B24;--ink2:#4A4550;--muted:#6B6570;
+  --page:#FBF8F3;--card:#FFFFFF;--line:#E6DED3;--line2:#D6CCBF;
+  --blue:#D4E8FA;--blueInk:#2F5E8F;--blueEdge:#7FAEDD;
+  --mint:#D6F3E4;--mintInk:#2F6B4F;--mintEdge:#6FB592;
+  --peach:#FFE1CF;--peachInk:#8A4B1C;--peachEdge:#E3A47A;
+  --lav:#E6DDF8;--lavInk:#5C4A9E;--lavEdge:#A08BD6;
+  --butter:#FFF2B8;--butterInk:#5C4600;--butterEdge:#D9B92A;
+  --pink:#FFDCE8;--pinkInk:#8A2F55;--pinkEdge:#E79BB7;
+  --peri:#DDE3FF;--periInk:#2F3F8A;--periEdge:#9FAEE8;
+  --cream:#F3EEE3;--creamInk:#5A4A2F;--creamEdge:#CDBFA5;
+  --note:#EEF1F5;--noteEdge:#A9B6C6;
+  --r:18px;
+  --shadow:0 1px 2px rgba(31,27,36,.06),0 8px 24px rgba(31,27,36,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;font-size:20px;line-height:1.6;letter-spacing:.005em;-webkit-font-smoothing:antialiased}
+h1,h2{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;margin:0 0 .4em;letter-spacing:-.005em}
+h1{font-size:38px}h2{font-size:30px}
+p{margin:0 0 .7em}
+b{font-weight:700}
+button{font-family:inherit;color:inherit}
+textarea,input{font-family:inherit}
+
+/* top */
+.top{position:sticky;top:0;z-index:40;background:var(--page);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-weight:600;font-size:21px;line-height:1.15}
+.brand small{display:block;font-family:'Hanken Grotesk';font-weight:600;font-size:14px;color:var(--ink2)}
+.progress{flex:1;min-width:140px;display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:10px;border-radius:999px;background:#E9E3DA;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--mintInk);border-radius:999px;transition:width .4s ease}
+.pcount{font-size:14px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.points{background:#FFF2B8;border:1.5px solid #E6CF6A;color:#5C4600;border-radius:999px;padding:3px 12px;font-weight:700;font-size:15px;white-space:nowrap}
+.points.bump{animation:bump .5s ease}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+.modetag{font-size:13.5px;font-weight:600;color:var(--ink2);background:#EFEAE3;border-radius:999px;padding:3px 10px;white-space:nowrap}
+
+/* page */
+.wrap{max-width:860px;margin:0 auto;padding:22px 20px 160px}
+#page{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lrow{font-size:21px}
+.small{font-size:16px;color:var(--ink2)}
+.band{border-radius:var(--r);padding:18px 22px 12px;margin:0 0 16px}
+.band .kicker{font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;opacity:.85;margin-bottom:4px}
+.band h1{margin-bottom:.2em}
+.how{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+.how ol,.how ul{margin:8px 0 0;padding-left:24px}
+.how li{margin-bottom:6px}
+.sticky{background:#FFF2B8;border:1.5px solid #E6CF6A;border-radius:6px;padding:14px 18px;font-size:21px;line-height:1.5;margin:0 0 16px;box-shadow:3px 4px 0 rgba(0,0,0,.08);position:relative;transform:rotate(-.6deg)}
+.sticky .sig{display:block;font-weight:700;margin-top:6px;text-align:right}
+.who{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14.5px;color:var(--ink2);margin-bottom:10px}
+.plain{background:var(--note);border-left:8px solid var(--noteEdge);border-radius:14px;padding:12px 16px;margin:0 0 16px;font-size:19.5px}
+.plain b{font-weight:800}
+
+/* job box */
+.job{background:var(--blue);border:2px solid var(--blueEdge);border-left:8px solid var(--blueInk);border-radius:16px;padding:12px 16px 12px;margin:0 0 16px}
+.jobtitle{font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--blueInk);margin-bottom:4px}
+.jobtext{font-size:20px;font-weight:700;line-height:1.4}
+.jobnote{font-size:16.5px;color:var(--ink2);margin:6px 0 0}
+
+/* email card */
+.email{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 20px 16px;margin:0 0 16px;font-size:19px;line-height:1.5}
+.email .hdr{font-size:16.5px;display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;align-items:start;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.email .lab{font-weight:800;color:var(--muted)}
+.email p{margin:0 0 4px}
+.blk{position:relative;transition:opacity .5s,background .5s;padding:6px 12px 6px 14px;margin:8px 0;border-left:6px solid transparent;border-radius:10px}
+.blk.inl{margin:0;padding:2px 10px;display:block}
+.blk.on{border-left-color:var(--c)}
+.blk.lit{background:var(--cl)}
+.blk.flash{animation:flash 1.2s ease}
+@keyframes flash{0%{background:var(--cl)}100%{background:transparent}}
+.blk[data-c="peach"]{--c:var(--peachEdge);--ci:var(--peachInk);--cl:var(--peach)}
+.blk[data-c="blue"]{--c:var(--blueEdge);--ci:var(--blueInk);--cl:var(--blue)}
+.blk[data-c="lav"]{--c:var(--lavEdge);--ci:var(--lavInk);--cl:var(--lav)}
+.blk[data-c="butter"]{--c:var(--butterEdge);--ci:var(--butterInk);--cl:var(--butter)}
+.blk[data-c="pink"]{--c:var(--pinkEdge);--ci:var(--pinkInk);--cl:var(--pink)}
+.blk[data-c="peri"]{--c:var(--periEdge);--ci:var(--periInk);--cl:var(--peri)}
+.blk[data-c="cream"]{--c:var(--creamEdge);--ci:var(--creamInk);--cl:var(--cream)}
+.pill{position:absolute;right:10px;top:-13px;font-size:14px;font-weight:800;background:var(--cl);border:1.5px solid var(--c);color:var(--ci);padding:1px 10px;border-radius:999px;white-space:nowrap;animation:rise .5s ease both}
+.sent{transition:opacity .5s,background .5s;border-radius:6px}
+.sent.tap{cursor:pointer;border-bottom:2px dashed var(--line2)}
+.sent.tap:hover{background:#F1ECE4}
+.sent.hit{background:var(--blue);box-shadow:0 0 0 4px var(--blue);border-bottom-color:transparent}
+.sent.nope{background:var(--peach);box-shadow:0 0 0 4px var(--peach)}
+.email[data-spot="opening"] .blk:not([data-blk="opening"]),
+.email[data-spot="subject"] .blk:not([data-blk="subject"]),
+.email[data-spot="sections"] .blk:not([data-blk^="sec"]),
+.email[data-spot="sec0"] .blk:not([data-blk="sec0"]),
+.email[data-spot="sec1"] .blk:not([data-blk="sec1"]),
+.email[data-spot="closing"] .blk:not([data-blk="closing"]),
+.email[data-spot="signature"] .blk:not([data-blk="signature"]){opacity:.32}
+.email[data-spot="find"] .sent:not(.hit):not(.nope):not(.tap){opacity:.4}
+.open-line{font-weight:700}
+.h{font-weight:800;margin:0 0 2px}
+.email ol,.email ul{margin:2px 0 4px 26px;padding:0}
+.email li{margin:3px 0}
+.email li::marker{font-weight:800}
+.sig .name{font-weight:800}
+.enter{animation:rise .55s ease both}
+.lift{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.compare{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.compare .col{flex:1 1 320px;min-width:0}
+.cap{font-weight:800;color:var(--ink2);font-size:15px;letter-spacing:.05em;text-transform:uppercase;margin:0 0 6px 4px}
+.compare .email{font-size:16.5px}
+
+/* options */
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--line2);border-radius:14px;padding:12px 16px;font-size:19px;line-height:1.4;cursor:pointer;box-shadow:var(--shadow);transition:border-color .2s,background .2s}
+.opt:hover{border-color:var(--ink)}
+.opt:focus-visible{outline:3px solid var(--blueInk);outline-offset:2px}
+.opt .L{flex:none;width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.opt.good{background:var(--mint);border-color:var(--mintEdge)}
+.opt.good .L{background:var(--mintInk);border-color:var(--mintInk);color:#fff}
+.opt.miss{background:var(--peach);border-color:var(--peachEdge);color:var(--peachInk)}
+.opt.miss .L{border-color:var(--peachEdge);color:var(--peachInk)}
+.opt[disabled]{cursor:default;opacity:.75}
+.opt.good[disabled]{opacity:1}
+.fb{border-radius:14px;padding:12px 16px;margin:0 0 14px;font-size:19px;line-height:1.5;animation:fade .3s ease}
+.fb.good{background:var(--mint);border-left:8px solid var(--mintEdge)}
+.fb.miss{background:var(--peach);border-left:8px solid var(--peachEdge)}
+.fb.note{background:var(--note);border-left:8px solid var(--noteEdge)}
+.btn{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:10px 22px;font-weight:700;font-size:19px;cursor:pointer;box-shadow:0 3px 0 var(--ink);line-height:1.2}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.btn.blue{background:var(--blueInk);border-color:var(--blueInk);color:#fff;box-shadow:0 3px 0 #1F4268}
+.btn.soft{background:#F1EEEA;border-color:#C9BFB1;box-shadow:0 3px 0 #C9BFB1}
+.btn.ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--ink2);padding-left:6px}
+.btn.wide{display:block;width:100%;margin:8px 0}
+.btn[disabled]{opacity:.45;cursor:default;transform:none}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;font-size:inherit;color:var(--blueInk)}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}
+
+/* write */
+.field{width:100%;font-size:19px;line-height:1.5;padding:10px 14px;border:2px solid var(--line2);border-radius:12px;background:#fff;color:var(--ink)}
+.field:focus{outline:3px solid var(--blueEdge);border-color:var(--blueInk)}
+textarea.field{min-height:150px;resize:vertical}
+.wlab{display:block;font-weight:800;margin:14px 0 6px;font-size:18px}
+.wlab span{font-weight:600;color:var(--ink2);font-size:16px}
+.hint{font-size:16px;color:var(--ink2);margin:4px 0 0}
+.checks{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;box-shadow:var(--shadow);margin:16px 0}
+.checks .ct{font-weight:800;font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);margin-bottom:8px}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:18px;line-height:1.4;border-top:1px solid var(--line)}
+.ck .box{flex:none;width:26px;height:26px;border-radius:7px;border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;margin-top:2px}
+.ck.ok .box{background:var(--mintInk);border-color:var(--mintInk);color:#fff}
+.ck.ok{color:var(--ink2)}
+.facts{background:var(--butter);border-left:8px solid var(--butterEdge);border-radius:14px;padding:12px 16px;margin:0 0 14px}
+.facts ul{margin:6px 0 0;padding-left:22px}
+.facts li{margin:3px 0}
+.bigscore{font-family:'Fraunces',Georgia,serif;font-size:34px;font-weight:600;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow);margin:0 0 16px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--page);border-top:1px solid var(--line);z-index:45}
+.nav-in{max-width:860px;margin:0 auto;padding:10px 20px;display:flex;gap:12px;align-items:center}
+.navmsg{margin-left:auto;color:var(--ink2);font-size:16px;font-weight:700;text-align:right;line-height:1.3}
+@media (max-width:480px){.navmsg{display:none}.nav-in{justify-content:space-between}h1{font-size:30px}}
+
+/* sign in */
+.modebox{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+.modebox.signed{background:var(--mint);border-color:var(--mintEdge)}
+.modehead{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:26px;margin-bottom:10px}
+.modenote{margin:4px 0 14px}
+.signstep{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.stephead{display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:8px;line-height:1.35}
+.sn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--blueInk);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.secrow{display:flex;gap:10px;flex-wrap:wrap}
+.secbtn{flex:1 1 200px;text-align:left;background:#fff;border:2px solid var(--line2);border-radius:14px;padding:10px 14px;cursor:pointer;line-height:1.3}
+.secbtn span{display:block;font-size:15px;color:var(--ink2);font-weight:600}
+.secbtn.on{border-color:var(--blueInk);background:var(--blue)}
+.secbtn[disabled]{cursor:default}
+.err{color:#8A2F2F;font-weight:700;min-height:1.4em;margin-bottom:8px}
+.confirm{background:var(--blue);border:2px solid var(--blueEdge);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.bigid{font-size:34px;font-weight:800;letter-spacing:.08em}
+
+/* Same Facts, Different Feel additions */
+.whobox{background:#fff;border:1px solid var(--line);border-left:8px solid var(--blueInk);border-radius:var(--r);padding:14px 18px 10px;box-shadow:var(--shadow);margin:0 0 16px}
+.whohead{font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--blueInk);margin-bottom:6px}
+.whorow{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line);font-size:20px;line-height:1.45}
+.whorow:first-of-type{border-top:0}
+.whorow .sym{flex:none;width:40px;height:40px;border-radius:12px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:24px}
+.whorow .nm{font-size:22px}
+.whorow.fact{background:#FBF8F3;border-radius:10px;padding:8px 8px;margin:4px 0;border-top:0}
+.rev{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 18px 6px;box-shadow:var(--shadow);margin:0 0 12px;transition:opacity .4s}
+.rev.past{opacity:.6}
+.rev.enter{animation:rise .5s ease both}
+.qchip{display:inline-block;background:var(--butter);border:1.5px solid var(--butterEdge);color:var(--butterInk);border-radius:12px;padding:4px 12px;font-weight:700;font-size:18.5px;line-height:1.4;margin:0 0 8px}
+.qchip.plainq{background:var(--note);border-color:var(--noteEdge);color:var(--ink)}
+.compare .col.chosen .email{border:3px solid var(--mintEdge)}
+.compare .col.dim{opacity:.55}
+.compare .col .email{min-height:100%}
+.ck input{flex:none}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand">✉️ <span>Same Facts, Different Feel<small>Six scenes about tone</small></span></div>
+  <div class="progress"><div class="bar"><i id="barfill"></i></div><span class="pcount" id="pcount"></span></div>
+  <span class="modetag" id="modetag" style="display:none"></span>
+  <span class="points" id="points">0 points</span>
+</div></header>
+<main class="wrap"><div id="page"></div></main>
+<nav class="nav" aria-label="Pages">
+  <div class="nav-in">
+    <button class="btn soft" type="button" id="back">‹ Back</button>
+    <button class="btn blue" type="button" id="next">Next ›</button>
+    <span class="navmsg" id="navmsg"></span>
+  </div>
+</nav>
+
+<script>
+/* ================= HELPERS ================= */
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function words(s){ var m = String(s).trim().match(/\S+/g); return m ? m.length : 0; }
+function shuffle(a){ a = a.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function onClick(sel, fn){ var el = $(sel); if (el) el.addEventListener('click', fn); }
+
+/* ================= CLASS VERSION (recording) ================= */
+var CONFIG = {
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbz8sy_FMZsIJuAOQOtbmRqBn-P03bvZCW-Dev7BEBSWBblCSi0RF1CMTMS39JCzWvTgOQ/exec',
+  SALT1: 'northline-ctstate-2026',
+  ACTIVITY: 'SFD1',
+  VERSION: 'sfd1-2026-10-28a',
+  SECTIONS: {'13046': {label:'CRN 13046', sub:'In person · Mon/Wed 12:30'}, '13901': {label:'CRN 13901', sub:'Live online · Mon/Wed 5:30'}}
+};
+var QS = (function(){ try { return new URLSearchParams(location.search); } catch(e){ return {get:function(){ return null; }}; } })();
+if (QS.get('test') === '1') CONFIG.ACTIVITY += '-TEST';
+var PRESET = CONFIG.SECTIONS[QS.get('s')] ? QS.get('s') : null;
+var STORE_KEY = 'samefacts_' + CONFIG.ACTIVITY;
+function newCls(){ return {mode:null, section:PRESET, h1:null, tail:'', code:'', recordId:null, startedAt:null, unverified:false, submitted:null, submitError:null, submitting:false}; }
+function isClass(){ return !!(st && st.cls && st.cls.mode === 'class'); }
+function save(){
+  try { var o = {}; Object.keys(st).forEach(function(k){ if (k !== 'form' && k !== 'look') o[k] = st[k]; });
+    sessionStorage.setItem(STORE_KEY, JSON.stringify({v:CONFIG.VERSION, st:o})); } catch(e){}
+}
+function restore(){
+  try {
+    var raw = sessionStorage.getItem(STORE_KEY); if (!raw) return false;
+    var o = JSON.parse(raw);
+    if (!o || o.v !== CONFIG.VERSION || !o.st || !o.st.pg || o.st.pg.length !== PAGES.length) return false;
+    st = o.st; if (!st.cls) st.cls = newCls(); st.cls.submitting = false;
+    if (st.view !== 'pages') st.view = 'pages';
+    return true;
+  } catch(e){ return false; }
+}
+function normalizeId(raw){ return String(raw || '').replace(/\D/g, ''); }
+function normalizeCode(c){ return String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+function secLabel(s){ return CONFIG.SECTIONS[s] ? CONFIG.SECTIONS[s].label : String(s || ''); }
+function shortId(h){ return h ? String(h).slice(0, 6).toUpperCase() : ''; }
+function showNav(on){ var n = $('.nav'); if (n) n.style.display = on ? '' : 'none'; }
+function modeTag(){ var t = $('#modetag'); if (!t) return; if (!st.cls.mode){ t.style.display = 'none'; return; } t.style.display = ''; t.textContent = isClass() ? 'Class version' : 'Practice'; }
+async function sha256Hex(text){
+  var buf = new TextEncoder().encode(text);
+  var hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+}
+async function postOnce(payload, timeoutMs){
+  var ctrl = new AbortController();
+  var t = setTimeout(function(){ ctrl.abort(); }, timeoutMs || 60000);
+  try {
+    var res = await fetch(CONFIG.ENDPOINT, {method:'POST', body:JSON.stringify(payload), signal:ctrl.signal, credentials:'omit', cache:'no-store'});
+    var text = await res.text();
+    try { return JSON.parse(text); } catch(e){ return {ok:false, error:'bad_response'}; }
+  } catch(e){ return {ok:false, error:(e && e.name === 'AbortError') ? 'timeout' : 'network'}; }
+  finally { clearTimeout(t); }
+}
+async function post(payload, timeoutMs){
+  var r = null;
+  for (var a = 0; a < 3; a++){
+    r = await postOnce(payload, timeoutMs || 60000);
+    if (r && (r.ok || (r.error !== 'timeout' && r.error !== 'network' && r.error !== 'bad_response'))) return r;
+    await new Promise(function(res){ setTimeout(res, 1200 + a * 800); });
+  }
+  return r;
+}
+function whoStrip(p){
+  if (!isClass() || p.type === 'start') return '';
+  var c = st.cls;
+  return '<div class="who"><span>🎓 Class version · ' + esc(secLabel(c.section)) + ' · ID ending in <b>' + esc(c.tail) + '</b></span>' + (c.recordId ? '<span>Record ' + esc(shortId(c.recordId)) + '</span>' : '') + '</div>';
+}
+function modeBox(){
+  var c = st.cls;
+  if (c.mode === 'class') return '<div class="modebox signed"><b>✅ You are signed in.</b> ' + esc(secLabel(c.section)) + ' · ID ending in <b>' + esc(c.tail) + '</b>. Press <b>Next ›</b> at the bottom.</div>';
+  if (c.mode === 'practice') return '<div class="modebox"><b>You are in practice mode.</b> Nothing is saved. Press <b>Next ›</b> at the bottom.' +
+    '<p class="small" style="margin:10px 0 0">Need points? <button class="linkbtn" type="button" id="toClass">Switch to the class version</button> (this starts over from page 1).</p></div>';
+  return '<div class="modebox">' +
+    '<div class="modehead">Choose one</div>' +
+    '<button class="btn blue wide" type="button" id="goClass">🎓 Class version (for points) ›</button>' +
+    '<p class="small modenote">Use this in class. You need the <b>class code</b> your professor gives you. Your points and the email you write in scene 6 are saved for your professor.</p>' +
+    '<button class="btn soft wide" type="button" id="goPractice">Practice only</button>' +
+    '<p class="small modenote">Nothing is saved. No points count.</p>' +
+    '<p class="small" style="margin:4px 0 0"><button class="linkbtn" type="button" id="goLookup">Already finished? Check that your result was saved.</button></p>' +
+  '</div>';
+}
+function secButtons(locked){
+  return '<div class="secrow">' + Object.keys(CONFIG.SECTIONS).map(function(k){ var s = CONFIG.SECTIONS[k], on = st.cls.section === k;
+    return '<button type="button" class="secbtn' + (on ? ' on' : '') + '" data-sec="' + k + '" aria-pressed="' + on + '"' + (locked ? ' disabled' : '') + '><b>' + esc(s.label) + '</b><span>' + esc(s.sub) + '</span></button>'; }).join('') + '</div>';
+}
+function renderSignin(){
+  showNav(false); modeTag();
+  var f = st.form || (st.form = {id:'', code:'', confirm:false, err:''});
+  var h = '<h1>Class version: sign in</h1>' +
+    '<p class="lrow">Three short steps. Then the activity starts.</p>' +
+    '<div class="signstep"><div class="stephead"><span class="sn">1</span> Tap your class.</div>' + secButtons(f.confirm) + '</div>' +
+    '<div class="signstep"><label class="stephead" for="sid"><span class="sn">2</span> Type the 8 digit number you log in to Blackboard with.</label>' +
+      '<p class="small" style="margin:0 0 8px">This is your Student ID. It starts with 0, for example 03083452.</p>' +
+      '<input id="sid" class="field" inputmode="numeric" autocomplete="off" maxlength="14" value="' + esc(f.id) + '"' + (f.confirm ? ' readonly' : '') + '></div>' +
+    '<div class="signstep"><label class="stephead" for="scode"><span class="sn">3</span> Type the class code.</label>' +
+      '<p class="small" style="margin:0 0 8px">Your professor gives it in class. It is a word and a number.</p>' +
+      '<input id="scode" class="field" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(f.code) + '"' + (f.confirm ? ' readonly' : '') + '></div>' +
+    '<div id="serr" class="err" aria-live="polite">' + esc(f.err || '') + '</div>';
+  if (!f.confirm){
+    h += '<div class="btnrow"><button type="button" class="btn blue" id="signNext">Next ›</button></div>';
+  } else {
+    var d = normalizeId(f.id);
+    h += '<div class="confirm"><p style="margin:0 0 4px">You typed:</p><div class="bigid">' + esc(d.slice(0, 4) + ' ' + d.slice(4)) + '</div>' +
+      '<p style="margin:8px 0 12px">Is this <b>your</b> Blackboard number? If it is wrong, your points go to no one.</p>' +
+      '<div class="btnrow"><button type="button" class="btn blue" id="signYes">Yes, that is me ›</button><button type="button" class="btn soft" id="signFix">No, let me fix it</button></div></div>';
+  }
+  h += '<div class="how" style="margin-top:18px"><b>🔒 What is saved</b><br>A scrambled version of your number, your points, the email you write, and the time. Your name is never saved. Your number is never saved the way you typed it.</div>' +
+    '<p><button type="button" class="btn ghost" id="signBack">‹ Back to the start</button></p>';
+  $('#page').innerHTML = h;
+  var sid = $('#sid'), sc = $('#scode');
+  if (sid) sid.addEventListener('input', function(){ f.id = sid.value; });
+  if (sc) sc.addEventListener('input', function(){ f.code = sc.value; });
+  if (!f.confirm) $$('[data-sec]').forEach(function(b){ b.addEventListener('click', function(){ keepInputs(); st.cls.section = b.dataset.sec; f.err = ''; renderSignin(); }); });
+  onClick('#signNext', function(){
+    keepInputs(); var d = normalizeId(f.id);
+    if (!st.cls.section){ f.err = 'Step 1 is missing: tap your class.'; renderSignin(); return; }
+    if (d.length !== 8){ f.err = 'Step 2: your number needs 8 digits. You typed ' + d.length + '.'; renderSignin(); return; }
+    if (normalizeCode(f.code).length < 3){ f.err = 'Step 3 is missing: type the class code.'; renderSignin(); return; }
+    f.err = ''; f.confirm = true; renderSignin();
+  });
+  onClick('#signFix', function(){ f.confirm = false; f.err = ''; renderSignin(); var i = $('#sid'); if (i) i.focus(); });
+  onClick('#signYes', signIn);
+  onClick('#signBack', function(){ st.form = null; st.view = 'pages'; go(0); });
+}
+function keepInputs(){ var sid = $('#sid'), sc = $('#scode'); if (!st.form) return; if (sid) st.form.id = sid.value; if (sc) st.form.code = sc.value; }
+async function signIn(){
+  var f = st.form, btn = $('#signYes');
+  var d = normalizeId(f.id), code = normalizeCode(f.code);
+  btn.disabled = true; btn.textContent = 'Checking the class code…';
+  var wait = document.createElement('p'); wait.className = 'small'; wait.style.margin = '10px 0 0'; wait.textContent = '⏳ This can take up to one minute. Keep this page open.'; btn.parentNode.parentNode.appendChild(wait);
+  var fx = $('#signFix'); if (fx) fx.disabled = true;
+  var h1;
+  try { h1 = await sha256Hex(CONFIG.SALT1 + '|' + d); }
+  catch(e){ f.err = 'This browser could not scramble your number. Open this page in Chrome, Safari, or Edge.'; f.confirm = false; renderSignin(); return; }
+  var r = await postOnce({action:'start', h1:h1, section:st.cls.section, activity:CONFIG.ACTIVITY, code:code, clientVersion:CONFIG.VERSION}, 45000);
+  var unreachable = !r || r.error === 'timeout' || r.error === 'network' || r.error === 'bad_response';
+  if (!unreachable && !r.ok){
+    var why = {bad_code:'That class code is not right. Check it and type it again.',
+      window_closed:'This activity is closed right now. It opens in class. The closing time is in Blackboard. Ask Professor Calafiore.',
+      no_endpoint:'Saving is switched off on this copy of the page.'};
+    f.err = why[r.error] || ('Something went wrong (' + r.error + '). Try again.');
+    f.confirm = false; renderSignin(); return;
+  }
+  var c = st.cls;
+  c.mode = 'class'; c.h1 = h1; c.tail = d.slice(-2); c.code = code; c.unverified = unreachable;
+  c.recordId = (r && r.ok && r.recordId) || null; c.startedAt = new Date().toISOString();
+  st.form = null; st.view = 'pages';
+  go(1);
+}
+async function submitFinal(){
+  var c = st.cls;
+  if (!isClass() || c.submitting || (c.submitted && c.submitted.ok)) return;
+  c.submitting = true; c.submitError = null; save(); refreshEndStatus();
+  var pts = [], tries = [];
+  PAGES.forEach(function(p, i){ if (p.pts){ var s = st.pg[i]; pts.push(s.firstTry == null ? 0 : s.firstTry); tries.push(s.tries || 0); } });
+  var w = st.write;
+  var payload = {action:'submit', h1:c.h1, section:c.section, activity:CONFIG.ACTIVITY, code:c.code, clientVersion:CONFIG.VERSION,
+    startedAt:c.startedAt, score:total(), maxScore:MAXPTS,
+    practicePicks:pts, practiceExplored:tries,
+    checkAnswers:[clip(w.text, 2500)],
+    checkStatuses:[w.locked ? 'email locked in' : 'email not locked', 'words ' + words(w.text), 'self check ' + w.checks.filter(Boolean).length + '/5']};
+  var r = await post(payload, 60000);
+  c.submitting = false;
+  if (r && r.ok){ c.submitted = r; c.recordId = r.recordId || c.recordId; c.submitError = null; }
+  else c.submitError = (r && r.error) || 'network';
+  save(); refreshEndStatus();
+}
+function clip(s, n){ return String(s || '').replace(/\s+/g, ' ').trim().slice(0, n); }
+function recHTML(){
+  var c = st.cls, lab = esc(secLabel(c.section));
+  if (c.submitted && c.submitted.ok){
+    var when = c.submitted.submittedAt ? new Date(c.submitted.submittedAt) : new Date();
+    if (isNaN(when)) when = new Date();
+    var t = when.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    var again = (c.submitted.already && c.submitted.score != null && +c.submitted.score !== total()) ? ' A result for this number was already saved earlier, so the first one stands (' + esc(c.submitted.score) + ' of ' + esc(c.submitted.maxScore) + ' points).' : '';
+    return '<div class="fb good"><b>✅ Saved</b> at ' + esc(t) + ' for ' + lab + '. Record ID <b>' + esc(shortId(c.recordId)) + '</b>.' + again + '</div>' +
+      '<p class="small">📸 Take a screenshot of this page. It is your proof. Your grade appears in Blackboard after the activity closes.</p>';
+  }
+  if (c.submitting || !c.submitError) return '<div class="fb note"><b>⏳ Saving your result…</b> This can take up to one minute. Keep this page open.</div>';
+  var msgs = {window_closed:'The activity is closed now, so this result was not saved.', bad_code:'The class code did not match, so this result was not saved yet. Your answers are still here.',
+    timeout:'The connection timed out.', network:'The connection failed.', bad_response:'The answer from the server was not readable.'};
+  var m = msgs[c.submitError] || ('Error: ' + c.submitError + '.');
+  var retry = c.submitError === 'window_closed' ? '' : (c.submitError === 'bad_code' ?
+    '<div class="signstep" style="margin-top:12px"><label class="stephead" for="fixcode"><span class="sn">!</span> Type the class code again.</label><input id="fixcode" class="field" autocomplete="off" autocapitalize="characters" spellcheck="false"><div class="btnrow" style="margin-top:12px"><button class="btn blue" type="button" id="retryCode">Save with this code</button></div></div>' :
+    '<p><button class="btn blue" type="button" id="retrySubmit">Try to save again</button></p><p class="small">Check the Wi-Fi first.</p>');
+  return '<div class="fb miss"><b>⚠️ Not saved yet.</b> ' + esc(m) + '</div>' + retry +
+    '<p class="small">📸 Take a screenshot of this whole page now and show it to Professor Calafiore. Backup code: <b>B-' + esc(shortId(c.h1)) + '</b>.</p>';
+}
+function refreshEndStatus(){ var b = $('#recbox'); if (!b) return; b.innerHTML = recHTML(); onClick('#retrySubmit', submitFinal); onClick('#retryCode', function(){ var v = normalizeCode(($('#fixcode') || {}).value); if (v.length < 3) return; st.cls.code = v; st.cls.submitError = null; submitFinal(); }); }
+function endStatus(){
+  if (!isClass()) return '<div class="how"><b>This was practice.</b> Nothing was saved, and no points count. For points, do the <b>class version</b> with the class code.</div>' +
+    '<button class="btn soft" id="restart" type="button">↺ Start over</button>';
+  return '<div id="recbox">' + recHTML() + '</div>';
+}
+function renderLookup(){
+  showNav(false); modeTag();
+  var f = st.look || (st.look = {id:'', out:''});
+  var h = '<h1>Check your result</h1>' +
+    '<p class="lrow">See if your class version was saved. Your score is not shown here. It appears in Blackboard.</p>' +
+    '<div class="signstep"><div class="stephead"><span class="sn">1</span> Tap your class.</div>' + secButtons(false) + '</div>' +
+    '<div class="signstep"><label class="stephead" for="lid"><span class="sn">2</span> Type the 8 digit number you log in to Blackboard with.</label>' +
+      '<input id="lid" class="field" inputmode="numeric" autocomplete="off" maxlength="14" value="' + esc(f.id) + '"></div>' +
+    '<div class="btnrow"><button type="button" class="btn blue" id="lookGo">Check ›</button></div>' +
+    '<div id="lookOut" aria-live="polite" style="margin-top:14px">' + f.out + '</div>' +
+    '<p><button type="button" class="btn ghost" id="lookBack">‹ Back to the start</button></p>';
+  $('#page').innerHTML = h;
+  var lid = $('#lid'); lid.addEventListener('input', function(){ f.id = lid.value; });
+  $$('[data-sec]').forEach(function(b){ b.addEventListener('click', function(){ f.id = lid.value; st.cls.section = b.dataset.sec; renderLookup(); }); });
+  onClick('#lookBack', function(){ st.look = null; st.view = 'pages'; go(0); });
+  onClick('#lookGo', async function(){
+    f.id = lid.value; var d = normalizeId(f.id), btn = $('#lookGo');
+    if (!st.cls.section){ f.out = '<div class="fb miss">Step 1 is missing: tap your class.</div>'; renderLookup(); return; }
+    if (d.length !== 8){ f.out = '<div class="fb miss">Your number needs 8 digits. You typed ' + d.length + '.</div>'; renderLookup(); return; }
+    btn.disabled = true; btn.textContent = 'Checking…';
+    var h1; try { h1 = await sha256Hex(CONFIG.SALT1 + '|' + d); } catch(e){ h1 = null; }
+    var r = h1 ? await post({action:'lookup', h1:h1, section:st.cls.section, clientVersion:CONFIG.VERSION}, 60000) : null;
+    if (!r || !r.ok){ f.out = '<div class="fb miss">Could not reach the server. Check the Wi-Fi and try again.</div>'; renderLookup(); return; }
+    if (!Array.isArray(r.found)){ f.out = '<div class="fb note"><b>The check is not available right now.</b> Your screenshot of the Saved page is your proof. Try again later.</div>'; renderLookup(); return; }
+    var mine = r.found.filter(function(x){ return x.activity === CONFIG.ACTIVITY; });
+    var fmt = function(iso){ var dd = new Date(iso); return isNaN(dd) ? String(iso) : dd.toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}); };
+    if (!mine.length) f.out = '<div class="fb note"><b>No record</b> for this number in ' + esc(secLabel(st.cls.section)) + ' for Same Facts, Different Feel. If you did the class version, email Professor Calafiore with the date and the time you did it.</div>';
+    else {
+      var x = mine[0];
+      f.out = x.submittedAt ? '<div class="fb good"><b>✅ Saved</b> on ' + esc(fmt(x.submittedAt)) + '. Record ID <b>' + esc(shortId(x.recordId)) + '</b>.</div>'
+        : '<div class="fb note"><b>Started</b> on ' + esc(fmt(x.startedAt)) + ' but <b>not finished</b>. Nothing was saved at the end.</div>';
+    }
+    renderLookup();
+  });
+}
+
+/* ================= CONTENT ================= */
+var SCENES = [
+ {key:'no', color:'lav', title:'Two ways to say no', emoji:'🚫',
+  who:[{sym:'🧁', name:'Lisa', role:'owns <b>Sunny Side Bakery</b>. She is asking.'},
+       {sym:'🎨', name:'Mike', role:'is the <b>designer</b> making her new menu boards. He has to say no.'}],
+  facts:[{sym:'📅', lab:'What Lisa wants', txt:'New menu boards by <b>Friday, April 9</b>.'},
+         {sym:'⏰', lab:'The problem', txt:'Mike cannot finish until <b>Tuesday, April 13</b>. The grand reopening is <b>Saturday, April 17</b>.'}],
+  story:['On <b>Monday night</b>, Lisa sends Mike <b>12 pages of notes</b>: every pastry, every price, and a little story about each recipe.',
+         'Mike already has <b>three other jobs</b> due that week.',
+         'He has to tell Lisa <b>no</b> two times. No to Friday. And no to the 12 pages, because one menu board fits about <b>15 items</b>, one line each.'],
+  cards:[{label:'Mike\'s email', from:'Mike', to:'Lisa', when:'Tuesday, April 6, 8:05 AM', subject:'Re: Menu boards', tap:true,
+     lines:['Lisa,','Unfortunately I cannot do the boards by Friday.','I have three other clients whose projects are ahead of yours.','The boards will not hold all the detail in your 12 pages of notes.','No customer is going to stand in line and read the history of a croissant.','Most of my boards have about 15 items, one line each.','Thank you for your understanding.','Mike'],
+     tappable:[1,2,3,4,5,6]}],
+  tap:{ask:'Tap the one sentence that will <b>sting Lisa the most</b>.', right:4,
+     good:'Yes. <b>"No customer is going to stand in line and read the history of a croissant."</b> Lisa hears: <b>your idea is silly</b>. Those recipe stories mean a lot to her, and Mike just made fun of them.',
+     near:{2:'That one hurts too. "Ahead of yours" tells Lisa she is at the back of the line. But one sentence hurts even more: it makes fun of something she loves. Try again.',
+           6:'That one is cold, but it is not the worst. Find the sentence that makes fun of her idea.',
+           3:'That one says no to her notes. It is stiff, but the next sentence is the one that stings. Try again.'},
+     miss:'Not that one. Look for the sentence that makes fun of something Lisa cares about.'},
+  hearsTitle:'What Lisa hears',
+  hears:[{q:'ahead of yours', h:'Lisa hears: <b>"You are at the back of my line."</b> Other customers matter more than she does.'},
+         {q:'your 12 pages of notes', h:'Lisa hears: <b>"You wrote too much."</b> She starts to feel like she is the problem.'},
+         {q:'No customer is going to stand in line and read the history of a croissant.', h:'Lisa hears: <b>"Your idea is silly."</b> Those stories are the heart of her bakery.'},
+         {q:'Thank you for your understanding.', h:'Mike thanks her for agreeing <b>before she has agreed</b>. It feels like the conversation is over.'}],
+  hearsEnd:'<b>Every fact in Mike\'s email is true.</b> The way he says it is what hurts.',
+  pick:{ask:'Mike tries again. <b>Which email should Mike send?</b>', who:'Mike', to:'Lisa',
+     good:{subject:'Menu boards: a firm date, and a home for your stories', lines:['Hi Lisa,','Thank you for the notes. I can tell how much these recipes mean to you.','This week I already have three projects due, and I don\'t want to rush your boards. So Friday won\'t work.','The earliest I can deliver is <b>Tuesday, April 13</b>. The printer needs three days, so the boards will be ready <b>Friday, April 16</b>, the day before your reopening.','I know that feels close. I would rather give you a firm date now than promise Friday and miss it.','About the notes: one board fits about 15 items, one line each, so people in line can read it fast. Your recipe stories deserve a place where people can read them slowly. How about a small card at the register, or posts on your Instagram?','<b>Does Tuesday, April 13 work for you?</b> If not, I can finish the two front boards by Friday and the rest on Tuesday.','Mike']},
+     other:{subject:'Re: Menu boards', lines:['Hi Lisa!','So sorry!! This week is crazy and I am drowning in work.','I will try my best to get to your boards as soon as I can, hopefully soon!','I will see what I can do with all the notes. Sorry again!!','Mike']},
+     goodWhy:'Yes. It is warm <b>and</b> it is clear. Lisa gets a real date, a reason, and a plan for her stories.',
+     otherWhy:'That one is friendly, but Lisa learns nothing. No date. No plan for her notes. "Hopefully soon" leaves her guessing, and her reopening is in 11 days. Pick again.'},
+  whyTitle:'Why Mike\'s second email works',
+  why:[{q:'I can tell how much these recipes mean to you.', w:'He names what Lisa cares about <b>before</b> any bad news.'},
+       {q:'This week I already have three projects due, and I don\'t want to rush your boards. So Friday won\'t work.', w:'The <b>reason comes first</b>. When the no arrives, Lisa already knows why. And "I don\'t want to rush your boards" turns his busy week into care for <b>her</b> project.'},
+       {q:'The earliest I can deliver is Tuesday, April 13.', w:'He gives the <b>closest yes</b> he can: a real date that still works for the reopening.'},
+       {q:'Your recipe stories deserve a place where people can read them slowly.', w:'He says no to the 12 pages <b>without making her idea silly</b>. He finds the stories a better home.'},
+       {q:'Does Tuesday, April 13 work for you?', w:'He ends with a <b>real question</b>. The door stays open.'}],
+  whyEnd:'<b>Lisa\'s reply, 20 minutes later:</b> "Tuesday works. I love the card idea."'},
+
+ {key:'third', color:'butter', title:'The third ask', emoji:'🔁',
+  who:[{sym:'🙋‍♀️', name:'Megan', role:'is a <b>cashier</b> at <b>Step Up Shoes</b>. She is asking.'},
+       {sym:'🧑‍💼', name:'Howard', role:'is her <b>store manager</b>. He is not answering.'}],
+  facts:[{sym:'📅', lab:'What Megan needs', txt:'<b>Saturday, March 27</b> off, for her sister\'s wedding.'},
+         {sym:'⏰', lab:'The deadline', txt:'Howard posts that week\'s schedule on <b>Friday, March 19</b>.'}],
+  story:['On <b>Thursday, February 4</b>, Megan emails Howard to ask for the day off.',
+         '<b>Five weeks</b> go by. No answer.',
+         'On <b>Thursday, March 11</b>, she asks again. Still no answer.',
+         'On <b>Monday, March 15</b>, Howard emails the whole staff about the new return policy. He answers three questions from other workers. He says <b>nothing</b> about Megan\'s day off.',
+         'That afternoon, Megan writes her <b>third</b> email.'],
+  cards:[{label:'Megan\'s third email', from:'Megan', to:'Howard', when:'Monday, March 15, 4:20 PM', subject:'Re: New return policy', tap:true,
+     lines:['Thanks, Howard.','I want March 27 off.','You still have not answered me.','Megan'], tappable:[0,1,2]}],
+  tap:{ask:'Tap the sentence Howard will hear as <b>blame</b>.', right:2,
+     good:'Yes. <b>"You still have not answered me."</b> The word <b>"still"</b> reminds Howard of every week he did not answer. He hears: <b>"You failed me."</b> He feels accused, not reminded.',
+     near:{1:'That one is a problem too. "I want" sounds like an order, not a request. But it is not blame. Find the sentence that points at what Howard did wrong.',
+           0:'That one is fine. Look for the sentence that points at what Howard did wrong.'},
+     miss:'Not that one. Look for the sentence that points at what Howard did wrong.'},
+  hearsTitle:'What Howard hears',
+  hears:[{q:'I want March 27 off.', h:'Howard hears <b>an order</b>, not a request. Managers usually say yes to requests. They push back on orders.'},
+         {q:'You still have not answered me.', h:'Howard hears <b>blame</b>. The word "still" reminds him of every week he did not answer. He feels accused, not reminded.'},
+         {q:'(what is missing)', h:'There is <b>no reason</b>, <b>no date</b>, and <b>no hello</b>. Howard does not even know why March 27 matters.'}],
+  hearsEnd:'Megan has been waiting almost <b>six weeks</b>. Howard has not been counting. <b>He only sees today\'s two lines.</b> He feels scolded, so he puts off answering again.',
+  pick:{ask:'Megan tries again. <b>Which email should she send?</b>', who:'Megan', to:'Howard',
+     good:{subject:'Day off request: Saturday, March 27 (before Friday\'s schedule)', lines:['Hi Howard,','Thanks for the update on the return policy.','One question is still open from my February 4 email. I need <b>Saturday, March 27</b> off for my sister\'s wedding.','I know you post that week\'s schedule on <b>Friday, March 19</b>, so I wanted to ask before then.','Kelly said she can cover my shift, if that helps.','<b>Could you let me know by Thursday, March 18?</b> If it\'s easier, I can stop by your office before my shift on Wednesday.','Thanks,','Megan']},
+     other:{subject:'Re: New return policy', lines:['Howard,','This is my THIRD time asking.','I need March 27 off. Please respond ASAP.','Megan']},
+     goodWhy:'Yes. Megan is still firm, but now Howard knows what she needs, why, and by when. And she made it easy for him to say yes.',
+     otherWhy:'That one shouts. The capital letters and "ASAP" make Howard defensive, and it still has no reason and no date. Pick again.'},
+  whyTitle:'Why Megan\'s new email works',
+  why:[{q:'Thanks for the update on the return policy.', w:'She thanks him for what he <b>did</b> answer. One short, friendly line before the ask.'},
+       {q:'Day off request: Saturday, March 27 (before Friday\'s schedule)', w:'The <b>subject line</b> names the request and the deadline. Howard can see it without opening the email.'},
+       {q:'I know you post that week\'s schedule on Friday, March 19', w:'She gives the <b>real deadline</b> and the reason for it. Now the date matters to Howard too.'},
+       {q:'Kelly said she can cover my shift, if that helps.', w:'She makes yes <b>easy</b>. Howard does not have to find someone to cover. One less problem for him.'},
+       {q:'If it\'s easier, I can stop by your office before my shift on Wednesday.', w:'She offers a <b>calm next step</b> in case email is not working. No threat. Just another way to get an answer.'}],
+  whyEnd:'<b>Howard\'s reply, that evening:</b> "Sorry, Megan, this slipped. Yes to March 27. Thanks for lining up Kelly."'},
+
+ {key:'five', color:'blue', title:'Five questions, one answer', emoji:'❓',
+  who:[{sym:'🆕', name:'Jake', role:'is a new <b>barista</b> at <b>Corner Coffee</b>. He is asking.'},
+       {sym:'☕', name:'Linda', role:'is the <b>store manager</b>. She is very busy.'}],
+  facts:[{sym:'📅', lab:'His first shift', txt:'<b>Saturday, June 12</b> at <b>7:00 AM</b>.'},
+         {sym:'✉️', lab:'What he did', txt:'He sent Linda <b>five numbered questions</b> so he could show up ready.'}],
+  story:['On <b>Monday, June 7</b>, Jake emails Linda five questions about his first shift.',
+         'On <b>Tuesday, June 8</b>, Linda writes back from her phone, between customers.'],
+  cards:[{label:'Linda\'s reply', from:'Linda', to:'Jake', when:'Tuesday, June 8, 6:50 AM', subject:'Re: Questions before Saturday',
+     lines:['Hi Jake!','Wear black. See you Saturday!','Linda']},
+     {label:'Jake\'s email (sent Monday)', from:'Jake', to:'Linda', when:'Monday, June 7, 3:45 PM', subject:'Questions before Saturday', tap:true,
+     lines:['Hi Linda,','1. What should I wear for my first shift?','2. Who will train me on the espresso machine?','3. Do I need a food handler card before I start?','4. Where should I park?','5. Will my schedule come in an app?','Thanks,','Jake'], tappable:[1,2,3,4,5]}],
+  tap:{ask:'Linda answered only <b>one</b> of Jake\'s five questions. <b>Tap the question she answered.</b>', right:1,
+     good:'Yes. <b>"What should I wear?"</b> Linda answered that one: black. The other <b>four</b> questions got no answer at all.',
+     near:{},
+     miss:'Not that one. Read Linda\'s reply again. Which question does "Wear black" answer?'},
+  hearsTitle:'What Jake hears',
+  hears:[{q:'Wear black. See you Saturday!', h:'Jake hears: <b>"I read your first line. The rest did not matter."</b>'},
+         {q:'(four questions with no answer)', h:'Now he worries. Does he need a food handler card <b>before</b> Saturday? Where does he park at 7 in the morning? His careful email now feels like it was <b>"too much."</b>'},
+         {q:'What Linda meant', h:'Linda was busy. She answered fast from her phone. She planned to explain the rest on Saturday. <b>Jake cannot see that plan.</b> He only sees one line.'}],
+  hearsEnd:'When someone asks you five things, <b>one friendly line can feel worse than no answer</b>.',
+  pick:{ask:'Jake writes back. <b>Which email should he send?</b>', who:'Jake', to:'Linda',
+     good:{subject:'Re: Questions before Saturday', lines:['Hi Linda,','Thank you! Black it is.','Most of my questions can wait until Saturday.','One thing can\'t wait: <b>do I need a food handler card before my first shift?</b> If I do, I want to get it this week.','Thanks,','Jake']},
+     other:{subject:'Re: Questions before Saturday', lines:['Hi Linda,','You only answered one of my questions.','Can you please answer the rest?','Jake']},
+     goodWhy:'Yes. Jake is polite, and he asks again for only the one thing that cannot wait. Linda can answer in ten seconds.',
+     otherWhy:'That one is true, but it scolds Linda for being busy. She will feel corrected by a new employee before his first shift. Pick again.'},
+  whyTitle:'Why Jake\'s reply works',
+  why:[{q:'Thank you! Black it is.', w:'He says <b>yes</b> to what was answered.'},
+       {q:'Most of my questions can wait until Saturday.', w:'He <b>lets go</b> of what can wait. Linda does not have to answer four things on her phone.'},
+       {q:'One thing can\'t wait: do I need a food handler card before my first shift?', w:'He asks again for <b>only the one thing that cannot wait</b>, and he says why: he wants to get it this week.'}],
+  whyEnd:'<b>Linda\'s reply, 10 minutes later:</b> "Good question! Yes, get the card this week. It takes about an hour online."',
+  extra:{title:'What Linda could have sent in two minutes',
+     note:'When an email has <b>numbers</b>, answer with <b>numbers</b>. Even "We will cover this on Saturday" counts. Five short answers tell the writer: <b>I read all of it.</b>',
+     card:{from:'Linda', to:'Jake', when:'Tuesday, June 8, 6:50 AM', subject:'Re: Questions before Saturday',
+       lines:['Hi Jake,','1. <b>What to wear:</b> a black shirt and black pants.','2. <b>Training:</b> Rosa will train you on the espresso machine.','3. <b>Food handler card:</b> yes, get it this week. It takes about an hour online.','4. <b>Parking:</b> the back lot, behind the store.','5. <b>Schedule:</b> yes, in our scheduling app. I will send you the invite.','See you Saturday!','Linda']}}},
+
+ {key:'spiral', color:'pink', title:'The tone spiral', emoji:'🌀',
+  who:[{sym:'😠', name:'Rick', role:'is a <b>customer</b>. He ordered 10 pizzas for his son\'s team party.'},
+       {sym:'🍕', name:'Dana', role:'is the <b>shift manager</b> at <b>Main Street Pizza</b>. She answers customer emails.'}],
+  facts:[{sym:'📦', lab:'What happened', txt:'The pizzas were ordered for <b>Saturday, May 1, at noon</b>. They arrived at <b>12:40 PM</b>.'},
+         {sym:'🚗', lab:'The other side', txt:'That Saturday, <b>two of Dana\'s drivers called out sick</b>.'}],
+  story:['On <b>Monday, May 3</b>, Rick sends Main Street Pizza an angry email. Some of it is in capital letters.',
+         'Dana reads it. She feels attacked. Her team worked hard on a terrible Saturday.',
+         'She writes back the same morning.'],
+  cards:[{label:'Rick\'s email', from:'Rick', to:'Main Street Pizza', when:'Monday, May 3, 9:10 AM', subject:'LATE ORDER',
+     lines:['I ordered 10 pizzas for SATURDAY AT NOON.','They showed up at 12:40.','Twenty kids sat there waiting.','I would appreciate a response.','Rick']},
+     {label:'Dana\'s reply', from:'Dana Lopez', to:'Rick', when:'Monday, May 3, 11:30 AM', subject:'Re: LATE ORDER', tap:true,
+     lines:['Rick,','Saturday was our busiest day of the month, and two drivers called out.','As far as I knew, your order was set for 12:30, not noon.','We did our best.','Please advise.','Dana Lopez, Shift Manager'], tappable:[1,2,3,4]}],
+  tap:{ask:'Tap the sentence in <b>Dana\'s reply</b> that will make Rick <b>angrier</b>.', right:2,
+     good:'Yes. <b>"As far as I knew, your order was set for 12:30, not noon."</b> Rick hears: <b>"You are confused."</b> His son\'s team waited, and now he is being told it might be his fault.',
+     near:{4:'"Please advise" is cold, but it is not the worst one. Find the sentence that tells Rick he might be wrong.',
+           1:'That one makes an excuse, and Rick will not like it. But one sentence is worse: it says the mistake might be his. Try again.',
+           3:'"We did our best" sounds like an excuse. Find the sentence that says the mistake might be Rick\'s.'},
+     miss:'Not that one. Find the sentence that says the mistake might be Rick\'s.'},
+  hearsTitle:'What each one hears',
+  hears:[{q:'SATURDAY AT NOON', h:'Dana hears <b>shouting</b>. Capital letters read like a raised voice.'},
+         {q:'I would appreciate a response.', h:'Dana hears: <b>"You are ignoring me."</b> It is Monday morning. She has not had a chance to answer yet.'},
+         {q:'As far as I knew, your order was set for 12:30, not noon.', h:'Rick hears: <b>"You are confused."</b>'},
+         {q:'Please advise.', h:'Rick hears: <b>"I am done being friendly."</b> It sounds like a form letter, and her full title under it makes it colder.'}],
+  hearsEnd:'Here is the twist: <b>both are partly right.</b> Rick\'s kids waited 40 minutes. Dana\'s store really was short two drivers. Each one answered the other person\'s <b>tone</b>, not the <b>facts</b>.',
+  pick:{ask:'Dana tries again. <b>Which reply should she send?</b>', who:'Dana', to:'Rick',
+     good:{subject:'Re: LATE ORDER', lines:['Hi Rick,','You\'re right. Your pizzas were 40 minutes late, and twenty kids waited. I\'m sorry.','Two of our drivers called out on Saturday. We should have called you as soon as we knew your order would be late.','I would like to <b>refund your delivery fee and half of the order</b>.','<b>Could I call you today at 2:00?</b>','Dana']},
+     other:{subject:'Re: LATE ORDER', lines:['Rick,','I\'m sorry you feel that way.','We do our best on busy days.','Dana Lopez, Shift Manager']},
+     goodWhy:'Yes. Dana starts with the part where Rick is right, says sorry with no "but," and fixes something real.',
+     otherWhy:'"I\'m sorry you feel that way" is not an apology. It says the problem is Rick\'s feelings, not the late pizzas. Pick again.'},
+  whyTitle:'Why Dana\'s new reply works',
+  why:[{q:'You\'re right. Your pizzas were 40 minutes late, and twenty kids waited.', w:'She starts with the part where <b>Rick is right</b>. He feels heard before anything else.'},
+       {q:'I\'m sorry.', w:'A <b>real apology</b>. Short. No "but" after it.'},
+       {q:'We should have called you as soon as we knew your order would be late.', w:'She owns the part her store <b>could control</b>. She does not blame the drivers.'},
+       {q:'I would like to refund your delivery fee and half of the order.', w:'She <b>fixes something real</b>, not just words.'},
+       {q:'Could I call you today at 2:00?', w:'She moves the conversation from hot emails to a <b>phone call</b>, where tone is easier to hear.'}],
+  whyEnd:'<b>Rick\'s reply:</b> "Thanks, Dana. I appreciate that. Talk at 2."'},
+
+ {key:'question', color:'cream', title:'Catch their mistake with a question', emoji:'🧾',
+  who:[{sym:'💵', name:'Ashley', role:'is a <b>sales associate</b> at <b>Bright Mart</b>. Her paycheck is short.'},
+       {sym:'🧑‍💼', name:'Steve', role:'is the <b>store manager</b>. He does payroll.'}],
+  facts:[{sym:'🕑', lab:'What is wrong', txt:'Ashley worked <b>4 extra hours</b> on <b>Saturday, October 9</b>. Her paycheck on <b>Friday, October 15</b> does not include them.'},
+         {sym:'💲', lab:'How much', txt:'About <b>$60</b>.'}],
+  story:['Ashley covered a shift for her coworker <b>Maria</b> on Saturday, October 9, from <b>2:00 to 6:00 PM</b>.',
+         'On Friday, October 15, her paycheck comes. The 4 hours are missing.',
+         'She is annoyed. It is her money.'],
+  cards:[{label:'Ashley\'s email', from:'Ashley', to:'Steve', when:'Friday, October 15, 5:15 PM', subject:'Paycheck', tap:true,
+     lines:['Steve,','My paycheck is wrong.','You forgot my 4 hours from Saturday.','Please fix it.','Ashley'], tappable:[1,2,3]}],
+  tap:{ask:'Tap the sentence Steve will hear as <b>"you are careless."</b>', right:2,
+     good:'Yes. <b>"You forgot my 4 hours from Saturday."</b> It points straight at Steve. Even if he made the mistake, he feels <b>caught</b>.',
+     near:{1:'That one states the problem. It is blunt, but the next sentence points the finger right at Steve. Try again.',
+           3:'"Please fix it" is short, but the worst one is the sentence that says what Steve did wrong.'},
+     miss:'Not that one. Find the sentence that says what Steve did wrong.'},
+  hearsTitle:'What Steve hears',
+  hears:[{q:'My paycheck is wrong.', h:'Steve hears: <b>"Your work is wrong."</b>'},
+         {q:'You forgot my 4 hours from Saturday.', h:'Steve hears: <b>"You are careless."</b> He feels caught, so he may dig through the records just to find something to push back on.'},
+         {q:'Please fix it.', h:'With no thanks and no question, it sounds like <b>an order</b>.'}],
+  hearsEnd:'Ashley is right about the hours. But the way she says it makes Steve <b>defend himself</b> instead of fixing it.',
+  pick:{ask:'Ashley tries again. <b>Which email should she send?</b>', who:'Ashley', to:'Steve',
+     good:{subject:'Quick question on my October 15 paycheck', lines:['Hi Steve,','Thank you for the paycheck.','I think <b>4 hours</b> might be missing. I covered Maria\'s shift on <b>Saturday, October 9</b>, from <b>2:00 to 6:00 PM</b>.','<b>Could you check if those hours made it in?</b>','Thanks,','Ashley']},
+     other:{subject:'Paycheck', lines:['Steve,','This is not the first time my check is wrong.','Fix it before next Friday.','Ashley']},
+     goodWhy:'Yes. Ashley gives her facts and asks Steve to check. He can find the mistake himself.',
+     otherWhy:'That one turns one mistake into a pattern, and it gives Steve an order. He will feel attacked, not reminded. Pick again.'},
+  whyTitle:'Why Ashley\'s new email works',
+  why:[{q:'Thank you for the paycheck.', w:'One <b>true, kind line</b> first.'},
+       {q:'I think 4 hours might be missing.', w:'"I think" and "might" leave <b>room</b>. It sounds like a question, not an accusation.'},
+       {q:'I covered Maria\'s shift on Saturday, October 9, from 2:00 to 6:00 PM.', w:'Her <b>facts</b>: the date, the time, and whose shift it was. Steve can check them in a minute.'},
+       {q:'Could you check if those hours made it in?', w:'She asks him to <b>confirm</b>. That lets Steve find and fix the mistake himself, without losing face. (Plain words: without feeling embarrassed.)'}],
+  whyEnd:'<b>Steve\'s reply:</b> "You\'re right, Ashley, I missed that shift. Sorry about that. It will be on your next check."<br><b>Ashley:</b> "No problem at all. Thanks for fixing it so fast!"<br><br>One caution: a question works the <b>first</b> time. If the same mistake keeps happening, say it plainly.'},
+
+ {key:'own', color:'peri', title:'Own your mistake in the first line', emoji:'🙋', write:true,
+  who:[{sym:'🛒', name:'Nicole', role:'is a <b>shift lead</b> at <b>Fresh Market</b>, a grocery store. She made a mistake.'},
+       {sym:'🧑‍💼', name:'Tom', role:'is the <b>store manager</b>. He is asking about it.'}],
+  facts:[{sym:'📦', lab:'The mistake', txt:'Nicole was supposed to order <b>coffee cups and lids</b> on Thursday. The order never went out.'},
+         {sym:'⏰', lab:'Right now', txt:'It is <b>Monday at 8:00 AM</b>. The coffee bar has <b>one sleeve of cups</b> left.'}],
+  story:['On <b>Thursday</b>, Tom asked Nicole to order coffee cups and lids before the weekend.',
+         'She filled the online cart. Then a customer needed help, and she never clicked <b>Submit</b>.',
+         'On <b>Monday at 8:00 AM</b>, Tom emails: "Did the cup order go out? We are almost out of cups."',
+         'Nicole checks. The order is still sitting in the cart.',
+         'She orders right away, at <b>8:15 AM</b>. The supplier says the cups will arrive <b>Wednesday</b>.',
+         'Until then, she can buy <b>2 sleeves</b> at the warehouse store for <b>$38</b>. That is enough until Wednesday.'],
+  cards:[{label:'Nicole\'s first try', from:'Nicole', to:'Tom', when:'Monday, 8:30 AM', subject:'Re: Cup order',
+     lines:['Hi Tom!','The supplier website has been really confusing lately.','I\'m looking into the cup order.','I\'ll keep you posted!','Nicole']}],
+  hearsTitle:'What Tom hears in Nicole\'s first try',
+  hears:[{q:'The supplier website has been really confusing lately.', h:'Tom hears: <b>"It is the website\'s fault."</b> But the website did not forget the order.'},
+         {q:'I\'m looking into the cup order.', h:'Tom hears: <b>"I do not know yet."</b> He still does not know if cups are coming.'},
+         {q:'I\'ll keep you posted!', h:'No time and no plan. Tom will have to email again.'}],
+  hearsEnd:'Later, Tom learns the order sat in the cart since Thursday. Now this email looks like <b>a cover story</b>, and he trusts Nicole less.',
+  writeFacts:['The order never went out. Nicole filled the cart on Thursday but never clicked Submit.','She placed the order this morning at 8:15 AM.','The cups arrive Wednesday.','She can buy 2 sleeves at the warehouse store for $38. That covers Monday to Wednesday.'],
+  checks:['My <b>first line</b> says what went wrong, in plain words.','I said <b>what happened</b> in one or two sentences, with no excuses.','I said <b>what I already did</b> to fix it.','I gave Tom something he can <b>use right now</b>.','I said <b>when he will hear from me next</b>.'],
+  model:{from:'Nicole', to:'Tom', when:'Monday, 8:30 AM', subject:'Cup order: my mistake, already fixed, cups arrive Wednesday',
+     lines:['Good morning, Tom,','<b>The cup order did not go out. That\'s on me.</b>','<b>What happened:</b> I filled the cart on Thursday, but I never clicked Submit.','<b>What I did this morning:</b> I placed the order at 8:15. The cups arrive Wednesday.','<b>What we can do now:</b> I can buy 2 sleeves at the warehouse store on my way in. They cost $38 and will last until Wednesday.','I\'ll text you when the delivery arrives.','Nicole']},
+  modelEnd:'<b>Tom\'s reply:</b> "Thanks for telling me straight, and for fixing it fast. Yes, grab the 2 sleeves."<br><br>Why <b>"That\'s on me"</b> builds trust: Tom gets the truth and the fix in the same email. He never has to find out later.'}
+];
+
+/* ================= PAGES ================= */
+var PAGES = [{type:'start'}];
+SCENES.forEach(function(S, si){
+  PAGES.push({type:'scene', si:si});
+  if (S.write){
+    PAGES.push({type:'look', si:si});
+    PAGES.push({type:'hears', si:si});
+    PAGES.push({type:'write', si:si});
+    PAGES.push({type:'model', si:si});
+  } else {
+    PAGES.push({type:'tap', si:si, pts:1});
+    PAGES.push({type:'hears', si:si});
+    PAGES.push({type:'pick', si:si, pts:1});
+    PAGES.push({type:'why', si:si});
+    if (S.extra) PAGES.push({type:'extra', si:si});
+  }
+});
+PAGES.push({type:'end'});
+var MAXPTS = PAGES.reduce(function(s, p){ return s + (p.pts || 0); }, 0);
+
+/* ================= STATE ================= */
+var st;
+function fresh(){
+  st = {i:0, view:'pages', pg:PAGES.map(function(p){
+    var s = {done:false, tries:0, firstTry:null, shown:0};
+    if (p.type === 'pick') s.order = Math.random() < 0.5 ? ['good', 'other'] : ['other', 'good'];
+    return s; }), cls:newCls(), write:{text:'', checks:[false, false, false, false, false], locked:false}};
+}
+function total(){ return st.pg.reduce(function(s, x, i){ return s + (PAGES[i].pts && x.firstTry === 1 ? 1 : 0); }, 0); }
+
+/* ================= RENDER PIECES ================= */
+function sceneNo(si){ return 'Scene ' + (si + 1) + ' of ' + SCENES.length; }
+function band(S, si, sub){
+  return '<div class="band" style="background:var(--' + S.color + ')"><div class="kicker">' + sceneNo(si) + (sub ? ' · ' + sub : '') + '</div><h1>' + S.emoji + ' ' + S.title + '</h1></div>';
+}
+function emailCard(c, opts){
+  opts = opts || {};
+  var h = '<div class="email" id="' + (opts.id || '') + '">' + (c.label ? '<div class="cap" style="margin:0 0 8px">' + c.label + '</div>' : '') +
+    '<div class="hdr"><span class="lab">From</span><span>' + esc(c.from) + '</span><span class="lab">To</span><span>' + esc(c.to) + '</span>' +
+    (c.when ? '<span class="lab">Sent</span><span>' + esc(c.when) + '</span>' : '') +
+    '<span class="lab">Subject</span><span><b>' + c.subject + '</b></span></div>';
+  c.lines.forEach(function(l, k){
+    var tappable = opts.tap && c.tappable && c.tappable.indexOf(k) >= 0;
+    h += '<p>' + (tappable ? '<span class="sent" data-k="' + k + '">' + l + '</span>' : l) + '</p>';
+  });
+  return h + '</div>';
+}
+function renderStart(){
+  return '<div class="band" style="background:var(--lav)"><div class="kicker">Business Communication · Emails and tone</div><h1>Same Facts, Different Feel</h1>' +
+    '<p class="lrow" style="margin:0 0 6px">Six short scenes from real jobs. In each one, an email goes wrong.</p></div>' +
+    '<div class="how"><b>How it works</b>' +
+    '<p style="margin:8px 0 6px">You will visit a <b>bakery</b>, a <b>shoe store</b>, a <b>coffee shop</b>, a <b>pizza place</b>, a <b>discount store</b>, and a <b>grocery store</b>.</p>' +
+    '<p style="margin:0 0 6px">In scenes 1 to 5, you do four things:</p>' +
+    '<ol><li>Read the email that goes wrong, and <b>tap the line that hurts</b>.</li><li>See <b>what the reader hears</b>.</li><li><b>Pick the better email</b>.</li><li>See <b>why it works</b>, line by line.</li></ol>' +
+    '<p style="margin:10px 0 0">In scene 6, <b>you write one email yourself</b>.</p></div>' +
+    '<div class="how"><b>⭐ Points</b><p style="margin:8px 0 6px">Scenes 1 to 5 give <b>2 points each</b>: 1 for the line you tap, 1 for the email you pick. That makes <b>10 points</b>.</p>' +
+    '<p style="margin:0">Only your <b>first try</b> counts. You can keep trying until you find it, so you still learn. The email you write in scene 6 is saved for Professor Calafiore.</p></div>' +
+    modeBox();
+}
+function renderScene(S, si){
+  var h = band(S, si, 'The scene');
+  h += '<div class="whobox"><div class="whohead">Who is who</div>';
+  S.who.forEach(function(w){ h += '<div class="whorow"><span class="sym">' + w.sym + '</span><span><b class="nm">' + w.name + '</b> ' + w.role + '</span></div>'; });
+  S.facts.forEach(function(f){ h += '<div class="whorow fact"><span class="sym">' + f.sym + '</span><span><b>' + f.lab + ':</b> ' + f.txt + '</span></div>'; });
+  h += '</div><div class="how">';
+  S.story.forEach(function(x){ h += '<p style="margin:0 0 8px">' + x + '</p>'; });
+  return h + '</div>';
+}
+function renderTap(S, si, s){
+  var h = band(S, si, 'Find the line that hurts');
+  h += '<div class="job"><div class="jobtitle">Your job · 1 point</div><div class="jobtext">' + S.tap.ask + '</div><p class="jobnote">Only your first tap counts.</p></div>';
+  S.cards.forEach(function(c){ h += emailCard(c, {tap:!!c.tap, id:c.tap ? 'em' : ''}); });
+  return h + '<div id="fbzone">' + (s.fb || '') + '</div>';
+}
+function revealList(items, n, kind){
+  var h = '';
+  items.slice(0, n).forEach(function(x, k){
+    var isQ = x.q.charAt(0) !== '(' && !/^What /.test(x.q);
+    h += '<div class="rev' + (k === n - 1 ? ' enter' : ' past') + '"><div class="qchip' + (isQ ? '' : ' plainq') + '">' + (isQ ? '"' + x.q + '"' : x.q.replace(/^\(|\)$/g, '')) + '</div><p>' + (kind === 'why' ? x.w : x.h) + '</p></div>';
+  });
+  return h;
+}
+function renderHears(S, si, s){
+  var h = band(S, si, S.write ? 'What the reader hears' : 'What the reader hears');
+  h += '<h2>' + S.hearsTitle + '</h2>';
+  if (s.shown < 1) s.shown = 1;
+  h += revealList(S.hears, s.shown, 'hears');
+  if (s.shown < S.hears.length) h += '<div class="btnrow"><button class="btn blue" type="button" id="moreBtn">Show the next one ›</button><span class="small">' + s.shown + ' of ' + S.hears.length + '</span></div>';
+  else h += '<div class="plain enter">' + S.hearsEnd + '</div>';
+  return h;
+}
+function renderPick(S, si, s){
+  var P = S.pick;
+  var h = band(S, si, 'Pick the better email');
+  h += '<div class="job"><div class="jobtitle">Your job · 1 point</div><div class="jobtext">' + P.ask + '</div><p class="jobnote">Only your first pick counts.</p></div>';
+  h += '<div class="compare">';
+  s.order.forEach(function(which, k){
+    var c = P[which], L = k === 0 ? 'A' : 'B';
+    var cls = s.done && which === 'good' ? ' chosen' : ((s.wrong || []).indexOf(which) >= 0 ? ' dim' : '');
+    h += '<div class="col' + cls + '"><div class="cap">Email ' + L + '</div>' + emailCard({from:P.who, to:P.to, subject:c.subject, lines:c.lines}) +
+      (s.done ? '' : '<button class="btn ' + ((s.wrong || []).indexOf(which) >= 0 ? 'soft' : 'blue') + ' wide pickbtn" type="button" data-w="' + which + '"' + ((s.wrong || []).indexOf(which) >= 0 ? ' disabled' : '') + '>' + esc(P.who) + ' sends Email ' + L + '</button>') + '</div>';
+  });
+  return h + '</div><div id="fbzone">' + (s.fb || '') + '</div>';
+}
+function renderWhy(S, si, s){
+  var h = band(S, si, 'Why it works');
+  h += '<h2>' + S.whyTitle + '</h2><p class="small" style="margin:-4px 0 12px">Each card shows a line from the better email, then what that line does.</p>';
+  if (s.shown < 1) s.shown = 1;
+  h += revealList(S.why, s.shown, 'why');
+  if (s.shown < S.why.length) h += '<div class="btnrow"><button class="btn blue" type="button" id="moreBtn">Show the next line ›</button><span class="small">' + s.shown + ' of ' + S.why.length + '</span></div>';
+  else h += '<div class="fb good enter">' + S.whyEnd + '</div>';
+  return h;
+}
+function renderExtra(S, si){
+  var E = S.extra;
+  return band(S, si, 'One more thing') + '<h2>' + E.title + '</h2>' + emailCard(E.card) + '<div class="plain">' + E.note + '</div>';
+}
+function renderLook(S, si){
+  return band(S, si, 'Nicole\'s first try') + '<p class="lrow">Nicole is embarrassed. Here is the email she writes first.</p>' + emailCard(S.cards[0]) +
+    '<div class="plain">Read it the way <b>Tom</b> will read it. He has one sleeve of cups and a store full of customers. Press <b>Next ›</b> to see what he hears.</div>';
+}
+function renderWrite(S, si){
+  var w = st.write;
+  var h = band(S, si, 'Your turn');
+  h += '<div class="job"><div class="jobtitle">Your job</div><div class="jobtext">Write Nicole\'s email to Tom. The <b>first line</b> must say what went wrong, in plain words.</div><p class="jobnote">This email is saved for Professor Calafiore.</p></div>';
+  h += '<div class="facts"><b>The facts you can use</b><ul>' + S.writeFacts.map(function(f){ return '<li>' + f + '</li>'; }).join('') + '</ul></div>';
+  if (w.locked){
+    return h + '<div class="fb good"><b>✅ Locked in.</b> Press <b>Next ›</b> to see one way Nicole could write it.</div><div class="email"><div class="cap" style="margin:0 0 8px">Your email</div><p style="white-space:pre-wrap">' + esc(w.text) + '</p></div>';
+  }
+  h += '<label class="wlab" for="wtext">Nicole\'s email <span>(start with "Hi Tom," then your first line)</span></label>' +
+    '<textarea id="wtext" class="field" style="min-height:240px">' + esc(w.text) + '</textarea>' +
+    '<p class="hint" id="wcount"></p>' +
+    '<div class="checks"><div class="ct">Check your email · tick each box when it is true</div>' +
+    S.checks.map(function(c, k){ return '<label class="ck' + (w.checks[k] ? ' ok' : '') + '"><input type="checkbox" class="wck" data-k="' + k + '"' + (w.checks[k] ? ' checked' : '') + ' style="width:22px;height:22px;margin-top:3px"><span>' + c + '</span></label>'; }).join('') + '</div>' +
+    '<div class="btnrow"><button class="btn blue" type="button" id="lockBtn">Lock in my email</button><span class="small" id="lockmsg"></span></div>';
+  return h;
+}
+function renderModel(S, si){
+  return band(S, si, 'One way to write it') + '<h2>One way Nicole could write it</h2>' + emailCard(S.model) +
+    (st.write.locked ? '<div class="email"><div class="cap" style="margin:0 0 8px">Your email, for comparison</div><p style="white-space:pre-wrap">' + esc(st.write.text) + '</p></div>' : '') +
+    '<div class="fb good">' + S.modelEnd + '</div>';
+}
+function renderEnd(){
+  var t = total(), w = st.write;
+  return '<div class="band" style="background:var(--mint)"><div class="kicker">Finished</div><h1>You finished all six scenes</h1></div>' +
+    '<div class="bigscore">⭐ ' + t + ' of ' + MAXPTS + ' points</div>' + endStatus() +
+    '<div class="how"><b>The six moves, one more time</b><ol>' +
+    '<li><b>Saying no:</b> give the reason first, then the closest yes, then a real question.</li>' +
+    '<li><b>Asking a third time:</b> make it the easiest email to say yes to. Real deadline, one friendly line, no blame.</li>' +
+    '<li><b>Got one answer out of five:</b> say thanks, then ask again only for what cannot wait.</li>' +
+    '<li><b>A hot email:</b> answer the facts, not the tone. Start with the part where they are right.</li>' +
+    '<li><b>Their mistake:</b> ask a question with your facts, so they can fix it themselves.</li>' +
+    '<li><b>Your mistake:</b> say it in the first line. Then what happened, the fix, and what comes next.</li></ol></div>' +
+    (w.locked ? '<div class="email"><div class="cap" style="margin:0 0 8px">The email you wrote for Nicole</div><p style="white-space:pre-wrap">' + esc(w.text) + '</p></div>' : '');
+}
+
+/* ================= ENGINE ================= */
+function render(){
+  if (st.view === 'signin'){ renderSignin(); save(); return; }
+  if (st.view === 'lookup'){ renderLookup(); return; }
+  showNav(true);
+  var p = PAGES[st.i], s = st.pg[st.i], S = SCENES[p.si], h = '';
+  if (p.type === 'start') h = renderStart();
+  else if (p.type === 'scene') h = renderScene(S, p.si);
+  else if (p.type === 'tap') h = renderTap(S, p.si, s);
+  else if (p.type === 'hears') h = renderHears(S, p.si, s);
+  else if (p.type === 'pick') h = renderPick(S, p.si, s);
+  else if (p.type === 'why') h = renderWhy(S, p.si, s);
+  else if (p.type === 'extra') h = renderExtra(S, p.si);
+  else if (p.type === 'look') h = renderLook(S, p.si);
+  else if (p.type === 'write') h = renderWrite(S, p.si);
+  else if (p.type === 'model') h = renderModel(S, p.si);
+  else if (p.type === 'end') h = renderEnd();
+  var pg = $('#page');
+  pg.innerHTML = whoStrip(p) + h;
+  pg.style.animation = 'none'; void pg.offsetWidth; pg.style.animation = '';
+  if (p.type === 'end' && isClass() && !(st.cls.submitted && st.cls.submitted.ok) && !st.cls.submitting) submitFinal();
+  bind(p, s);
+  nav(); modeTag(); save();
+}
+function bumpPoints(){ var el = $('#points'); if (!el) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+function bind(p, s){
+  var S = SCENES[p.si];
+  if (p.type === 'start'){
+    onClick('#goClass', function(){ st.view = 'signin'; st.form = null; render(); });
+    onClick('#goPractice', function(){ st.cls = newCls(); st.cls.mode = 'practice'; go(1); });
+    onClick('#goLookup', function(){ st.view = 'lookup'; st.look = null; render(); });
+    onClick('#toClass', function(){ fresh(); st.view = 'signin'; render(); });
+  }
+  if (p.type === 'tap'){
+    if (s.done){ var hit = $('#em .sent[data-k="' + S.tap.right + '"]'); if (hit) hit.classList.add('hit'); (s.nopes || []).forEach(function(k){ var el = $('#em .sent[data-k="' + k + '"]'); if (el) el.classList.add('nope'); }); }
+    else {
+      (s.nopes || []).forEach(function(k){ var el = $('#em .sent[data-k="' + k + '"]'); if (el) el.classList.add('nope'); });
+      $$('#em .sent').forEach(function(el){
+        if (!el.classList.contains('nope')) el.classList.add('tap');
+        el.addEventListener('click', function(){
+          if (s.done || el.classList.contains('nope')) return;
+          var k = +el.dataset.k;
+          s.tries = (s.tries || 0) + 1;
+          if (k === S.tap.right){
+            s.done = true; if (s.firstTry == null){ s.firstTry = 1; bumpPoints(); }
+            $$('#em .sent').forEach(function(x){ x.classList.remove('tap'); });
+            el.classList.add('hit');
+            s.fb = '<div class="fb good"><b>✅ ' + (s.firstTry === 1 ? '1 point. ' : 'Found it. ') + '</b>' + S.tap.good + '</div>';
+          } else {
+            if (s.firstTry == null) s.firstTry = 0;
+            s.nopes = (s.nopes || []).concat([k]);
+            el.classList.remove('tap'); el.classList.add('nope');
+            s.fb = '<div class="fb miss"><b>Not that one.</b> ' + ((S.tap.near && S.tap.near[k]) || S.tap.miss) + '</div>';
+          }
+          $('#fbzone').innerHTML = s.fb; nav(); save();
+        });
+      });
+    }
+  }
+  if ((p.type === 'hears' || p.type === 'why')){
+    onClick('#moreBtn', function(){ s.shown += 1; render(); var last = $$('.rev'); if (last.length) last[last.length - 1].scrollIntoView({behavior:'smooth', block:'center'}); });
+  }
+  if (p.type === 'pick' && !s.done){
+    $$('.pickbtn').forEach(function(b){
+      b.addEventListener('click', function(){
+        if (s.done) return;
+        var which = b.dataset.w;
+        s.tries = (s.tries || 0) + 1;
+        if (which === 'good'){
+          s.done = true; if (s.firstTry == null){ s.firstTry = 1; bumpPoints(); }
+          s.fb = '<div class="fb good"><b>✅ ' + (s.firstTry === 1 ? '1 point. ' : 'Right. ') + '</b>' + S.pick.goodWhy + '</div>';
+        } else {
+          if (s.firstTry == null) s.firstTry = 0;
+          s.wrong = (s.wrong || []).concat([which]);
+          s.fb = '<div class="fb miss"><b>Not that one.</b> ' + S.pick.otherWhy + '</div>';
+        }
+        render();
+        var fz = $('#fbzone'); if (fz) fz.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    });
+  }
+  if (p.type === 'write' && !st.write.locked){
+    var w = st.write, ta = $('#wtext');
+    var upd = function(){
+      w.text = ta.value;
+      var n = words(w.text), allTicked = w.checks.every(Boolean);
+      $('#wcount').textContent = n + ' words' + (n < 30 ? ' · write at least 30' : '');
+      $('#lockBtn').disabled = !(n >= 30 && allTicked);
+      $('#lockmsg').textContent = n < 30 ? 'Write at least 30 words.' : (allTicked ? 'Ready.' : 'Tick all five boxes when they are true.');
+      save();
+    };
+    ta.addEventListener('input', upd);
+    $$('.wck').forEach(function(cb){ cb.addEventListener('change', function(){ w.checks[+cb.dataset.k] = cb.checked; cb.parentNode.classList.toggle('ok', cb.checked); upd(); }); });
+    upd();
+    onClick('#lockBtn', function(){
+      upd(); if (words(w.text) < 30 || !w.checks.every(Boolean)) return;
+      if (!confirm('Lock in your email? You cannot change it after this.')) return;
+      w.locked = true; s.done = true; render(); window.scrollTo(0, 0);
+    });
+  }
+  if (p.type === 'end'){ onClick('#restart', function(){ fresh(); render(); }); refreshEndStatus(); }
+}
+function canNext(){
+  var p = PAGES[st.i], s = st.pg[st.i];
+  if (p.type === 'start') return !!st.cls.mode;
+  if (p.type === 'tap' || p.type === 'pick') return !!s.done;
+  if (p.type === 'hears') return s.shown >= SCENES[p.si].hears.length;
+  if (p.type === 'why') return s.shown >= SCENES[p.si].why.length;
+  if (p.type === 'write') return !!st.write.locked;
+  if (p.type === 'end') return false;
+  return true;
+}
+function nav(){
+  var p = PAGES[st.i];
+  var back = $('#back'), next = $('#next'), msg = $('#navmsg');
+  back.disabled = st.i === 0 || p.type === 'end';
+  next.disabled = !canNext();
+  next.textContent = PAGES[st.i + 1] && PAGES[st.i + 1].type === 'end' ? 'Finish ›' : 'Next ›';
+  var s = st.pg[st.i];
+  if (p.type === 'start') msg.innerHTML = st.cls.mode ? 'Press Next to begin' : 'Choose a version above to begin';
+  else if (p.type === 'tap') msg.innerHTML = s.done ? 'Good. Press Next.' : 'Tap a sentence in the email';
+  else if (p.type === 'pick') msg.innerHTML = s.done ? 'Good. Press Next.' : 'Pick Email A or Email B';
+  else if (p.type === 'hears' || p.type === 'why') msg.innerHTML = canNext() ? 'Press Next when you are ready' : 'Show every card first';
+  else if (p.type === 'write') msg.innerHTML = st.write.locked ? 'Press Next' : 'Lock in your email first';
+  else if (p.type === 'end') msg.innerHTML = '';
+  else msg.innerHTML = 'Press Next when you are ready';
+  $('#barfill').style.width = Math.round(100 * st.i / (PAGES.length - 1)) + '%';
+  $('#pcount').textContent = 'Page ' + (st.i + 1) + ' of ' + PAGES.length;
+  $('#points').textContent = total() + ' of ' + MAXPTS + ' points';
+}
+function go(i){
+  if (i < 0 || i >= PAGES.length) return;
+  st.i = i; st.view = 'pages';
+  render();
+  window.scrollTo(0, 0);
+}
+$('#next').addEventListener('click', function(){ if (canNext()) go(st.i + 1); });
+$('#back').addEventListener('click', function(){ if (st.i > 0) go(st.i - 1); });
+
+/* ================= BOOT ================= */
+fresh();
+if (!restore()) fresh();
+render();
+window.__sfd = {st:function(){ return st; }, go:go, PAGES:PAGES, MAXPTS:MAXPTS, CONFIG:CONFIG, SCENES:SCENES};
+</script>
+</body>
+</html>
